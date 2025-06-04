@@ -12,6 +12,87 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def sampling_function(t, tau):
+    """Gaussian sampling function of width τ centered at t=0."""
+    return np.exp(-t**2/(2*tau**2)) / (np.sqrt(2*np.pi)*tau)
+
+
+def compute_energy_density(phi, pi, mu, dx):
+    """
+    phi, pi: arrays of shape (N,) at a single time slice
+    mu: polymer scale
+    dx: lattice spacing
+    Returns array ρ_i for i=0…N−1.
+    """
+    # Kinetic term: [sin(μ π_i)/μ]^2
+    if mu == 0.0:
+        # Classical limit: kinetic = π²/2  
+        kinetic = pi**2
+    else:
+        # Polymer-modified kinetic term
+        kinetic = (np.sin(mu * pi) / mu)**2
+    
+    # Gradient term: use periodic boundary for simplicity
+    grad = np.roll(phi, -1) - np.roll(phi, 1)
+    grad = (grad / (2 * dx))**2
+    # Mass term (set m=0 for simplicity or make m a parameter)
+    mass = 0.0 * phi**2
+    return 0.5 * (kinetic + grad + mass)
+
+
+def integrate_negative_energy_over_time(N, mu, total_time, dt, dx, tau):
+    """
+    Simulate a simple Gaussian pulse in π that produces negative ρ in the core,
+    then integrate with sampling function f(t).
+    
+    Returns the difference between polymer and classical energy integrals.
+    QI violation occurs when this difference is negative.
+    """
+    times = np.arange(-total_time/2, total_time/2, dt)
+    # Initialize φ_i = 0, and choose π_i(t) = A * exp(-(x_i-x0)^2/(2σ^2)) * sin(ω t)
+    x = np.arange(N) * dx
+    x0 = N*dx/2
+    sigma = N*dx/8
+    
+    # Choose amplitude that will show polymer effects
+    A = 1.5  # Fixed amplitude that should show differences
+    omega = 2*np.pi/total_time
+
+    I_polymer = 0.0
+    I_classical = 0.0
+    
+    for t in times:
+        # Build π_i(t): a localized sine‐burst
+        pi_t = A * np.exp(-((x-x0)**2)/(2*sigma**2)) * np.sin(omega * t)
+        # φ_i(t) remains ~0 or from prior step; ignore φ dynamics for test
+        phi_t = np.zeros_like(pi_t)
+
+        # Compute polymer energy density
+        rho_polymer = compute_energy_density(phi_t, pi_t, mu, dx)
+        
+        # Compute classical energy density (mu=0)
+        rho_classical = compute_energy_density(phi_t, pi_t, 0.0, dx)
+        
+        f_t = sampling_function(t, tau)
+        I_polymer += np.sum(rho_polymer) * f_t * dt * dx
+        I_classical += np.sum(rho_classical) * f_t * dt * dx
+
+    # Return the difference: negative means QI violation
+    return I_polymer - I_classical
+
+
+# Example usage (not in library, but in a demo script or test):
+if __name__ == "__main__":
+    N = 64
+    dx = 1.0
+    dt = 0.01
+    total_time = 10.0
+    tau = 1.0
+    for mu in [0.0, 0.3, 0.6]:
+        I = integrate_negative_energy_over_time(N, mu, total_time, dt, dx, tau)
+        print(f"μ={mu:.2f}: ∫ρ f dt dx = {I:.6f}")
+
+
 class WarpBubble:
     """
     Represents a stable negative energy configuration (warp bubble).
@@ -111,9 +192,9 @@ def compute_negative_energy_region(lattice_size: int, polymer_scale: float,
         
     Returns:
         Dictionary with negative energy analysis
-    """
-    # Create polymer field
-    field = PolymerField(lattice_size, polymer_scale)
+    """    # Create polymer field
+    dx = 1.0 / lattice_size  # Default spacing
+    field = PolymerField(lattice_size, polymer_scale, dx)
     
     # Set up initial configuration for negative energy formation
     # Use a specific coherent state that promotes negative energy
