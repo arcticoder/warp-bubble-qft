@@ -45,7 +45,7 @@ def ford_roman_bounds(energy_density: float, spatial_scale: float,
     # Convert to maximum density for given spatial extent
     max_negative_density = max_negative_integral / spatial_scale
     
-    # FIXED: Violation analysis - Energy density must be more negative (less than) the bound to violate
+    # FIX: Violation occurs when energy_density is more negative than max_negative_density
     # Ford-Roman inequality says: energy_density ≥ max_negative_density
     violates_bound = energy_density < max_negative_density
     
@@ -87,14 +87,13 @@ def polymer_modified_bounds(energy_density: float, spatial_scale: float,
     if polymer_scale == 0:
         return {**classical_bounds, "bound_type": "polymer_classical_limit"}
     
-    # FIXED: Polymer modification factor
-    # Properly implement a modification factor that makes bounds more negative
+    # FIX: Polymer modification factor calculation
+    # For bounds to be more negative (relaxed), we need polymer_factor > 1
+    # Use 1/sinc(μ̄/π) which is always > 1 for μ̄ > 0
+    polymer_factor = 1.0 / np.sinc(polymer_scale / np.pi)
     
-    # For μ > 0, we want the bound to be more negative than classical
-    # Using a quadratic enhancement to ensure polymer_factor > 1
-    polymer_factor = 1.0 / np.sinc(polymer_scale / np.pi)  # This ensures factor > 1 for μ > 0
-    
-    # Bounds are negative, so multiplying by polymer_factor > 1 makes them more negative
+    # FIX: The bound is negative, so we need to multiply by enhancement factor
+    # To make it more negative (i.e., more relaxed)
     max_negative_density_polymer = classical_bounds["ford_roman_bound"] * polymer_factor
     max_negative_integral_polymer = classical_bounds["max_negative_integral"] * polymer_factor
     
@@ -331,4 +330,4 @@ def stability_analysis(negative_energy: float, spatial_scale: float,
         "classical_bounds": classical_bounds,
         "polymer_bounds": polymer_bounds,
         "duration_info": duration_info
-    }
+    }   

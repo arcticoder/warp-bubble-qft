@@ -319,38 +319,11 @@ def ford_roman_violation_analysis(bubble: WarpBubble, observation_time: float) -
     Returns:
         Violation analysis results
     """
-    # Classical Ford-Roman bound
-    classical_bound = (bubble.radius**2) / (abs(bubble.rho_neg) + 1e-10)
+    # Import stability functions
+    from warp_qft.bubble_stability import ford_roman_violation_analysis as analyze_violation
     
-    # Polymer-modified bound (theoretical prediction)
-    # FIXED: Ensure polymer bound is more relaxed (larger) than classical bound
-    if bubble.mu_bar > 0:
-        # Ensure polymer_factor > 1 to make bound more relaxed
-        polymer_factor = 1.0 / np.sinc(bubble.mu_bar / np.pi)  # This ensures factor > 1 for μ > 0
-        polymer_bound = classical_bound * polymer_factor
-    else:
-        polymer_bound = classical_bound
-        polymer_factor = 1.0
-    
-    # Check violations
-    classical_violation = observation_time > classical_bound
-    polymer_violation = observation_time > polymer_bound
-    
-    # Violation strength
-    classical_violation_factor = observation_time / classical_bound
-    polymer_violation_factor = observation_time / polymer_bound
-    
-    return {
-        "classical_ford_roman_bound": classical_bound,
-        "polymer_ford_roman_bound": polymer_bound,
-        "observation_time": observation_time,
-        "classical_violation": classical_violation,
-        "polymer_violation": polymer_violation,
-        "classical_violation_factor": classical_violation_factor,
-        "polymer_violation_factor": polymer_violation_factor,
-        "polymer_enhancement": polymer_factor,
-        "violation_possible": classical_violation and not polymer_violation
-    }
+    # Use the implementation from bubble_stability.py
+    return analyze_violation(bubble, observation_time)
 
 
 def compute_negative_energy_region(bubble: WarpBubble) -> Dict:
@@ -417,6 +390,33 @@ def compute_negative_energy_region(lattice_size: int, polymer_scale: float,
     # Compute initial energy density
     energy_density = field.compute_energy_density()
     
+    # Find negative energy regions
+    negative_indices = np.where(energy_density < 0)[0]
+    total_negative_energy = np.sum(energy_density[negative_indices]) if len(negative_indices) > 0 else 0
+    
+    # Estimate bubble parameters if negative energy exists
+    if len(negative_indices) > 0:
+        center_idx = negative_indices[np.argmin(energy_density[negative_indices])]
+        center_position = x[center_idx]
+        bubble_radius = len(negative_indices) * field.dx / 2
+        peak_density = np.min(energy_density)
+        
+        # Create warp bubble object
+        bubble = WarpBubble(center_position, bubble_radius, peak_density, polymer_scale)
+        stability = bubble.stability_analysis()
+    else:
+        bubble = None
+        stability = None
+    
+    return {
+        "total_negative_energy": total_negative_energy,
+        "negative_sites": len(negative_indices),
+        "energy_density": energy_density,
+        "x_grid": x,
+        "bubble": bubble,
+        "stability_analysis": stability,
+        "polymer_enhancement": polymer_scale > 0
+    }
     # Find negative energy regions
     negative_indices = np.where(energy_density < 0)[0]
     total_negative_energy = np.sum(energy_density[negative_indices]) if len(negative_indices) > 0 else 0

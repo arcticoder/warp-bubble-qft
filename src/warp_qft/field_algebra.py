@@ -241,7 +241,8 @@ class PolymerField:
         x = np.linspace(0, 1, self.N)
         self.phi = amplitude * np.exp(-(x - center)**2 / (2 * width**2))
         self.pi = np.zeros_like(self.phi)  # Start with zero momentum
-      def polymer_momentum_operator(self, p_classical: np.ndarray) -> np.ndarray:
+        
+    def polymer_momentum_operator(self, p_classical: np.ndarray) -> np.ndarray:
         """
         Apply polymer modification to momentum field values.
         
