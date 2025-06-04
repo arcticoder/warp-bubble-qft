@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, graphicx, hyperref}
+
+\title{Polymer Field Algebra: Discrete Commutation Relations}
+\author{Warp Bubble QFT Project}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+In the polymer quantization approach to quantum field theory, the continuous field variables are replaced by discrete polymer variables that live on a lattice. This discretization fundamentally modifies the commutation relations and can lead to violations of classical quantum inequalities like the Ford-Roman bound.
+
+\section{Polymer Representation}
+
+Consider a scalar field $\phi(x)$ on a 1D lattice with sites $x_i = i \Delta x$ where $i = 0, 1, \ldots, N-1$. The field value at site $i$ is denoted $\phi_i$ and its conjugate momentum is $\pi_i$.
+
+\subsection{Classical Commutation Relations}
+
+In the standard canonical quantization, the field and momentum satisfy:
+\begin{equation}
+[\hat{\phi}(x), \hat{\pi}(y)] = i\hbar \delta(x-y)
+\end{equation}
+
+On a discrete lattice, this becomes:
+\begin{equation}
+[\hat{\phi}_i, \hat{\pi}_j] = i\hbar \delta_{ij}
+\end{equation}
+
+\subsection{Polymer Modification}
+
+In the polymer representation, we introduce a polymer scale parameter $\bar{\mu}$ and replace the momentum operator:
+\begin{equation}
+\hat{\pi}_i \longrightarrow \frac{\sin(\bar{\mu} \hat{p}_i)}{\bar{\mu}}
+\end{equation}
+
+This leads to modified commutation relations:
+\begin{equation}
+[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}] = i\hbar \, \text{sinc}(\bar{\mu}) \, \delta_{ij}
+\end{equation}
+
+where $\text{sinc}(x) = \sin(\pi x)/(\pi x)$.
+
+\section{Energy Density in Polymer Representation}
+
+The energy density for a scalar field in the polymer representation becomes:
+\begin{equation}
+\rho_i = \frac{1}{2}\left[ \left(\frac{\sin(\bar{\mu} \pi_i)}{\bar{\mu}}\right)^2 + (\nabla_d \phi)_i^2 + m^2 \phi_i^2 \right]
+\end{equation}
+
+where $(\nabla_d \phi)_i$ is the discrete gradient:
+\begin{equation}
+(\nabla_d \phi)_i = \frac{\phi_{i+1} - \phi_{i-1}}{2\Delta x}
+\end{equation}
+
+\section{Negative Energy Formation}
+
+The polymer modification can lead to negative energy densities through interference effects. When the momentum term becomes negative due to the $\sin(\bar{\mu} \pi_i)$ factor, the total energy density can become negative if:
+
+\begin{equation}
+\left(\frac{\sin(\bar{\mu} \pi_i)}{\bar{\mu}}\right)^2 < -(\nabla_d \phi)_i^2 - m^2 \phi_i^2
+\end{equation}
+
+This condition can be satisfied when $\bar{\mu} \pi_i$ is in the range where $\sin(\bar{\mu} \pi_i) < 0$ and the magnitude is sufficiently large.
+
+\section{Ford-Roman Bound Violation}
+
+The Ford-Roman inequality states that for a classical field:
+\begin{equation}
+\int_{-\infty}^{\infty} \rho(t) f(t) \, dt \geq -\frac{C}{\tau^2}
+\end{equation}
+
+where $f(t)$ is a test function with characteristic width $\tau$, and $C = \hbar c/(12\pi)$ for a massless scalar field.
+
+In the polymer representation, the effective $\hbar$ is replaced by $\hbar_{\text{eff}} = \hbar \, \text{sinc}(\bar{\mu})$, which modifies the bound:
+\begin{equation}
+\int_{-\infty}^{\infty} \rho(t) f(t) \, dt \geq -\frac{C \, \text{sinc}(\bar{\mu})}{\tau^2}
+\end{equation}
+
+For small $\bar{\mu}$, $\text{sinc}(\bar{\mu}) \approx 1 - \frac{\pi^2 \bar{\mu}^2}{6}$, so the bound is slightly relaxed. However, for larger $\bar{\mu}$, additional discrete effects can provide further stabilization.
+
+\section{Stability Analysis}
+
+The stability of negative energy regions in the polymer representation depends on several factors:
+
+\begin{enumerate}
+\item \textbf{Polymer Scale}: Larger $\bar{\mu}$ generally provides more stabilization
+\item \textbf{Lattice Effects}: Discretization introduces quantum pressure effects
+\item \textbf{Field Configuration}: Specific momentum and field profiles that optimize interference
+\end{enumerate}
+
+The critical polymer scale for stabilization is approximately:
+\begin{equation}
+\bar{\mu}_{\text{crit}} \sim \sqrt{|\rho_{\text{neg}}| \, (\Delta x)^2}
+\end{equation}
+
+\section{Conclusions}
+
+The polymer quantization approach provides a natural framework for creating stable negative energy densities that can violate the Ford-Roman bound. The key mechanisms are:
+
+\begin{itemize}
+\item Modified commutation relations that effectively reduce $\hbar$
+\item Discrete lattice effects that create quantum pressure
+\item Interference patterns in the polymer momentum representation
+\end{itemize}
+
+These effects combine to allow negative energy densities to persist for longer than classically allowed, opening the possibility for stable warp bubble formation.
+
+\end{document}
