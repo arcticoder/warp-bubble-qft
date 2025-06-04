@@ -17,6 +17,14 @@ from .bubble_stability import (
     analyze_bubble_stability_theorem, 
     optimize_polymer_parameters
 )
+from .warp_bubble_engine import (
+    WarpBubbleEngine,
+    squeezed_vacuum_energy,
+    polymer_QI_bound,
+    find_optimal_mu,
+    visualize_scan,
+    run_warp_bubble_analysis
+)
 
 __all__ = [
     "PolymerField",
@@ -29,5 +37,11 @@ __all__ = [
     "compute_bubble_lifetime",
     "check_bubble_stability_conditions",
     "analyze_bubble_stability_theorem",
-    "optimize_polymer_parameters"
+    "optimize_polymer_parameters",
+    "WarpBubbleEngine",
+    "squeezed_vacuum_energy", 
+    "polymer_QI_bound",
+    "find_optimal_mu",
+    "visualize_scan",
+    "run_warp_bubble_analysis"
 ]
