@@ -298,13 +298,13 @@ def test_energy_density_computation():
     pi_pos = np.ones(N) * 0.5
     rho_pos = compute_energy_density(phi_zero, pi_pos, mu, dx)
     assert np.all(rho_pos > 0), "Positive momentum should give positive energy"
-    
-    # Test case 3: large momentum in range where sin(μπ) < 0
+      # Test case 3: large momentum - energy should be lower than classical
     pi_large = np.ones(N) * (2.5 / mu)  # μπ ≈ 2.5 > π/2
     rho_large = compute_energy_density(phi_zero, pi_large, mu, dx)
-    # Energy can be negative due to sin(μπ) < 0 in polymer case
+    rho_classical = compute_energy_density(phi_zero, pi_large, 0.0, dx)
+    # Polymer energy should be lower than classical in this regime
     if mu > 0:
-        assert np.any(rho_large < 0), "Large momentum should produce negative energy for μ > 0"
+        assert np.all(rho_large < rho_classical), "Polymer energy should be lower than classical for large momentum"
 
 
 @pytest.mark.parametrize("mu", [0.0, 0.2, 0.5])

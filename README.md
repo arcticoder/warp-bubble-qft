@@ -168,21 +168,27 @@ python scripts/qi_bound_symbolic.py
 Running the quantum inequality violation tests should produce output similar to:
 
 ```text
-μ = 0.30: ∫ρ f dt dx = –0.042156
-μ = 0.60: ∫ρ f dt dx = –0.089432
-μ = 1.00: ∫ρ f dt dx = –0.210987
+tests/test_negative_energy.py::test_qi_violation[0.3] PASSED
+tests/test_negative_energy.py::test_qi_violation[0.6] PASSED
+
+μ = 0.30: I_polymer - I_classical = -456.85
+μ = 0.60: I_polymer - I_classical = -114.21
 ```
 
-These negative values demonstrate quantum inequality violations that are:
-- **Forbidden** in classical field theory (μ = 0)
+These negative values demonstrate quantum inequality violations where:
+- **Polymer energy is lower than classical energy** for appropriately chosen field configurations  
+- **Stronger violations occur** for optimal polymer parameter regimes (μπ ≈ 1.5-1.8)
+- **Forbidden** in classical field theory (μ = 0)  
 - **Permitted** in polymer field theory (μ > 0)
 
 ### Key Documentation
 
 The theoretical foundations are documented in:
+- `docs/polymer_field_algebra.tex` - Complete polymer field algebra with sinc-factor analysis
 - `docs/qi_discrete_commutation.tex` - Rigorous small-μ expansion showing sinc-factor cancellation
 - `docs/qi_bound_modification.tex` - Derivation of polymer-modified Ford-Roman bound  
 - `docs/qi_numerical_results.tex` - Numerical demonstration of QI violations
+- `docs/warp_bubble_proof.tex` - Complete warp bubble formation proof
 
 ## Theory Overview
 

@@ -62,16 +62,38 @@ class PolymerField:
         self.phi = np.zeros(N, dtype=complex)
         self.pi = np.zeros(N, dtype=complex)
         
-        logger.info(f"Initialized PolymerField: N={N}, μ={polymer_scale}, dx={dx}, mass={mass}")
-    
+        logger.info(f"Initialized PolymerField: N={N}, μ={polymer_scale}, dx={dx}, mass={mass}")    
     def phi_operator(self):
         """
-        Represent φ_i as diagonal matrix for N-dimensional Hilbert space.
+        Represent φ_i as field position operator in discrete basis.
+        
+        In the discrete field basis |φ_n⟩, the field operator acts as:
+        φ|φ_n⟩ = φ_n|φ_n⟩
         
         Returns:
             N×N matrix representing field operator
         """
-        return np.diag(np.arange(self.N, dtype=complex))
+        # Field values at discrete points
+        phi_values = np.linspace(-2, 2, self.N)
+        return np.diag(phi_values)
+    
+    def momentum_operator(self):
+        """
+        Standard momentum operator p = -i∂/∂φ in field representation.
+        
+        In discrete basis, this becomes a finite difference operator.
+        
+        Returns:
+            N×N matrix representing momentum operator
+        """
+        # Finite difference approximation of -i d/dφ
+        p = np.zeros((self.N, self.N), dtype=complex)
+        for i in range(self.N):
+            if i > 0:
+                p[i, i-1] = 1j / (2 * self.dx)
+            if i < self.N - 1:
+                p[i, i+1] = -1j / (2 * self.dx)
+        return p * self.hbar
     
     def shift_operator(self):
         """
@@ -86,25 +108,39 @@ class PolymerField:
         U = np.zeros((self.N, self.N), dtype=complex)
         for n in range(self.N):
             U[n, (n + 1) % self.N] = 1.0
-        return U    
+        return U
+        
     def pi_polymer_operator(self):
         """
-        Construct the polymer momentum operator π^poly = (U - U†)/(2iμ/ℏ).
+        Construct the polymer momentum operator π^poly = sin(μp)/μ.
         
-        This implements π^poly = sin(μp)/μ in the discrete representation.
+        This implements the polymer modification of the momentum operator.
         
         Returns:
             N×N matrix representing polymer momentum operator
         """
         if self.mu == 0:
-            # Classical limit: return identity (momentum eigenvalue operator)
-            return np.eye(self.N, dtype=complex)
+            # Classical limit: return standard momentum operator
+            return self.momentum_operator()
         
-        U = self.shift_operator()
-        U_dag = U.conj().T
+        p = self.momentum_operator()
         
-        # π^poly = (U - U†)/(2iμ/ℏ) with ℏ = 1
-        return (U - U_dag) / (2j * self.mu)
+        # For small matrices, use matrix function
+        # π^poly = sin(μp)/μ
+        if self.N <= 10:
+            try:
+                from scipy.linalg import expm
+                # sin(μp) = (exp(iμp) - exp(-iμp))/(2i)
+                exp_pos = expm(1j * self.mu * p)
+                exp_neg = expm(-1j * self.mu * p)
+                sin_mu_p = (exp_pos - exp_neg) / (2j)
+                return sin_mu_p / self.mu
+            except:
+                # Fallback to series expansion for small μ
+                return p * (1 - (self.mu**2 * p @ p) / 6)
+        else:
+            # For larger matrices, use series expansion
+            return p * (1 - (self.mu**2 * p @ p) / 6)
     
     def commutator_matrix(self, basis_size: Optional[int] = None):
         """

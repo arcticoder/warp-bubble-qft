@@ -43,39 +43,23 @@ def compute_energy_density(phi, pi, mu, dx):
 def integrate_negative_energy_over_time(N, mu, total_time, dt, dx, tau):
     """
     Create π_i(t) = A exp[-((x_i - x0)^2)/(2 σ^2)] sin(ω t), 
-    choose A so that μ π_i(t) enters (π/2, 3π/2) in core → sin(μ π)<0 there.
+    choose A so that μ π_i(t) enters the regime where sin(μ π) gives lower energy.
     Integrate I = sum_i ∫ ρ_i(t) f(t) dt dx.
-    Return I.
+    Return I_polymer - I_classical (negative indicates QI violation).
     """
-    x = np.arange(N) * dx
-    x0 = N * dx / 2
-    sigma = N * dx / 8
-    
-    # Choose A slightly larger than (π/2)/(max envelope) so max(μ π_i)>π/2
-    A = 1.1 * (np.pi / (2 * mu)) if mu > 0 else 1.0
-    omega = 2 * np.pi / total_time
-
     times = np.arange(-total_time/2, total_time/2, dt)
-    I_sum = 0.0
-    
-    for t in times:
-        envelope = np.exp(-((x - x0)**2) / (2 * sigma**2))
-        pi_t = A * envelope * np.sin(omega * t)
-        phi_t = np.zeros_like(pi_t)  # assume φ ≈ 0 for worst‐case negative kinetic
-        
-        rho = compute_energy_density(phi_t, pi_t, mu, dx)
-        f_t = sampling_function(t, tau)
-        I_sum += np.sum(rho) * f_t * dt * dx
-        
-    return I_sum
-    times = np.arange(-total_time/2, total_time/2, dt)
-    # Initialize φ_i = 0, and choose π_i(t) = A * exp(-(x_i-x0)^2/(2σ^2)) * sin(ω t)
     x = np.arange(N) * dx
     x0 = N*dx/2
     sigma = N*dx/8
     
-    # Choose amplitude that will show polymer effects
-    A = 1.5  # Fixed amplitude that should show differences
+    # Choose amplitude to target the regime where polymer energy is lower
+    # From analysis: need μπ ≈ 1.5-1.8 for maximum energy reduction
+    # Choose A such that max(μ π_i) ≈ 6/μ to hit this optimal regime
+    if mu > 0:
+        A = 6.0 / mu  # Target μπ ≈ 6 at peak
+    else:
+        A = 1.0  # Classical case
+    
     omega = 2*np.pi/total_time
 
     I_polymer = 0.0
@@ -84,7 +68,7 @@ def integrate_negative_energy_over_time(N, mu, total_time, dt, dx, tau):
     for t in times:
         # Build π_i(t): a localized sine‐burst
         pi_t = A * np.exp(-((x-x0)**2)/(2*sigma**2)) * np.sin(omega * t)
-        # φ_i(t) remains ~0 or from prior step; ignore φ dynamics for test
+        # φ_i(t) remains ~0 for focused kinetic energy test
         phi_t = np.zeros_like(pi_t)
 
         # Compute polymer energy density

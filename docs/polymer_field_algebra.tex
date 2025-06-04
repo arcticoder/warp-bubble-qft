@@ -111,12 +111,16 @@ Substituting back:
 &= i\hbar \cos(\mu \hat{p}_i)
 \end{align}
 
-\subsection{Why the Sinc Factor Cancels}
+\subsection{Small-$\mu$ Limit \& Sinc Factor Cancellation}
+
+A detailed derivation of why the sinc factor cancels in the discrete commutator is provided in the companion document \textit{qi\_discrete\_commutation.tex}. Here we summarize the key results.
 
 In the small-$\mu$ limit and for states with bounded momentum expectation values, we can show that:
 \begin{equation}
 \langle \cos(\mu \hat{p}_i) \rangle \approx 1 - \frac{\mu^2 \langle \hat{p}_i^2 \rangle}{2} + O(\mu^4)
 \end{equation}
+
+The crucial insight is that the "sinc" factor never appears as a prefactor in the final canonical commutation relation. Instead, it is encoded in the expectation value of $\cos(\mu\hat{p}_i)$, which approaches unity for small $\mu$.
 
 For physical field configurations, the leading correction is suppressed by $\mu^2$, ensuring that in the continuum limit:
 \begin{equation}
@@ -128,97 +132,30 @@ Thus, the polymer modification preserves the canonical commutation structure:
 \boxed{[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}] = i\hbar\,\delta_{ij}}
 \end{equation}
 
-In the continuum, a scalar field $\phi(x,t)$ and its canonical momentum $\pi(x,t) = \dot{\phi}(x,t)$ satisfy the canonical commutation relation:
+The rigorous small-$\mu$ expansion demonstrates that discrete commutators remain canonical to leading order, with polymer corrections entering only at second order in $\mu$. See \textit{qi\_discrete\_commutation.tex} for the complete mathematical derivation.
+
+\section{Quantum Inequality Bound Modification}
+
+The polymer quantization modifies the classical Ford-Roman quantum inequality bound. As detailed in \textit{qi\_bound\_modification.tex}, the classical bound:
 \begin{equation}
-[\hat{\phi}(x), \hat{\pi}(y)] = i\hbar\delta(x-y)
+\int_{-\infty}^{\infty} \rho(t) f(t) dt \geq -\frac{\hbar}{12\pi\tau^2}
 \end{equation}
 
-\subsection{Lattice Discretization}
-
-We discretize spacetime on a 1D lattice with $N$ sites at positions $x_i = i \cdot \Delta x$ where $i = 0, 1, \ldots, N-1$ and $\Delta x = L/N$ is the lattice spacing.
-
-The field operators become:
-\begin{align}
-\hat{\phi}(x) &\rightarrow \hat{\phi}_i \\
-\hat{\pi}(x) &\rightarrow \hat{\pi}_i
-\end{align}
-
-The discretized commutation relation becomes:
+becomes:
 \begin{equation}
-[\hat{\phi}_i, \hat{\pi}_j] = i\hbar\delta_{ij}
+\int_{-\infty}^{\infty} \rho_{\text{eff}}(t) f(t) dt \geq -\frac{\hbar\,\mathrm{sinc}(\mu)}{12\pi\tau^2}
 \end{equation}
 
-\section{Polymer Quantization}
+where $\mathrm{sinc}(\mu) = \sin(\mu)/\mu < 1$ for $\mu > 0$. This relaxed bound permits negative energy violations that are classically forbidden.
 
-\subsection{Polymer Momentum Operator}
+\section{Numerical Verification}
 
-In the polymer representation, the momentum operator is modified by replacing the classical momentum $\hat{\pi}_i$ with a polymer-regularized version:
+Numerical demonstrations of quantum inequality violations on the polymer lattice are documented in \textit{qi\_numerical\_results.tex}. The key findings show that for specific field configurations with $\mu > 0$:
 \begin{equation}
-\hat{\pi}_i^{\text{poly}} = \frac{\sin(\mu \hat{p}_i)}{\mu}
+\int \rho_{\text{eff}}(t) f(t) dt dx < -\frac{\hbar}{12\pi\tau^2}
 \end{equation}
 
-where $\mu$ is the polymer scale parameter and $\hat{p}_i$ is the generator of translations in $\phi_i$.
-
-\subsection{Translation Generator}
-
-The translation generator $\hat{p}_i$ acts on the field basis states as:
-\begin{equation}
-\hat{p}_i |\phi_i\rangle = -i\hbar \frac{\partial}{\partial \phi_i} |\phi_i\rangle
-\end{equation}
-
-The finite translation operator is:
-\begin{equation}
-\hat{U}_i(\mu) = e^{i\mu \hat{p}_i/\hbar}
-\end{equation}
-
-which shifts the field: $\hat{U}_i(\mu) |\phi_i\rangle = |\phi_i + \mu\rangle$.
-
-\subsection{Polymer Momentum in Terms of Translation Operators}
-
-The polymer momentum can be expressed as:
-\begin{equation}
-\hat{\pi}_i^{\text{poly}} = \frac{\hat{U}_i(\mu) - \hat{U}_i^\dagger(\mu)}{2i\mu/\hbar} = \frac{\hat{U}_i(\mu) - \hat{U}_i^{-1}(\mu)}{2i\mu/\hbar}
-\end{equation}
-
-\section{Commutator Calculation}
-
-\subsection{Commutator with Field Operator}
-
-We need to compute $[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}]$. For $i \neq j$, the operators act on different lattice sites and commute:
-\begin{equation}
-[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}] = 0 \quad \text{for } i \neq j
-\end{equation}
-
-For $i = j$, we compute:
-\begin{align}
-[\hat{\phi}_i, \hat{\pi}_i^{\text{poly}}] &= \left[\hat{\phi}_i, \frac{\hat{U}_i(\mu) - \hat{U}_i^{-1}(\mu)}{2i\mu/\hbar}\right] \\
-&= \frac{\hbar}{2i\mu} \left([\hat{\phi}_i, \hat{U}_i(\mu)] - [\hat{\phi}_i, \hat{U}_i^{-1}(\mu)]\right)
-\end{align}
-
-\subsection{Commutator with Translation Operator}
-
-Using the Baker-Campbell-Hausdorff formula and the fact that $[\hat{\phi}_i, \hat{p}_i] = i\hbar$:
-\begin{align}
-[\hat{\phi}_i, \hat{U}_i(\mu)] &= [\hat{\phi}_i, e^{i\mu \hat{p}_i/\hbar}] \\
-&= \frac{d}{d\lambda}\left(\hat{U}_i(\lambda)\hat{\phi}_i\hat{U}_i^{-1}(\lambda)\right)\bigg|_{\lambda=\mu} \cdot \mu \\
-&= \mu \hat{U}_i(\mu)
-\end{align}
-
-Similarly:
-\begin{equation}
-[\hat{\phi}_i, \hat{U}_i^{-1}(\mu)] = -\mu \hat{U}_i^{-1}(\mu)
-\end{equation}
-
-\subsection{Final Result}
-
-Substituting back:
-\begin{align}
-[\hat{\phi}_i, \hat{\pi}_i^{\text{poly}}] &= \frac{\hbar}{2i\mu} \left(\mu \hat{U}_i(\mu) + \mu \hat{U}_i^{-1}(\mu)\right) \\
-&= \frac{i\hbar}{2} \left(\hat{U}_i(\mu) + \hat{U}_i^{-1}(\mu)\right) \\
-&= i\hbar \frac{\hat{U}_i(\mu) + \hat{U}_i^{-1}(\mu)}{2}
-\end{align}
-
-In the position representation, this approaches the expected result $i\hbar\delta_{ij}$ in the appropriate limit.
+violating the classical bound while respecting the modified polymer bound.
 
 \section{Energy Density in Polymer Representation}
 
@@ -227,7 +164,10 @@ The Hamiltonian density for the polymer field becomes:
 \mathcal{H}_i = \frac{1}{2}\left[ \left(\frac{\sin(\mu \pi_i)}{\mu}\right)^2 + (\nabla_d \phi)_i^2 + m^2 \phi_i^2 \right]
 \end{equation}
 
-where $(\nabla_d \phi)_i$ is the discrete gradient.
+where $(\nabla_d \phi)_i$ is the discrete gradient:
+\begin{equation}
+(\nabla_d \phi)_i = \frac{\phi_{i+1} - \phi_{i-1}}{2\Delta x}
+\end{equation}
 
 \subsection{Negative Energy Formation}
 
@@ -238,51 +178,7 @@ When $\mu \pi_i$ enters the range $(\pi/2, 3\pi/2)$, we have $\sin(\mu \pi_i) < 
 
 This reduction in kinetic energy can lead to negative total energy density when the gradient and mass terms are small.
 
-\section{Small-$\mu$ Limit and Sinc Factor}
-
-In the limit $\mu \to 0$, the polymer momentum approaches the classical momentum:
-\begin{equation}
-\lim_{\mu \to 0} \hat{\pi}_i^{\text{poly}} = \lim_{\mu \to 0} \frac{\sin(\mu \hat{p}_i)}{\mu} = \hat{p}_i = \hat{\pi}_i
-\end{equation}
-
-using $\lim_{x \to 0} \frac{\sin(x)}{x} = 1$.
-
-The commutator in this limit gives:
-\begin{equation}
-\lim_{\mu \to 0} [\hat{\phi}_i, \hat{\pi}_i^{\text{poly}}] = [\hat{\phi}_i, \hat{\pi}_i] = i\hbar\delta_{ij}
-\end{equation}
-
-The sinc factor $\text{sinc}(\mu) = \sin(\pi\mu)/(\pi\mu)$ that appears in discrete approximations cancels out in the continuum limit, ensuring the correct classical result.
-
-\section{Quantum Inequality Violations}
-
-\subsection{Ford-Roman Bound Modification}
-
-The classical Ford-Roman bound states:
-\begin{equation}
-\int_{-\infty}^{\infty} \rho(t) f(t) dt \geq -\frac{\hbar}{12\pi \tau^2}
-\end{equation}
-
-for a sampling function $f(t)$ of width $\tau$.
-
-In the polymer representation, this becomes:
-\begin{equation}
-\int_{-\infty}^{\infty} \rho_{\text{eff}}(t) f(t) dt \geq -\frac{\hbar \text{sinc}(\mu)}{12\pi \tau^2}
-\end{equation}
-
-For $\mu > 0$, we have $\text{sinc}(\mu) < 1$, making the right-hand side less negative and enabling violations of the classical bound.
-
-\section{Numerical Implementation}
-
-In the numerical implementation:
-\begin{enumerate}
-\item We represent operators on a truncated basis $\{|\phi_n\rangle\}_{n=0}^{N_b-1}$
-\item The commutator matrix elements are computed as $[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}]_{mn}$
-\item The trace gives the expectation value: $\text{Tr}([\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}])/N_b$
-\item Deviations from $i\hbar\delta_{ij}$ vanish as $N_b \to \infty$ and $\mu \to 0$
-\end{enumerate}
-
-\section{Conclusion}
+\section{Conclusions}
 
 We have derived the complete polymer field algebra, showing that:
 \begin{enumerate}
@@ -294,66 +190,5 @@ We have derived the complete polymer field algebra, showing that:
 \end{enumerate}
 
 This framework provides the theoretical foundation for stable warp bubble formation through controlled quantum inequality violations.
-
-\end{document}
-\end{equation}
-
-where $(\nabla_d \phi)_i$ is the discrete gradient:
-\begin{equation}
-(\nabla_d \phi)_i = \frac{\phi_{i+1} - \phi_{i-1}}{2\Delta x}
-\end{equation}
-
-\section{Negative Energy Formation}
-
-The polymer modification can lead to negative energy densities through interference effects. When the momentum term becomes negative due to the $\sin(\bar{\mu} \pi_i)$ factor, the total energy density can become negative if:
-
-\begin{equation}
-\left(\frac{\sin(\bar{\mu} \pi_i)}{\bar{\mu}}\right)^2 < -(\nabla_d \phi)_i^2 - m^2 \phi_i^2
-\end{equation}
-
-This condition can be satisfied when $\bar{\mu} \pi_i$ is in the range where $\sin(\bar{\mu} \pi_i) < 0$ and the magnitude is sufficiently large.
-
-\section{Ford-Roman Bound Violation}
-
-The Ford-Roman inequality states that for a classical field:
-\begin{equation}
-\int_{-\infty}^{\infty} \rho(t) f(t) \, dt \geq -\frac{C}{\tau^2}
-\end{equation}
-
-where $f(t)$ is a test function with characteristic width $\tau$, and $C = \hbar c/(12\pi)$ for a massless scalar field.
-
-In the polymer representation, the effective $\hbar$ is replaced by $\hbar_{\text{eff}} = \hbar \, \text{sinc}(\bar{\mu})$, which modifies the bound:
-\begin{equation}
-\int_{-\infty}^{\infty} \rho(t) f(t) \, dt \geq -\frac{C \, \text{sinc}(\bar{\mu})}{\tau^2}
-\end{equation}
-
-For small $\bar{\mu}$, $\text{sinc}(\bar{\mu}) \approx 1 - \frac{\pi^2 \bar{\mu}^2}{6}$, so the bound is slightly relaxed. However, for larger $\bar{\mu}$, additional discrete effects can provide further stabilization.
-
-\section{Stability Analysis}
-
-The stability of negative energy regions in the polymer representation depends on several factors:
-
-\begin{enumerate}
-\item \textbf{Polymer Scale}: Larger $\bar{\mu}$ generally provides more stabilization
-\item \textbf{Lattice Effects}: Discretization introduces quantum pressure effects
-\item \textbf{Field Configuration}: Specific momentum and field profiles that optimize interference
-\end{enumerate}
-
-The critical polymer scale for stabilization is approximately:
-\begin{equation}
-\bar{\mu}_{\text{crit}} \sim \sqrt{|\rho_{\text{neg}}| \, (\Delta x)^2}
-\end{equation}
-
-\section{Conclusions}
-
-The polymer quantization approach provides a natural framework for creating stable negative energy densities that can violate the Ford-Roman bound. The key mechanisms are:
-
-\begin{itemize}
-\item Modified commutation relations that effectively reduce $\hbar$
-\item Discrete lattice effects that create quantum pressure
-\item Interference patterns in the polymer momentum representation
-\end{itemize}
-
-These effects combine to allow negative energy densities to persist for longer than classically allowed, opening the possibility for stable warp bubble formation.
 
 \end{document}
