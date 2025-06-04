@@ -1,0 +1,253 @@
+{
+  "backreaction_analysis": {
+    "energy_reduction_percent": 15.464109651534708,
+    "refined_requirement": 1.9443254780147017
+  },
+  "convergence_analysis": {
+    "converged": true,
+    "final_ratio": 5.801204293839256,
+    "iterations_to_convergence": 1,
+    "iteration_history": [
+      {
+        "iteration": 1,
+        "mu": 0.1,
+        "R": 2.3,
+        "E_available_base": 4.0867497506086785,
+        "E_effective": 11.279429311679952,
+        "E_required": 1.9443254780147017,
+        "feasibility_ratio": 5.801204293839256,
+        "converged": true
+      }
+    ],
+    "enhancement_factors": {
+      "cavity_boost": 1.15,
+      "squeezing_factor": 1.2,
+      "bubble_count": 2
+    }
+  },
+  "profile_comparison": {
+    "Bojowald": {
+      "energy_grid": [
+        [
+          -4.009426331641871
+        ]
+      ],
+      "max_energy": 4.009426331641871,
+      "optimal_mu": 0.1,
+      "optimal_R": 2.3
+    },
+    "Ashtekar": {
+      "energy_grid": [
+        [
+          -3.999819417789691
+        ]
+      ],
+      "max_energy": 3.999819417789691,
+      "optimal_mu": 0.1,
+      "optimal_R": 2.3
+    },
+    "Polymer Field": {
+      "energy_grid": [
+        [
+          -4.000524087562414
+        ]
+      ],
+      "max_energy": 4.000524087562414,
+      "optimal_mu": 0.1,
+      "optimal_R": 2.3
+    }
+  },
+  "unity_combinations": {
+    "success": true,
+    "first_unity_combination": {
+      "cavity_boost": 1.1,
+      "cavity_boost_percent": 10.000000000000009,
+      "squeeze_parameter_r": 0.3,
+      "squeeze_factor": 1.3498588075760032,
+      "squeeze_dB": 1.3028834457097558,
+      "bubble_count": 1,
+      "feasibility_ratio": 1.5197822104120415,
+      "E_effective": 2.5117085818269875,
+      "E_required_corrected": 1.6526766563124964
+    },
+    "all_unity_combinations": [
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.3,
+        "squeeze_factor": 1.3498588075760032,
+        "squeeze_dB": 1.3028834457097558,
+        "bubble_count": 1,
+        "feasibility_ratio": 1.5197822104120415,
+        "E_effective": 2.5117085818269875,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.3,
+        "squeeze_factor": 1.3498588075760032,
+        "squeeze_dB": 1.3028834457097558,
+        "bubble_count": 2,
+        "feasibility_ratio": 3.039564420824083,
+        "E_effective": 5.023417163653975,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.3,
+        "squeeze_factor": 1.3498588075760032,
+        "squeeze_dB": 1.3028834457097558,
+        "bubble_count": 3,
+        "feasibility_ratio": 4.559346631236124,
+        "E_effective": 7.535125745480963,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.3,
+        "squeeze_factor": 1.3498588075760032,
+        "squeeze_dB": 1.3028834457097558,
+        "bubble_count": 4,
+        "feasibility_ratio": 6.079128841648166,
+        "E_effective": 10.04683432730795,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.4,
+        "squeeze_factor": 1.4918246976412703,
+        "squeeze_dB": 1.7371779276130073,
+        "bubble_count": 1,
+        "feasibility_ratio": 1.6796191007561128,
+        "E_effective": 2.7758672793162145,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.4,
+        "squeeze_factor": 1.4918246976412703,
+        "squeeze_dB": 1.7371779276130073,
+        "bubble_count": 2,
+        "feasibility_ratio": 3.3592382015122255,
+        "E_effective": 5.551734558632429,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.4,
+        "squeeze_factor": 1.4918246976412703,
+        "squeeze_dB": 1.7371779276130073,
+        "bubble_count": 3,
+        "feasibility_ratio": 5.0388573022683385,
+        "E_effective": 8.327601837948643,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.4,
+        "squeeze_factor": 1.4918246976412703,
+        "squeeze_dB": 1.7371779276130073,
+        "bubble_count": 4,
+        "feasibility_ratio": 6.718476403024451,
+        "E_effective": 11.103469117264858,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.5,
+        "squeeze_factor": 1.6487212707001282,
+        "squeeze_dB": 2.171472409516259,
+        "bubble_count": 1,
+        "feasibility_ratio": 1.856266183600027,
+        "E_effective": 3.067807789538051,
+        "E_required_corrected": 1.6526766563124964
+      },
+      {
+        "cavity_boost": 1.1,
+        "cavity_boost_percent": 10.000000000000009,
+        "squeeze_parameter_r": 0.5,
+        "squeeze_factor": 1.6487212707001282,
+        "squeeze_dB": 2.171472409516259,
+        "bubble_count": 2,
+        "feasibility_ratio": 3.712532367200054,
+        "E_effective": 6.135615579076102,
+        "E_required_corrected": 1.6526766563124964
+      }
+    ],
+    "total_combinations_found": 160
+  },
+  "q_factor_analysis": {
+    "enhancement_target": 1.15,
+    "required_Q_factor": 0.009424777960769374,
+    "optical_frequency": 100000000000000.0,
+    "confinement_time": 1e-12,
+    "technology_regime": "Theoretical",
+    "q_factor_regimes": {
+      "Basic": {
+        "Q_min": 1000.0,
+        "Q_max": 10000.0,
+        "description": "Standard optical cavities"
+      },
+      "Advanced": {
+        "Q_min": 10000.0,
+        "Q_max": 100000.0,
+        "description": "High-Q superconducting resonators"
+      },
+      "Extreme": {
+        "Q_min": 100000.0,
+        "Q_max": 1000000.0,
+        "description": "State-of-the-art crystalline resonators"
+      },
+      "Theoretical": {
+        "Q_min": 1000000.0,
+        "Q_max": 100000000.0,
+        "description": "Next-generation technology"
+      }
+    },
+    "feasible": true
+  },
+  "squeezing_analysis": {
+    "squeezing_targets": {
+      "Conservative": {
+        "factor": 1.5,
+        "r": 0.4054651081081644,
+        "dB": 1.7609125905568124
+      },
+      "Target": {
+        "factor": 2.0,
+        "r": 0.6931471805599453,
+        "dB": 3.010299956639812
+      },
+      "Advanced": {
+        "factor": 3.0,
+        "r": 1.0986122886681098,
+        "dB": 4.771212547196624
+      }
+    },
+    "experimental_status": {
+      "Conservative": "Demonstrated in multiple labs",
+      "Target": "Achievable with current technology",
+      "Advanced": "Requires next-generation squeezers"
+    },
+    "implementation_requirements": {
+      "phase_stability": "mrad precision over \u03bcs timescales",
+      "pump_power": "mW to W depending on nonlinear medium",
+      "detection_efficiency": ">90% for meaningful enhancement",
+      "decoherence_time": ">ps for cavity integration",
+      "bandwidth": "MHz to GHz depending on application"
+    },
+    "recommended_target": "Target",
+    "current_state_of_art": {
+      "r_max": 1.2,
+      "dB_max": 10.4
+    }
+  }
+}
