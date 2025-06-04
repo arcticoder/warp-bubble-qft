@@ -315,19 +315,3 @@ def stability_analysis(negative_energy: float, spatial_scale: float,
         "polymer_bounds": polymer_bounds,
         "duration_info": duration_info
     }
-    # Violation duration
-    duration_info = violation_duration(negative_energy, spatial_scale, polymer_scale)
-    
-    return {
-        "classical_bounds": classical_bounds,
-        "polymer_bounds": polymer_bounds,
-        "duration_info": duration_info
-    }
-    # Violation duration
-    duration_info = violation_duration(negative_energy, spatial_scale, polymer_scale)
-    
-    return {
-        "classical_bounds": classical_bounds,
-        "polymer_bounds": polymer_bounds,
-        "duration_info": duration_info
-    }   
