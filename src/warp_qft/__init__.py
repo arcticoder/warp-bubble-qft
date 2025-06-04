@@ -31,6 +31,14 @@ from .warp_bubble_analysis import (
     solve_warp_metric_3plus1D,
     generate_analysis_report
 )
+from .enhancement_pipeline import WarpBubbleEnhancementPipeline
+from .enhancement_pathway import (
+    EnhancementConfig,
+    CavityBoostCalculator,
+    QuantumSqueezingEnhancer,
+    MultiBubbleSuperposition,
+    ComprehensiveEnhancementCalculator
+)
 
 __all__ = [
     "PolymerField",
@@ -44,7 +52,6 @@ __all__ = [
     "check_bubble_stability_conditions",
     "analyze_bubble_stability_theorem",
     "optimize_polymer_parameters",
-    # Comprehensive warp bubble analysis
     "run_warp_analysis",
     "squeezed_vacuum_energy",
     "scan_3d_shell",
@@ -56,5 +63,11 @@ __all__ = [
     "evolve_phi_pi_3plus1D",
     "linearized_stability",
     "solve_warp_metric_3plus1D",
-    "generate_analysis_report"
+    "generate_analysis_report",
+    "WarpBubbleEnhancementPipeline",
+    "EnhancementConfig",
+    "CavityBoostCalculator",
+    "QuantumSqueezingEnhancer",
+    "MultiBubbleSuperposition",
+    "ComprehensiveEnhancementCalculator"
 ]

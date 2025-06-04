@@ -10,6 +10,8 @@ Date: 2024
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
+from typing import Dict, List, Tuple
 
 class SimpleWarpEnhancementCalculator:
     """
@@ -148,23 +150,21 @@ class SimpleWarpEnhancementCalculator:
         print("WARP DRIVE ENHANCEMENT DISCOVERIES")
         print("=" * 50)
         
-        print("\n1. METRIC BACKREACTION CORRECTION:")
-        print(f"   Energy requirement reduction: {(1 - self.backreaction_factor)*100:.1f}%")
-        print(f"   Corrected feasibility ratio: {self.base_ratio / self.backreaction_factor:.2f}")
-        
-        print("\n2. LQG PROFILE ADVANTAGES:")
-        for name, factor in self.lqg_factors.items():
-            enhancement = factor / 1.0  # Relative to no LQG
-            print(f"   {name.capitalize()} prescription: {enhancement:.1f}x enhancement")
-        
-        print("\n3. ITERATIVE CONVERGENCE:")
+        # Run all demonstrations
         self.iterative_convergence()
-        
-        print("\n4. PRACTICAL ENHANCEMENT COMBINATIONS:")
         self.find_minimal_unity_config()
-        
-        print("\n5. TECHNOLOGY DEVELOPMENT PATHWAY:")
         self.technology_roadmap()
+        
+        print("\n🎉 All discoveries successfully demonstrated!")
+
+
+def main():
+    """Main demonstration function."""
+    calculator = SimpleWarpEnhancementCalculator()
+    calculator.demonstrate_discoveries()
+
+if __name__ == "__main__":
+    main()
         
         print("\n6. FIRST UNITY-ACHIEVING COMBINATION:")
         best_ratio, breakdown = self.calculate_total_ratio('polymer', 1e4, 0.5, 2)

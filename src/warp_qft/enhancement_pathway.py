@@ -27,6 +27,7 @@ class EnhancementConfig:
     cavity_volume: float = 1.0     # Cavity volume in cubic Planck lengths
     squeezing_bandwidth: float = 0.1  # Squeezing bandwidth
     bubble_separation: float = 5.0    # Separation between bubbles
+    coherence_time: float = 1e-12    # Coherence time for squeezing
 
 
 class CavityBoostCalculator:

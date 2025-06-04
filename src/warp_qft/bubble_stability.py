@@ -191,22 +191,22 @@ def analyze_bubble_stability_theorem(bubble_params: Dict) -> Dict:
     else:
         uncertainty_relation = "(Δφ_i)(Δπ_i) ≥ ħ/2"
         momentum_cutoff = "No cutoff in classical theory"
-        bps_condition = "Cannot be satisfied in classical theory"
-        lifetime_eqn = "τ = τ_classical"
-        enhancement = "ξ = 1.0"
-    
-    # Bubble formation/stability conditions
-    can_form_bubble = polymer_scale >= compute_critical_polymer_scale() and neg_energy < 0
-    
+        bps_condition = "Classical BPS bound"
+        lifetime_eqn = "τ_classical"
+        enhancement = "No enhancement"
+
+    # Return complete analysis
     return {
-        **stability,
-        "can_form_stable_bubble": can_form_bubble,
-        "uncertainty_relation": uncertainty_relation,
-        "momentum_cutoff": momentum_cutoff,
-        "bps_condition": bps_condition,
-        "lifetime_equation": lifetime_eqn,
-        "enhancement_formula": enhancement,
-        "theorem_satisfied": stability["is_stable"] and can_form_bubble
+        'stability_analysis': stability,
+        'theoretical_framework': {
+            'uncertainty_relation': uncertainty_relation,
+            'momentum_cutoff': momentum_cutoff,
+            'bps_condition': bps_condition,
+            'lifetime_equation': lifetime_eqn,
+            'enhancement_factor': enhancement
+        },
+        'stability_satisfied': stability['is_stable'],
+        'enhancement_factor': stability.get('enhancement_factor', 1.0)
     }
 
 
