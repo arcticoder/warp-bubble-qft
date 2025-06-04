@@ -13,8 +13,11 @@ try:
     import numpy as np
     print("✅ NumPy imported successfully")
     
-    from scipy.integrate import simps
-    print("✅ SciPy imported successfully")
+    try:
+        from scipy.integrate import simpson
+        print("✅ SciPy imported successfully")
+    except ImportError:
+        print("⚠️ Using numpy integration fallback")
     
     import matplotlib.pyplot as plt
     print("✅ Matplotlib imported successfully")
