@@ -16,7 +16,10 @@ Date: June 2025
 """
 
 import numpy as np
-from scipy.integrate import simps
+try:
+    from scipy.integrate import simpson as simps
+except ImportError:
+    from scipy.integrate import simps
 import matplotlib.pyplot as plt
 
 # ------------------------------------------
@@ -494,25 +497,24 @@ def generate_analysis_report(results, violations, mu_vals, tau_vals, R_vals,
     
     # Parameter sensitivity analysis
     report.append("PARAMETER SENSITIVITY:")
-    
-    # μ analysis
+      # μ analysis
     mu_violations = {}
     for mu in mu_vals:
-        mu_violations[mu] = sum(1 for (m,_,_) in violations if m==mu and violations[(m,_,_)])
+        mu_violations[mu] = sum(1 for (m,t,r) in violations if m==mu and violations[(m,t,r)])
     best_mu = min(mu_violations, key=mu_violations.get)
     report.append(f"  Best μ (fewest violations): {best_mu:.3f} ({mu_violations[best_mu]} violations)")
     
     # τ analysis  
     tau_violations = {}
     for tau in tau_vals:
-        tau_violations[tau] = sum(1 for (_,t,_) in violations if t==tau and violations[(_,t,_)])
+        tau_violations[tau] = sum(1 for (m,t,r) in violations if t==tau and violations[(m,t,r)])
     best_tau = min(tau_violations, key=tau_violations.get)
     report.append(f"  Best τ (fewest violations): {best_tau:.3f} ({tau_violations[best_tau]} violations)")
     
     # R analysis
     R_violations = {}
     for R in R_vals:
-        R_violations[R] = sum(1 for (_,_,r) in violations if r==R and violations[(_,_,r)])
+        R_violations[R] = sum(1 for (m,t,r) in violations if r==R and violations[(m,t,r)])
     best_R = min(R_violations, key=R_violations.get)
     report.append(f"  Best R (fewest violations): {best_R:.3f} ({R_violations[best_R]} violations)")
     

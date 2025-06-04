@@ -17,13 +17,19 @@ from .bubble_stability import (
     analyze_bubble_stability_theorem, 
     optimize_polymer_parameters
 )
-from .warp_bubble_engine import (
-    WarpBubbleEngine,
+from .warp_bubble_analysis import (
+    run_warp_analysis,
     squeezed_vacuum_energy,
-    polymer_QI_bound,
+    scan_3d_shell,
     find_optimal_mu,
+    compare_neg_energy,
+    polymer_QI_bound,
+    compute_I_3d,
     visualize_scan,
-    run_warp_bubble_analysis
+    evolve_phi_pi_3plus1D,
+    linearized_stability,
+    solve_warp_metric_3plus1D,
+    generate_analysis_report
 )
 
 __all__ = [
@@ -38,10 +44,17 @@ __all__ = [
     "check_bubble_stability_conditions",
     "analyze_bubble_stability_theorem",
     "optimize_polymer_parameters",
-    "WarpBubbleEngine",
-    "squeezed_vacuum_energy", 
-    "polymer_QI_bound",
+    # Comprehensive warp bubble analysis
+    "run_warp_analysis",
+    "squeezed_vacuum_energy",
+    "scan_3d_shell",
     "find_optimal_mu",
+    "compare_neg_energy",
+    "polymer_QI_bound",
+    "compute_I_3d",
     "visualize_scan",
-    "run_warp_bubble_analysis"
+    "evolve_phi_pi_3plus1D",
+    "linearized_stability",
+    "solve_warp_metric_3plus1D",
+    "generate_analysis_report"
 ]

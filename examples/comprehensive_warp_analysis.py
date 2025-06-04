@@ -28,7 +28,8 @@ from warp_qft.warp_bubble_analysis import (
     find_optimal_mu,
     compare_neg_energy,
     polymer_QI_bound,
-    squeezed_vacuum_energy
+    squeezed_vacuum_energy,
+    visualize_scan
 )
 
 def main():
@@ -55,181 +56,153 @@ def main():
         tau_vals = [0.5, 1.0, 1.5, 2.0]
         R_vals = [1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
     
-    # Run the complete analysis
-    results = run_warp_analysis(
-        mu_vals=mu_vals,
-        tau_vals=tau_vals,
-        R_vals=R_vals,
-        generate_plots=not args.no_plots
-    )
-    
-    # 2. Define custom parameter ranges for detailed analysis
-    mu_vals = [0.1, 0.2, 0.3, 0.5, 0.8, 1.0]  # Extended polymer scales
-    tau_vals = [0.3, 0.5, 1.0, 1.5, 2.0]      # Expanded temporal scales
-    R_vals = [1.5, 2.0, 2.5, 3.0, 3.5, 4.0]   # Extended radial scales
-    
     print(f"Parameter ranges:")
     print(f"  μ (polymer scale): {mu_vals}")
     print(f"  τ (temporal scale): {tau_vals}")  
     print(f"  R (radial scale): {R_vals}")
     print()
     
-    # 3. Run the comprehensive analysis
-    analysis_results = engine.run_full_analysis(
+    # Run the comprehensive analysis
+    analysis_results = run_warp_analysis(
         mu_vals=mu_vals,
         tau_vals=tau_vals, 
         R_vals=R_vals,
         sigma=0.4,          # Slightly tighter shell
         A_factor=1.5,       # Higher amplitude factor
-        omega=3*np.pi       # Higher frequency
+        omega=3*np.pi,      # Higher frequency
+        generate_plots=not args.no_plots
     )
     
-    # 4. Advanced visualization
-    print("\n📈 Generating comprehensive visualization...")
-    fig = visualize_scan(
-        analysis_results['scan_results'],
-        analysis_results['violations'],
-        mu_vals, tau_vals, R_vals
-    )
-    
-    # Save the figure
-    output_dir = Path(__file__).parent / "output"
-    output_dir.mkdir(exist_ok=True)
-    fig.savefig(output_dir / "warp_bubble_analysis.png", dpi=300, bbox_inches='tight')
-    print(f"Visualization saved to: {output_dir / 'warp_bubble_analysis.png'}")
-    
-    # 5. Detailed parameter optimization
-    print("\n🔧 Detailed Parameter Optimization...")
-    mu_detailed, bound_detailed, mu_array, bound_array = find_optimal_mu(
-        mu_min=0.05, mu_max=1.2, steps=100, tau=0.5
-    )
-    
-    # Plot optimization curve
-    plt.figure(figsize=(10, 6))
-    plt.plot(mu_array, bound_array * 1e34, 'b-', linewidth=2, label='QI Bound')
-    plt.axvline(mu_detailed, color='r', linestyle='--', linewidth=2, 
-                label=f'Optimal μ = {mu_detailed:.3f}')
-    plt.xlabel('Polymer Parameter μ')
-    plt.ylabel('QI Bound (×10⁻³⁴ J)')
-    plt.title('Quantum Inequality Bound Optimization')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.savefig(output_dir / "qi_bound_optimization.png", dpi=300, bbox_inches='tight')
-    plt.show()
-    
-    # 6. Energy comparison across different scenarios
-    print("\n⚡ Multi-Scenario Energy Analysis...")
-    scenarios = [
-        {'name': 'Microwave Cavity', 'r_squeeze': 1.0, 'omega': 2*np.pi*5e9, 'volume': 1e-12},
-        {'name': 'Optical Cavity', 'r_squeeze': 1.5, 'omega': 2*np.pi*5e14, 'volume': 1e-15},
-        {'name': 'Superconducting Circuit', 'r_squeeze': 2.0, 'omega': 2*np.pi*10e9, 'volume': 1e-18}
-    ]
-    
-    feasibility_data = []
-    
-    for scenario in scenarios:
-        rho_neg = squeezed_vacuum_energy(
-            scenario['r_squeeze'], 
-            scenario['omega'], 
-            scenario['volume']
+    # Advanced visualization if plots are enabled
+    if not args.no_plots:
+        print("\n📈 Generating comprehensive visualization...")
+        fig = analysis_results.get('figure')
+        
+        if fig:
+            # Save the figure
+            output_dir = Path(__file__).parent / "output"
+            output_dir.mkdir(exist_ok=True)
+            fig.savefig(output_dir / "warp_bubble_analysis.png", dpi=300, bbox_inches='tight')
+            print(f"Visualization saved to: {output_dir / 'warp_bubble_analysis.png'}")
+        
+        # Detailed parameter optimization
+        print("\n🔧 Detailed Parameter Optimization...")
+        mu_detailed, bound_detailed, mu_array, bound_array = find_optimal_mu(
+            mu_min=0.05, mu_max=1.2, steps=100, tau=0.5
         )
-        E_available = rho_neg * scenario['volume']
-        E_required = analysis_results['energy_required']
-        ratio = abs(E_available / E_required) if E_required != 0 else np.inf
         
-        feasibility_data.append({
-            'scenario': scenario['name'],
-            'E_available': E_available,
-            'ratio': ratio
-        })
+        # Plot optimization curve
+        plt.figure(figsize=(10, 6))
+        plt.plot(mu_array, bound_array * 1e34, 'b-', linewidth=2, label='QI Bound')
+        plt.axvline(mu_detailed, color='r', linestyle='--', linewidth=2, 
+                    label=f'Optimal μ = {mu_detailed:.3f}')
+        plt.xlabel('Polymer Parameter μ')
+        plt.ylabel('QI Bound (×10⁻³⁴ J)')
+        plt.title('Quantum Inequality Bound Optimization')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
         
-        print(f"{scenario['name']:20s}: Ratio = {ratio:.2e}")
+        output_dir = Path(__file__).parent / "output"
+        output_dir.mkdir(exist_ok=True)
+        plt.savefig(output_dir / "qi_bound_optimization.png", dpi=300, bbox_inches='tight')
+        plt.show()
+        print(f"QI optimization plot saved to: {output_dir / 'qi_bound_optimization.png'}")
+        
+        # Energy comparison across different scenarios
+        print("\n⚡ Multi-Scenario Energy Analysis...")
+        scenarios = [
+            {'name': 'Microwave Cavity', 'r_squeeze': 1.0, 'omega': 2*np.pi*5e9, 'volume': 1e-12},
+            {'name': 'Optical Cavity', 'r_squeeze': 1.5, 'omega': 2*np.pi*5e14, 'volume': 1e-15},
+            {'name': 'Superconducting Circuit', 'r_squeeze': 2.0, 'omega': 2*np.pi*10e9, 'volume': 1e-18}
+        ]
+        
+        feasibility_data = []
+        best_mu = analysis_results['optimization']['best_mu']
+        
+        for scenario in scenarios:
+            rho_neg = squeezed_vacuum_energy(
+                scenario['r_squeeze'], 
+                scenario['omega'], 
+                scenario['volume']
+            )
+            E_available = rho_neg * scenario['volume']
+            
+            # Use the optimized parameters for requirement calculation
+            E_required, _ = compare_neg_energy(
+                best_mu, 1.0, 3.0, 0.5,  # mu, tau, R, dR
+                scenario['r_squeeze'], scenario['omega'], scenario['volume']
+            )
+            
+            ratio = abs(E_available / E_required) if E_required != 0 else np.inf
+            
+            feasibility_data.append({
+                'scenario': scenario['name'],
+                'E_available': E_available,
+                'E_required': E_required,
+                'ratio': ratio
+            })
+            
+            print(f"{scenario['name']:20s}: Ratio = {ratio:.2e}")
     
-    # 7. Generate summary report
-    print("\n📝 Generating Analysis Report...")
+    # Generate summary report
+    print("\n📝 Analysis Summary:")
+    print("-" * 30)
     
-    report_content = f"""
-WARP BUBBLE FEASIBILITY ANALYSIS REPORT
-======================================
-
-EXECUTIVE SUMMARY
-----------------
-Analysis of warp bubble formation in polymer field theory shows:
-- Optimal polymer parameter: μ = {analysis_results['optimal_mu']:.3f}
-- Required negative energy: {analysis_results['energy_required']:.2e} J
-- Best feasibility scenario: {max(feasibility_data, key=lambda x: x['ratio'])['scenario']}
-- Maximum feasibility ratio: {max(feasibility_data, key=lambda x: x['ratio'])['ratio']:.2e}
-
-PARAMETER OPTIMIZATION RESULTS
------------------------------
-Total configurations tested: {len(analysis_results['scan_results'])}
-QI violations found: {sum(1 for v in analysis_results['violations'].values() if v)}
-Optimal QI bound: {analysis_results['optimal_bound']:.2e} J
-
-ENERGY SCENARIOS
----------------
-"""
+    optimal_results = analysis_results.get('optimization', {})
+    squeezed_results = analysis_results.get('squeezed_analysis', {})
     
-    for data in feasibility_data:
-        report_content += f"- {data['scenario']}: {data['ratio']:.2e}\n"
+    print(f"Optimal polymer parameter: μ = {optimal_results.get('best_mu', 'N/A'):.3f}")
+    print(f"Optimal QI bound: {optimal_results.get('best_bound', 'N/A'):.2e} J")
     
-    report_content += f"""
-
-EXPERIMENTAL RECOMMENDATIONS
----------------------------
-1. Focus on {max(feasibility_data, key=lambda x: x['ratio'])['scenario'].lower()} systems
-2. Optimize polymer parameter around μ = {analysis_results['optimal_mu']:.3f}
-3. Target shell radius R ≈ 3.0 for maximum violations
-4. Use temporal sampling τ ≈ 1.0 for optimal bound relaxation
-
-NEXT DEVELOPMENT PRIORITIES
---------------------------
-1. Implement full 3+1D PDE solver with AMR
-2. Couple polymer stress-energy to Einstein field equations  
-3. Develop experimental protocols for squeezed vacuum generation
-4. Design warp metric measurement techniques
-
-Analysis completed: {str(np.datetime64('now'))}
-"""
+    if squeezed_results:
+        E_req = squeezed_results.get('E_required', 0)
+        E_avail = squeezed_results.get('E_available', 0)
+        ratio = squeezed_results.get('feasibility_ratio', 0)
+        
+        print(f"Required negative energy: {E_req:.2e} J")
+        print(f"Available squeezed energy: {E_avail:.2e} J")
+        print(f"Feasibility ratio: {ratio:.2e}")
     
-    # Save report
-    report_path = output_dir / "warp_bubble_analysis_report.txt"
-    with open(report_path, 'w') as f:
-        f.write(report_content)
-    
-    print(f"Detailed report saved to: {report_path}")
-    
-    # 8. Final summary
+    # Final assessment
     print("\n🎯 ANALYSIS COMPLETE")
     print("=" * 30)
     
-    if analysis_results['feasibility_ratio'] > 1:
+    if squeezed_results and squeezed_results.get('feasibility_ratio', 0) > 1:
         print("✅ RESULT: Warp bubble formation appears FEASIBLE!")
-        print(f"   Energy surplus: {analysis_results['feasibility_ratio']:.1f}x")
-    elif analysis_results['feasibility_ratio'] > 0.1:
+        print(f"   Energy surplus: {squeezed_results['feasibility_ratio']:.1f}x")
+    elif squeezed_results and squeezed_results.get('feasibility_ratio', 0) > 0.1:
         print("⚠️  RESULT: Warp bubble formation is CHALLENGING but possible")
-        print(f"   Energy deficit: {1/analysis_results['feasibility_ratio']:.1f}x")
+        print(f"   Energy deficit: {1/squeezed_results['feasibility_ratio']:.1f}x")
     else:
         print("❌ RESULT: Warp bubble formation requires significant advancement")
-        print(f"   Energy deficit: {1/analysis_results['feasibility_ratio']:.0f}x")
+        if squeezed_results and squeezed_results.get('feasibility_ratio', 0) > 0:
+            print(f"   Energy deficit: {1/squeezed_results['feasibility_ratio']:.0f}x")
+    
+    num_violations = sum(1 for v in analysis_results['violations'].values() if v)
+    total_configs = len(analysis_results['scan_results'])
     
     print(f"\nKey findings:")
-    print(f"- Polymer enhancement enables {sum(1 for v in analysis_results['violations'].values() if v)} QI violations")
-    print(f"- Optimal parameter μ = {analysis_results['optimal_mu']:.3f}")
-    print(f"- Best experimental approach: {max(feasibility_data, key=lambda x: x['ratio'])['scenario']}")
+    print(f"- Polymer enhancement enables {num_violations} QI violations")
+    print(f"- {total_configs} configurations tested total")
+    print(f"- Optimal parameter μ = {optimal_results.get('best_mu', 'N/A'):.3f}")
     
-    print(f"\nFiles generated:")
-    print(f"- {output_dir / 'warp_bubble_analysis.png'}")
-    print(f"- {output_dir / 'qi_bound_optimization.png'}")
-    print(f"- {output_dir / 'warp_bubble_analysis_report.txt'}")
+    if not args.no_plots:
+        best_scenario = max(feasibility_data, key=lambda x: x['ratio']) if 'feasibility_data' in locals() else None
+        if best_scenario:
+            print(f"- Best experimental approach: {best_scenario['scenario']}")
+        
+        output_dir = Path(__file__).parent / "output"
+        print(f"\nFiles generated:")
+        print(f"- {output_dir / 'warp_bubble_analysis.png'}")
+        print(f"- {output_dir / 'qi_bound_optimization.png'}")
     
-    return analysis_results, feasibility_data
+    return analysis_results
 
 
 if __name__ == "__main__":
     # Run the comprehensive analysis
     try:
-        results, scenarios = main()
+        results = main()
         
         print("\n🚀 Ready to proceed with warp bubble implementation!")
         print("   Theoretical foundation: ✅ Complete")
