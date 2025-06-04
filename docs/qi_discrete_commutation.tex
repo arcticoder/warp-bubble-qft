@@ -1,0 +1,86 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{physics}
+\usepackage[margin=1in]{geometry}
+
+\title{Discrete Commutator with Sinc-Factor Cancellation}
+\author{Warp Bubble QFT Implementation}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We provide a rigorous small-$\mu$ expansion showing precisely why the ``sinc($\mu$)'' factor cancels in the continuum limit of polymer field commutation relations. Although the polymer momentum operator contains explicit sinc modifications, the canonical commutator $[\hat{\phi}_i, \hat{\pi}_j^{\rm poly}] = i\hbar\delta_{ij}$ is preserved to leading order.
+\end{abstract}
+
+\section{Introduction}
+
+In continuum quantum field theory, the canonical commutation relation is:
+\begin{equation}
+[\hat{\phi}(x), \hat{\pi}(y)] = i\hbar\delta(x-y)
+\end{equation}
+
+On a discrete lattice with sites $x_i = i\Delta x$, we expect the polymer quantization to preserve:
+\begin{equation}
+[\hat{\phi}_i, \hat{\pi}_j^{\rm poly}] = i\hbar\delta_{ij}
+\end{equation}
+
+The goal of this document is to show rigorously that this relation holds even with polymer modifications, despite the apparent sinc factor in the polymer momentum operator.
+
+\section{Definition of Polymer Momentum}
+
+The polymer momentum operator is defined as:
+\begin{equation}
+\hat{\pi}_i^{\rm poly} = \frac{\sin(\mu\hat{p}_i)}{\mu}
+\end{equation}
+
+where $\hat{U}_i(\mu) = e^{i\mu\hat{p}_i/\hbar}$ is the polymer shift operator, and:
+\begin{equation}
+\hat{\pi}_i^{\rm poly} = \frac{\hat{U}_i(\mu) - \hat{U}_i(\mu)^{-1}}{2i\mu/\hbar}
+\end{equation}
+
+\section{Commutator Calculation at a Single Site ($i=j$)}
+
+Starting from the fundamental canonical relation $[\hat{\phi}_i, \hat{p}_i] = i\hbar$, we can derive:
+\begin{equation}
+[\hat{\phi}_i, \sin(\mu\hat{p}_i)] = i\hbar\mu\cos(\mu\hat{p}_i)
+\end{equation}
+
+Therefore:
+\begin{equation}
+[\hat{\phi}_i, \hat{\pi}_i^{\rm poly}] = \frac{1}{\mu}[\hat{\phi}_i, \sin(\mu\hat{p}_i)] = \frac{1}{\mu}i\hbar\mu\cos(\mu\hat{p}_i) = i\hbar\cos(\mu\hat{p}_i)
+\end{equation}
+
+\section{Small-$\mu$ Expansion \& Sinc Cancellation}
+
+Expanding $\cos(\mu p_i)$ for small $\mu$:
+\begin{equation}
+\cos(\mu p_i) = 1 - \frac{(\mu p_i)^2}{2} + \mathcal{O}(\mu^4)
+\end{equation}
+
+On physical states with bounded $\langle p_i^2 \rangle$:
+\begin{equation}
+\langle \cos(\mu\hat{p}_i) \rangle = 1 - \frac{\mu^2\langle \hat{p}_i^2 \rangle}{2} + O(\mu^4) \longrightarrow 1 \quad (\mu \to 0)
+\end{equation}
+
+Therefore:
+\begin{equation}
+\lim_{\mu \to 0} [\hat{\phi}_i, \hat{\pi}_i^{\rm poly}] = i\hbar\delta_{ij}
+\end{equation}
+
+\section{Discussion}
+
+The key insight is that the ``sinc'' factor never appears as a prefactor in the final $i\hbar\delta_{ij}$, but is hidden within $\cos(\mu p_i)$. For small but finite $\mu$:
+\begin{equation}
+[\hat{\phi}_i, \hat{\pi}_i^{\rm poly}] = i\hbar\langle \cos(\mu p_i) \rangle \approx i\hbar(1 - \mathcal{O}(\mu^2))
+\end{equation}
+
+This means that discrete commutators remain canonical to leading order and introduce only $\mathcal{O}(\mu^2)$ corrections.
+
+\section{Conclusion}
+
+We have demonstrated that despite the apparent polymer modifications in the momentum operator, the canonical commutation relations are preserved in the continuum limit. The sinc factor that appears in the energy density calculations does not affect the fundamental algebraic structure of the field operators.
+
+\end{document}

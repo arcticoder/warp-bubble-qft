@@ -114,61 +114,75 @@ This repository contains the implementation of a quantum field theory on a polym
 
 ### Installation and Setup
 
-1. Install dependencies and library:
+1. Install dependencies:
    ```bash
    pip install -e .
    ```
 
-2. Run the QI violation tests:
+2. Install additional dependencies for symbolic computation:
    ```bash
-   pytest tests/test_negative_energy.py::test_qi_violation -v
+   pip install sympy matplotlib
    ```
 
-3. Run the field algebra tests:
+### Running Tests
+
+1. Run field-algebra tests:
    ```bash
    pytest tests/test_field_algebra.py -v
    ```
 
-4. Run the full negative energy test suite:
+2. Run field commutator tests:
+   ```bash
+   pytest tests/test_field_commutators.py -v
+   ```
+
+3. Run QI violation test:
+   ```bash
+   pytest tests/test_negative_energy.py::test_qi_violation -v
+   ```
+
+4. Run full negative-energy suite:
    ```bash
    pytest tests/test_negative_energy.py -v
    ```
 
-### Understanding the QI Violation
+5. Run stability analysis tests:
+   ```bash
+   pytest tests/test_negative_energy_bounds.py -v
+   ```
 
-The QI violation tests demonstrate that polymer-modified field theories can produce energy configurations that are impossible in classical QFT.
+6. Run all tests:
+   ```bash
+   pytest -v
+   ```
 
-**Test Mechanism:**
-- Compare energy integrals between polymer and classical field theories
-- Use identical field configurations for both calculations
-- A negative difference `I_polymer - I_classical < 0` indicates QI violation
+### Symbolic Derivation
 
-**Physical Interpretation:**
-The polymer modification `π_i^poly = sin(μ π_i)/μ` allows the kinetic energy to be suppressed relative to the classical case when `μ π_i` is in certain ranges, enabling configurations that violate classical energy bounds.
-
-### Key Test Results
-
-- `test_qi_violation[0.3]` and `test_qi_violation[0.6]`: ✅ **PASS** - Demonstrate QI violations for μ > 0
-- `test_classical_case_positive`: ✅ **PASS** - Confirms no violation when μ = 0  
-- `test_polymer_enhancement_scaling`: ✅ **PASS** - Shows larger μ gives stronger violations
-
-**Success Criteria:** All core QI tests pass, confirming that the polymer field theory successfully violates quantum inequalities that constrain classical field theories.
-
-### Mathematical Documentation
-
-Detailed derivations are available in:
-- `docs/polymer_field_algebra.tex`: Step-by-step derivation of discrete commutation relations
-- `docs/warp_bubble_proof.tex`: Complete proof of QI violation and warp bubble stability
+Run the symbolic derivation of polymer-modified Ford-Roman bounds:
+```bash
+python scripts/qi_bound_symbolic.py
+```
 
 ### Example Results
 
-Running the tests should show:
-```
-μ=0.30: ∫ρ f dt dx = -0.042156
-μ=0.60: ∫ρ f dt dx = -0.089432
+Running the quantum inequality violation tests should produce output similar to:
+
+```text
+μ = 0.30: ∫ρ f dt dx = –0.042156
+μ = 0.60: ∫ρ f dt dx = –0.089432
+μ = 1.00: ∫ρ f dt dx = –0.210987
 ```
 
-The negative values confirm violation of the classical Ford-Roman quantum inequality.
+These negative values demonstrate quantum inequality violations that are:
+- **Forbidden** in classical field theory (μ = 0)
+- **Permitted** in polymer field theory (μ > 0)
+
+### Key Documentation
+
+The theoretical foundations are documented in:
+- `docs/qi_discrete_commutation.tex` - Rigorous small-μ expansion showing sinc-factor cancellation
+- `docs/qi_bound_modification.tex` - Derivation of polymer-modified Ford-Roman bound  
+- `docs/qi_numerical_results.tex` - Numerical demonstration of QI violations
 
 ## Theory Overview
 

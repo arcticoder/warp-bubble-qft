@@ -280,8 +280,122 @@ def test_negative_energy_formation_specific_configuration():
     assert min_energy < 0.5 * max_energy, f"Expected energy suppression in core, min/max: {min_energy}/{max_energy}"
 
 
+# Additional comprehensive tests for energy density and polymer scaling
+
+def test_energy_density_computation():
+    """Test energy density computation for different field configurations."""
+    N = 10
+    dx = 1.0
+    mu = 0.5
+    
+    # Test case 1: zero fields
+    phi_zero = np.zeros(N)
+    pi_zero = np.zeros(N)
+    rho_zero = compute_energy_density(phi_zero, pi_zero, mu, dx)
+    assert np.allclose(rho_zero, 0), "Zero fields should give zero energy density"
+    
+    # Test case 2: positive momentum (should give positive energy)
+    pi_pos = np.ones(N) * 0.5
+    rho_pos = compute_energy_density(phi_zero, pi_pos, mu, dx)
+    assert np.all(rho_pos > 0), "Positive momentum should give positive energy"
+    
+    # Test case 3: large momentum in range where sin(μπ) < 0
+    pi_large = np.ones(N) * (2.5 / mu)  # μπ ≈ 2.5 > π/2
+    rho_large = compute_energy_density(phi_zero, pi_large, mu, dx)
+    # Energy can be negative due to sin(μπ) < 0 in polymer case
+    if mu > 0:
+        assert np.any(rho_large < 0), "Large momentum should produce negative energy for μ > 0"
+
+
+@pytest.mark.parametrize("mu", [0.0, 0.2, 0.5])
+def test_energy_density_polymer_scaling(mu):
+    """Test energy density behavior for different polymer scales."""
+    N = 8
+    dx = 1.0
+    phi = np.zeros(N)
+    pi = np.ones(N) * 1.5  # Fixed momentum magnitude
+    
+    rho = compute_energy_density(phi, pi, mu, dx)
+    
+    if mu == 0.0:
+        # Classical case: kinetic = π²/2
+        expected = 0.5 * pi**2
+        assert np.allclose(rho, expected), "Classical energy should match π²/2"
+    else:
+        # Polymer case: kinetic = [sin(μπ)/μ]²/2
+        expected_kinetic = 0.5 * (np.sin(mu * pi) / mu)**2
+        # Only check kinetic part (gradient term is zero for constant φ=0)
+        assert np.allclose(rho, expected_kinetic), "Polymer energy should match sinc formula"
+
+
+def test_qi_violation_magnitude_scaling():
+    """Test that QI violation magnitude scales appropriately with polymer parameter."""
+    N = 16
+    dx = 1.0
+    dt = 0.01
+    total_time = 4.0
+    tau = 1.0
+    
+    mu_small = 0.1
+    mu_large = 0.7
+    
+    I_small = integrate_negative_energy_over_time(N, mu_small, total_time, dt, dx, tau)
+    I_large = integrate_negative_energy_over_time(N, mu_large, total_time, dt, dx, tau)
+    
+    # Both should be negative (QI violation), but larger μ should give stronger violation
+    assert I_small < 0, f"Small μ should still violate QI: {I_small}"
+    assert I_large < 0, f"Large μ should violate QI: {I_large}"
+    assert I_large < I_small, f"Larger μ should give stronger violation: {I_large} vs {I_small}"
+
+
+def test_sampling_function_properties():
+    """Test additional properties of the Gaussian sampling function."""
+    tau = 2.0
+    
+    # Test symmetry
+    t_vals = np.array([-1.0, 1.0])
+    f_vals = sampling_function(t_vals, tau)
+    assert np.isclose(f_vals[0], f_vals[1]), "Sampling function should be symmetric"
+    
+    # Test peak at t=0
+    t_peak = 0.0
+    t_side = tau
+    f_peak = sampling_function(t_peak, tau)
+    f_side = sampling_function(t_side, tau)
+    assert f_peak > f_side, "Peak should be at t=0"
+    
+    # Test proper scaling with tau
+    tau_small = 0.5
+    tau_large = 2.0
+    f_small = sampling_function(0.0, tau_small)
+    f_large = sampling_function(0.0, tau_large)
+    # Smaller tau should give larger peak (due to normalization)
+    assert f_small > f_large, "Smaller tau should give larger peak value"
+
+
+# Demonstration function for numerical results table
+def generate_qi_violation_table():
+    """Generate the numerical results table from the documentation."""
+    print("\nQuantum Inequality Violation Results:")
+    print("μ     | ∫ρ_eff f dt dx | Comment")
+    print("------|---------------|--------")
+    
+    N = 64
+    dx = 1.0
+    dt = 0.01
+    total_time = 8.0
+    tau = 1.0
+    
+    mu_values = [0.00, 0.30, 0.60, 1.00]
+    comments = ["classical (no violation)", "QI violated", "stronger violation", "even stronger"]
+    
+    for mu, comment in zip(mu_values, comments):
+        try:
+            I = integrate_negative_energy_over_time(N, mu, total_time, dt, dx, tau)
+            print(f"{mu:4.2f}  | {I:12.6f}  | {comment}")
+        except Exception as e:
+            print(f"{mu:4.2f}  | {'ERROR':>12}  | {str(e)[:20]}")
+
+
 if __name__ == "__main__":
-    # Quick manual test
-    test_qi_violation(0.5)
-    test_classical_case_positive()
-    print("QI violation tests passed!")
+    generate_qi_violation_table()

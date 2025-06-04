@@ -11,25 +11,50 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def compute_commutator(i: int, j: int, polymer_scale: float, hbar: float = 1.0) -> complex:
+    """
+    Compute [φ_i, π_j^poly] for given lattice indices.
+    
+    Args:
+        i, j: lattice site indices
+        polymer_scale: polymer parameter μ
+        hbar: Planck's constant
+        
+    Returns:
+        Commutator value (should be iℏδ_ij with polymer modifications)
+    """
+    if i != j:
+        return 0.0
+    
+    if polymer_scale == 0.0:
+        # Classical limit
+        return 1j * hbar
+    
+    # Polymer modification via sinc function
+    # [φ_i, π_i^poly] = iℏ sinc(μ) δ_ij to leading order
+    sinc_factor = np.sinc(polymer_scale / np.pi)
+    return 1j * hbar * sinc_factor
+
+
 class PolymerField:
     """
     A scalar field quantized on a polymer/discrete background.
     
     This implements the polymer representation where:
-    - phi_i are field values at lattice sites
+    - phi_i are field values at lattice sites  
     - pi_i are conjugate momenta with polymer-modified commutation relations
     """
     
-    def __init__(self, N: int, mu: float, dx: float = 1.0, hbar: float = 1.0, mass: float = 0.0):
+    def __init__(self, N: int, polymer_scale: float, dx: float = 1.0, hbar: float = 1.0, mass: float = 0.0):
         """
-        N   = number of lattice sites
-        mu  = polymer scale
-        dx  = lattice spacing
-        hbar= Planck's constant (set =1 for units)
-        mass= field mass (default 0 for massless)
+        N            = number of lattice sites
+        polymer_scale= polymer parameter μ  
+        dx           = lattice spacing
+        hbar         = Planck's constant (set =1 for units)
+        mass         = field mass (default 0 for massless)
         """
         self.N = N
-        self.mu = mu
+        self.mu = polymer_scale
         self.dx = dx
         self.hbar = hbar
         self.mass = mass
@@ -37,48 +62,68 @@ class PolymerField:
         self.phi = np.zeros(N, dtype=complex)
         self.pi = np.zeros(N, dtype=complex)
         
-        logger.info(f"Initialized PolymerField: N={N}, μ={mu}, dx={dx}, mass={mass}")
+        logger.info(f"Initialized PolymerField: N={N}, μ={polymer_scale}, dx={dx}, mass={mass}")
     
     def phi_operator(self):
         """
-        Represent ϕ_i as diagonal on a chosen basis (e.g., position basis).
-        For demonstration, we label basis states |ϕ₀…ϕ_{N−1}⟩, but in code you
-        might treat ϕ_i as a multiplication operator on site i.
-        """        # For N sites, φ_i can be represented as an array of length N
-        # acting by φ_i |ϕ_j⟩ = ϕ_j δ_{ij}.  In practice, choose a basis.
-        # Return identity for now - this represents the field value operator
-        return np.eye(self.N, dtype=complex)
+        Represent φ_i as diagonal matrix for N-dimensional Hilbert space.
+        
+        Returns:
+            N×N matrix representing field operator
+        """
+        return np.diag(np.arange(self.N, dtype=complex))
     
+    def shift_operator(self):
+        """
+        Construct the polymer shift operator U = exp(iμp/ℏ).
+        
+        For finite-dimensional representation, this is a cyclic shift:
+        U|n⟩ = |n+1 mod N⟩
+        
+        Returns:
+            N×N unitary shift matrix
+        """
+        U = np.zeros((self.N, self.N), dtype=complex)
+        for n in range(self.N):
+            U[n, (n + 1) % self.N] = 1.0
+        return U    
     def pi_polymer_operator(self):
         """
-        Represent π_i^poly = (U_i – U_i⁻¹)/(2iμ) with U_i = e^{iμ p_i}.
-        On the φ basis, U_i shifts φ_i → φ_i + μ.  Build N×N blocks.
+        Construct the polymer momentum operator π^poly = (U - U†)/(2iμ/ℏ).
+        
+        This implements π^poly = sin(μp)/μ in the discrete representation.
+        
+        Returns:
+            N×N matrix representing polymer momentum operator
         """
-        # For simplicity, implement as diagonal operators with polymer modification
-        # In the full treatment, this would involve shift operators on function space
         if self.mu == 0:
-            # Classical limit
+            # Classical limit: return identity (momentum eigenvalue operator)
             return np.eye(self.N, dtype=complex)
-        else:
-            # Polymer modification introduces sinc factors
-            # This is a simplified representation
-            polymer_factor = np.sinc(self.mu / np.pi)  # sin(μ)/(μ)
-            return polymer_factor * np.eye(self.N, dtype=complex)
+        
+        U = self.shift_operator()
+        U_dag = U.conj().T
+        
+        # π^poly = (U - U†)/(2iμ/ℏ) with ℏ = 1
+        return (U - U_dag) / (2j * self.mu)
     
-    def commutator_matrix(self):
+    def commutator_matrix(self, basis_size: Optional[int] = None):
         """
-        Compute the N×N matrix [ϕ_i, π_j^poly] for all i,j and check it equals iℏ δ_{ij}.
-        Return a dense array C where C[i,j] = [ϕ_i, π_j^poly].
+        Compute the commutator [φ, π^poly] as an N×N matrix.
+        
+        Args:
+            basis_size: Size of computational basis (default: self.N)
+            
+        Returns:
+            N×N matrix C where C[i,j] = [φ_i, π_j^poly]
         """
-        # In the simplified representation, the commutator is just the canonical one
-        # modified by the polymer factor
-        C = np.zeros((self.N, self.N), dtype=complex)
+        if basis_size is None:
+            basis_size = self.N
+            
+        phi = self.phi_operator()
+        pi_poly = self.pi_polymer_operator()
         
-        # The diagonal elements should be iℏ (using the polymer-preserved commutator)
-        for i in range(self.N):
-            C[i, i] = 1j * self.hbar
-        
-        return C
+        # Compute commutator [φ, π^poly] = φ·π^poly - π^poly·φ
+        return phi @ pi_poly - pi_poly @ phi
     
     def set_coherent_state(self, amplitude: float, width: float, center: float = 0.5):
         """Set field to a Gaussian coherent state."""
@@ -88,10 +133,16 @@ class PolymerField:
     
     def polymer_momentum_operator(self, p_classical: np.ndarray) -> np.ndarray:
         """
-        Apply polymer modification to momentum operator.
+        Apply polymer modification to momentum field values.
         
         Classical: π → π
         Polymer: π → sin(μπ)/μ
+        
+        Args:
+            p_classical: Classical momentum field values
+            
+        Returns:
+            Polymer-modified momentum values
         """
         if self.mu == 0:
             return p_classical

@@ -42,12 +42,32 @@ def compute_energy_density(phi, pi, mu, dx):
 
 def integrate_negative_energy_over_time(N, mu, total_time, dt, dx, tau):
     """
-    Simulate a simple Gaussian pulse in π that produces negative ρ in the core,
-    then integrate with sampling function f(t).
-    
-    Returns the difference between polymer and classical energy integrals.
-    QI violation occurs when this difference is negative.
+    Create π_i(t) = A exp[-((x_i - x0)^2)/(2 σ^2)] sin(ω t), 
+    choose A so that μ π_i(t) enters (π/2, 3π/2) in core → sin(μ π)<0 there.
+    Integrate I = sum_i ∫ ρ_i(t) f(t) dt dx.
+    Return I.
     """
+    x = np.arange(N) * dx
+    x0 = N * dx / 2
+    sigma = N * dx / 8
+    
+    # Choose A slightly larger than (π/2)/(max envelope) so max(μ π_i)>π/2
+    A = 1.1 * (np.pi / (2 * mu)) if mu > 0 else 1.0
+    omega = 2 * np.pi / total_time
+
+    times = np.arange(-total_time/2, total_time/2, dt)
+    I_sum = 0.0
+    
+    for t in times:
+        envelope = np.exp(-((x - x0)**2) / (2 * sigma**2))
+        pi_t = A * envelope * np.sin(omega * t)
+        phi_t = np.zeros_like(pi_t)  # assume φ ≈ 0 for worst‐case negative kinetic
+        
+        rho = compute_energy_density(phi_t, pi_t, mu, dx)
+        f_t = sampling_function(t, tau)
+        I_sum += np.sum(rho) * f_t * dt * dx
+        
+    return I_sum
     times = np.arange(-total_time/2, total_time/2, dt)
     # Initialize φ_i = 0, and choose π_i(t) = A * exp(-(x_i-x0)^2/(2σ^2)) * sin(ω t)
     x = np.arange(N) * dx
@@ -340,4 +360,39 @@ def ford_roman_violation_analysis(bubble: WarpBubble, observation_time: float) -
         "polymer_violation_factor": polymer_violation_factor,
         "polymer_enhancement": polymer_bound / classical_bound,
         "violation_possible": classical_violation and not polymer_violation
+    }
+
+
+def compute_negative_energy_region(bubble: WarpBubble) -> Dict:
+    """
+    Compute the spatial region where negative energy density exists.
+    
+    Args:
+        bubble: WarpBubble instance
+        
+    Returns:
+        Dictionary with negative energy region analysis
+    """
+    # Get energy density profile
+    rho = bubble.energy_density()
+    x = np.linspace(-bubble.radius, bubble.radius, len(rho))
+    
+    # Find negative energy regions
+    negative_mask = rho < 0
+    if not np.any(negative_mask):
+        return {
+            "has_negative_region": False,
+            "negative_volume": 0.0,
+            "peak_negative_density": 0.0
+        }
+    
+    # Compute negative energy volume
+    negative_volume = np.sum(negative_mask) * (x[1] - x[0])
+    peak_negative_density = np.min(rho[negative_mask])
+    
+    return {
+        "has_negative_region": True,
+        "negative_volume": negative_volume,
+        "peak_negative_density": peak_negative_density,
+        "negative_indices": np.where(negative_mask)[0]
     }
