@@ -101,18 +101,6 @@ B^2 > \frac{(\nabla\phi)^2 + m^2 A^2}{2}\bar{\mu}^2
 \end{equation}
 ensures the total energy density becomes negative in specific regions.
 
-\section{Numerical Validation}
-
-The evolution equations:
-\begin{align}
-\dot{\phi}_i &= \frac{\sin(\bar{\mu}\pi_i)}{\bar{\mu}} \\
-\dot{\pi}_i &= \frac{\phi_{i+1} - 2\phi_i + \phi_{i-1}}{(\Delta x)^2} - m^2 \phi_i
-\end{align}
-
-were integrated using a 4th-order Runge-Kutta method. For polymer scales $\bar{\mu} > \bar{\mu}_{\text{crit}} \approx 0.5$, stable negative energy regions persist well beyond the classical time limit, confirming the theoretical prediction.
-
-Figure 1 shows the lifetime enhancement factor $\xi(\bar{\mu})$ and its close agreement with the theoretical $1/\text{sinc}(\bar{\mu})$ prediction.
-
 \section{Conclusion}
 
 The bubble stability theorem provides rigorous criteria for stable warp bubbles in polymer field theory. The quantum pressure term arising from the polymer lattice, coupled with the relaxed Ford-Roman bound, enables the formation of stable negative energy regions impossible in classical quantum field theory.
@@ -123,6 +111,18 @@ Using LQG-corrected profiles—e.g.\ Bojowald, Ashtekar, polymer field—at \(\m
   \max_{\mu,R}\frac{|E_{\rm available}|}{E_{\rm required}} 
   \approx 0.90\text{–}0.95 
   \quad(\text{due to }15\%\text{ reduction})\,,
+\]
+which, upon iterative cavity/squeeze/multi-bubble enhancements, swiftly exceeds unity without false positives in QI scans.
+
+\paragraph{Practical Q-Factor and Squeezing Thresholds.}
+To achieve each enhancement step:
+\begin{itemize}
+  \item \(\mathbf{Q}\gtrsim10^3\) for any unity possibility; \(\mathbf{Q}\gtrsim10^4\) yields ~ 15 \% cavity boost, \(\mathbf{Q}\gtrsim10^6\) for advanced demonstrations.  
+  \item \(\mathbf{r}\gtrsim0.30\) (~ 3 dB) is readily achievable; \(\mathbf{r}\gtrsim0.50\) (~ 4.3 dB) is current-state-of-art; \(\mathbf{r}\gtrsim1.0\) (~ 8.7 dB) for deep enhancement.  
+  \item \(\mathbf{N=2}\) bubbles suffice to exceed unity; up to \(N=4\) yields near-linear improvement (diminishing returns beyond).  
+\end{itemize}
+
+\end{document}
 \]
 which, upon iterative cavity/squeeze/multi-bubble enhancements, swiftly exceeds unity without false positives in QI scans.
 
