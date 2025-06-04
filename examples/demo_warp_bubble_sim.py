@@ -8,6 +8,12 @@ densities (warp bubbles) in a polymer-quantized field theory.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
+import os
+
+# Add src directory to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
 from warp_qft.field_algebra import PolymerField, analyze_negative_energy_formation
 from warp_qft.negative_energy import compute_negative_energy_region, WarpBubble
 from warp_qft.stability import ford_roman_bounds, polymer_modified_bounds, violation_duration

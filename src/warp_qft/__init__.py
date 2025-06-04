@@ -10,7 +10,7 @@ __author__ = "Arcticoder"
 
 from .field_algebra import PolymerField, compute_commutator
 from .negative_energy import WarpBubble, compute_negative_energy_region
-from .stability import ford_roman_bounds, violation_duration
+from .stability import ford_roman_bounds, polymer_modified_bounds, violation_duration
 
 __all__ = [
     "PolymerField",
@@ -18,5 +18,6 @@ __all__ = [
     "compute_commutator",
     "compute_negative_energy_region",
     "ford_roman_bounds",
+    "polymer_modified_bounds",
     "violation_duration"
 ]

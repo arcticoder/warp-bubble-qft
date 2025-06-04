@@ -2,7 +2,11 @@
 
 import numpy as np
 import sys
-sys.path.append('src')
+import os
+
+# Add src directory to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+
 from warp_qft.negative_energy import compute_energy_density, integrate_negative_energy_over_time
 
 def test_energy_difference():
