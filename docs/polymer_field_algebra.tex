@@ -146,7 +146,7 @@ becomes:
 \int_{-\infty}^{\infty} \rho_{\text{eff}}(t) f(t) dt \geq -\frac{\hbar\,\mathrm{sinc}(\mu)}{12\pi\tau^2}
 \end{equation}
 
-where $\mathrm{sinc}(\mu) = \sin(\mu)/\mu < 1$ for $\mu > 0$. This relaxed bound permits negative energy violations that are classically forbidden.
+where $\mathrm{sinc}(\pi\mu) = \sin(\pi\mu)/(\pi\mu) < 1$ for $\mu > 0$. This relaxed bound permits negative energy violations that are classically forbidden.
 
 \section{Numerical Verification}
 
@@ -161,7 +161,7 @@ violating the classical bound while respecting the modified polymer bound.
 
 The Hamiltonian density for the polymer field becomes:
 \begin{equation}
-\mathcal{H}_i = \frac{1}{2}\left[ \left(\frac{\sin(\mu \pi_i)}{\mu}\right)^2 + (\nabla_d \phi)_i^2 + m^2 \phi_i^2 \right]
+\mathcal{H}_i = \frac{1}{2}\left[ \left(\frac{\sin(\pi\mu \pi_i)}{\pi\mu}\right)^2 + (\nabla_d \phi)_i^2 + m^2 \phi_i^2 \right]
 \end{equation}
 
 where $(\nabla_d \phi)_i$ is the discrete gradient:
@@ -231,7 +231,7 @@ This numerical verification goes beyond simply checking $C_{ii} = i\hbar$ and co
 Parameterized tests demonstrate exact agreement between numerical calculations and analytical sinc-formula predictions. For constant momentum $\pi_i = 1.5$:
 \begin{itemize}
 \item \textbf{Classical case} ($\mu = 0$): $\rho_i = \pi^2/2 = 1.125$
-\item \textbf{Polymer case} ($\mu > 0$): $\rho_i = \frac{1}{2}\left[\frac{\sin(\mu\pi)}{\mu}\right]^2$
+\item \textbf{Polymer case} ($\mu > 0$): $\rho_i = \frac{1}{2}\left[\frac{\sin(\pi\mu\pi)}{\pi\mu}\right]^2$
 \end{itemize}
 
 Numerical verification confirms the sinc-formula relationship exactly, with polymer energy density satisfying $\rho_{\text{poly}} < \rho_{\text{classical}}$ for $\mu\pi > \pi/2 \approx 1.57$.
@@ -251,7 +251,7 @@ This comprehensive approach validates not only final integrated violations but a
 
 The script \texttt{scripts/qi\_bound\_symbolic.py} provides symbolic analysis of the enhancement mechanism:
 \begin{itemize}
-\item \textbf{Sinc function expansion}: $\text{sinc}(\mu) = \sin(\mu)/\mu = 1 - \mu^2/6 + O(\mu^4)$ for small $\mu$
+\item \textbf{Sinc function expansion}: $\text{sinc}(\pi\mu) = \sin(\pi\mu)/(\pi\mu) = 1 - \pi^2\mu^2/6 + O(\mu^4)$ for small $\mu$
 \item \textbf{Enhancement factors}: $\xi(\mu) = 1/\text{sinc}(\mu)$ with numerical values:
   \begin{align}
   \mu = 0.5: \quad \xi &\approx 1.04 \quad (4\% \text{ enhancement}) \\
@@ -267,7 +267,7 @@ The analysis demonstrates that $|\text{sinc}(\mu)| < 1$ for all $\mu > 0$, ensur
 We have derived the complete polymer field algebra, showing that:
 \begin{enumerate}
 \item The canonical commutation relations are preserved: $[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}] = i\hbar\delta_{ij}$
-\item The polymer modification introduces $\sin(\mu\pi)/\mu$ factors in the kinetic energy
+\item The polymer modification introduces $\sin(\pi\mu\pi)/(\pi\mu)$ factors in the kinetic energy
 \item Negative energy densities become possible when $\mu\pi \in (\pi/2, 3\pi/2)$
 \item Quantum inequality violations occur through the modified Ford-Roman bound
 \item The classical limit $\mu \to 0$ is correctly recovered
