@@ -1,0 +1,15 @@
+{
+  "use_vdb_natario": true,
+  "R_int": 100.0,
+  "R_ext": 2.3,
+  "mu_min": 0.05,
+  "mu_max": 0.2,
+  "R_min": 1.5,
+  "R_max": 4.0,
+  "grid_resolution": 50,
+  "target_energy_ratio": 1.0,
+  "use_backreaction": true,
+  "use_cavity_boost": true,
+  "use_squeezing": true,
+  "use_multi_bubble": true
+}

@@ -1,0 +1,46 @@
+{
+  "validation_timestamp": "2025-06-04 22:01:48",
+  "tests": [
+    {
+      "command": "python practical_fast_scan.py --quick",
+      "execution_time": 1.0615794658660889,
+      "return_code": 1,
+      "success": false,
+      "output_length": 165
+    },
+    {
+      "command": "python practical_fast_scan.py --thorough",
+      "execution_time": 1.0202233791351318,
+      "return_code": 1,
+      "success": false,
+      "output_length": 165
+    },
+    {
+      "command": "python practical_fast_scan.py --compare",
+      "execution_time": 1.0210216045379639,
+      "return_code": 0,
+      "success": true,
+      "output_length": 1068
+    },
+    {
+      "command": "python enhanced_fast_pipeline.py",
+      "execution_time": 0.9996609687805176,
+      "return_code": 0,
+      "success": true,
+      "output_length": 45
+    },
+    {
+      "command": "python ultra_fast_scan.py --demo",
+      "execution_time": 5.836675643920898,
+      "return_code": 2,
+      "success": false,
+      "output_length": 0
+    }
+  ],
+  "discoveries_preserved": {
+    "vdb_natario_reduction": true,
+    "exact_backreaction": 1.9443254780147017,
+    "corrected_sinc": true,
+    "geometric_baseline": true
+  }
+}
