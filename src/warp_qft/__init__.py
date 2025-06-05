@@ -39,6 +39,13 @@ from .enhancement_pathway import (
     MultiBubbleSuperposition,
     ComprehensiveEnhancementCalculator
 )
+from .metrics import (
+    van_den_broeck_shape,
+    natario_shift_vector,
+    van_den_broeck_natario_metric,
+    compute_energy_tensor,
+    energy_requirement_comparison
+)
 
 __all__ = [
     "PolymerField",
@@ -68,6 +75,10 @@ __all__ = [
     "EnhancementConfig",
     "CavityBoostCalculator",
     "QuantumSqueezingEnhancer",
-    "MultiBubbleSuperposition",
-    "ComprehensiveEnhancementCalculator"
+    "MultiBubbleSuperposition",    "ComprehensiveEnhancementCalculator",
+    "van_den_broeck_shape",
+    "natario_shift_vector", 
+    "van_den_broeck_natario_metric",
+    "compute_energy_tensor",
+    "energy_requirement_comparison"
 ]
