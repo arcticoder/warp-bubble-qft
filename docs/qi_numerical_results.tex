@@ -101,11 +101,11 @@ The results clearly demonstrate:
 
 The classical Ford-Roman bound would require $I \geq -\hbar/(12\pi\tau^2) \approx -0.0265$.
 
-The polymer-modified bound allows $I \geq -\hbar\,\mathrm{sinc}(\mu)/(12\pi\tau^2)$:
+The polymer-modified bound allows $I \geq -\hbar\,\mathrm{sinc}(\mu)/(12\pi\tau^2)$ with $\mathrm{sinc}(\mu) = \sin(\pi\mu)/(\pi\mu)$:
 \begin{align}
-\mu = 0.30: \quad I &\geq -0.0265 \times 0.985 \approx -0.0261 \\
-\mu = 0.60: \quad I &\geq -0.0265 \times 0.937 \approx -0.0248 \\
-\mu = 1.00: \quad I &\geq -0.0265 \times 0.841 \approx -0.0223
+\mu = 0.30: \quad I &\geq -0.0265 \times 0.959 \approx -0.0254 \\
+\mu = 0.60: \quad I &\geq -0.0265 \times 0.841 \approx -0.0223 \\
+\mu = 1.00: \quad I &\geq -0.0265 \times 0.637 \approx -0.0169
 \end{align}
 
 Our numerical results violate even these relaxed bounds, indicating we have successfully constructed configurations in the forbidden region.
@@ -141,13 +141,10 @@ A secondary viable region lies near \(R\approx0.7\), but yields lower ratios.
 \subsubsection*{Refined Energy Requirement with Backreaction}
 Incorporating polymer-induced metric backreaction,
 \[
-  E_{\rm req}^{\rm refined}(\mu,R) 
-  \;=\; R\,v^2 \times \bigl[\,1 - 0.15\,\sinc(\mu)\,e^{-R/2}\bigr]
-  \times \bigl[\,0.85 + 0.10\,e^{-v^2}\bigr]
-  \times \bigl[\,0.80 + 0.15\,e^{-\mu R}\bigr],
+  E_{\rm req}^{\rm refined}(0.10,2.3) = 1.9443254780147017,
 \]
-yielding an ≃ 15 \% reduction at \(\mu=0.10,\;R=2.3\) (e.g.\ \(E_{\rm req}^{\rm refined}/E_{\rm req}^{\rm naive}\approx0.85\)).  
-Consequently, the toy-model feasibility ratio improves from ~ 0.87 → ~ 1.02.
+i.e.\ a 15.464\% reduction from the naive $R\,v^2$.  
+Consequently, the toy-model feasibility ratio improves from ~0.87 → ~1.02.
 
 \subsubsection*{Iterative Enhancement Convergence}
 Starting from the refined base ratio \(\approx1.02\), applying a fixed

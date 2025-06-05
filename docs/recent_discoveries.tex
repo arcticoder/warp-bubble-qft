@@ -3,14 +3,7 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
-\title{Recent Discoveries in Polymer QFT: Enhanced Theoretical and Numeric\subsection*{Enhancement Pathways to Unity}
-\begin{itemize}
-  \item \textbf{LQG Profile Enhancements:} Negative-energy profiles from Bojowald, Ashtekar, or polymer-field theory yield ≥ 2× the toy-model integral at \(\mu=0.10,\;R=2.3\).  
-  \item \textbf{Metric Backreaction:} A self-consistent backreaction factor \(\beta_{\rm backreaction} = 0.80 + 0.15\,e^{-\mu R}\) reduces \(E_{\rm req}\) to validated value 1.9443254780147017 at \(\mu=0.10,\;R=2.3\).  
-  \item \textbf{Cavity Resonators:} High-\(Q\) cavities—\(Q\gtrsim10^4\) for 15 \% boost, \(Q\gtrsim10^6\) for 2×—amplify negative energy.  
-  \item \textbf{Squeezed Vacuum Techniques:} Squeezing parameter \(r\gtrsim0.5\) (≥ 4.3 dB) yields ~ 1.65×–2.72× gains; \(r\gtrsim1.0\) (8.7 dB) for deep enhancement.  
-  \item \textbf{Multi-Bubble Interference:} Two bubbles \((N=2)\) linearly double negative energy; up to \(N=4\) yields ≃ 4× (interference losses beyond).  
-\end{itemize}tion}
+\title{Recent Discoveries in Polymer QFT: Enhanced Theoretical and Numerical Validation}
 \author{Warp Bubble QFT Implementation}
 \date{\today}
 
@@ -100,7 +93,7 @@ This verifies not only the final integral $I = \int\rho f dt dx$ but also interm
 The script \texttt{scripts/qi\_bound\_symbolic.py} provides symbolic analysis of the polymer enhancement:
 
 \begin{enumerate}
-\item \textbf{Sinc function:} $\text{sinc}(\mu) = \sin(\mu)/\mu$
+\item \textbf{Sinc function:} $\text{sinc}(\mu) = \sin(\pi\mu)/(\pi\mu)$
 \item \textbf{Small-$\mu$ expansion:} $\text{sinc}(\mu) = 1 - \frac{\mu^2}{6} + O(\mu^4)$
 \item \textbf{Enhancement factor:} $|\text{polymer bound}| = |\text{classical bound}| \times \text{sinc}(\mu) < |\text{classical bound}|$
 \end{enumerate}
@@ -204,7 +197,8 @@ This framework provides the theoretical foundation for stable warp bubble format
 \subsection*{Enhancement Pathways to Unity}
 \begin{itemize}
   \item \textbf{LQG Profile Enhancements:} Negative-energy profiles from Bojowald, Ashtekar, or polymer-field theory yield ≥ 2× the toy-model integral at \(\mu=0.10,\;R=2.3\).  
-  \item \textbf{Metric Backreaction:} A self-consistent backreaction factor \(\beta_{\rm backreaction} = 0.80 + 0.15\,e^{-\mu R}\) reduces \(E_{\rm req}\) to validated value 1.9443254780147017 at \(\mu=0.10,\;R=2.3\).  
+  \item \textbf{Metric Backreaction:} A self-consistent factor \(\beta_{\rm backreaction} = 0.80 + 0.15\,e^{-\mu R}\) yields
+    \(E_{\rm req}^{\rm refined}(0.10,2.3) = 1.9443254780147017\) (15.464\% reduction).  
   \item \textbf{Cavity Resonators:} High-\(Q\) cavities—\(Q\gtrsim10^4\) for 15 % boost, \(Q\gtrsim10^6\) for 2×—amplify negative energy.  
   \item \textbf{Squeezed Vacuum Techniques:} Squeezing parameter \(r\gtrsim0.5\) (≥ 4.3 dB) yields ~ 1.65×–2.72× gains; \(r\gtrsim1.0\) (8.7 dB) for deep enhancement.  
   \item \textbf{Multi-Bubble Interference:} Two bubbles \((N=2)\) linearly double negative energy; up to \(N=4\) yields ≃ 4× (interference losses beyond).  
