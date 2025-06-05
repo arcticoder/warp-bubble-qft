@@ -37,13 +37,14 @@ def toy_negative_energy(mu: float, R: float, rho0: float = 1.0,
         sigma = R / 2.0
     
     # High-resolution integration
-    x = np.linspace(-R, R, 1000)
+    x = np.linspace(-R, R, 1000) 
     dx = x[1] - x[0]
     
     # Toy profile: Gaussian envelope with sinc modulation
     gaussian = np.exp(-(x**2) / (sigma**2))
-    sinc_factor = np.sinc(mu) if mu != 0 else 1.0
+    sinc_factor = np.sin(mu*np.pi)/(mu*np.pi) if mu != 0 else 1.0
     
+    # Using negative sign to ensure negative energy density
     rho_x = -rho0 * gaussian * sinc_factor
     
     # Integrate over spatial domain
@@ -191,67 +192,75 @@ def compute_lqg_energy_integral(mu: float, R: float, N_points: int = 1000) -> Di
     }
 
 
-def optimal_lqg_parameters(R_range: Tuple[float, float] = (1.0, 5.0),
-                          mu_range: Tuple[float, float] = (0.05, 0.30),
-                          N_scan: int = 20) -> Dict:
+def optimal_lqg_parameters(
+        mu_range: Tuple[float, float] = (0.05, 0.3),
+        R_range: Tuple[float, float] = (1.0, 5.0),
+        steps: int = 20) -> Dict:
     """
-    Find optimal (mu, R) parameters for maximum LQG enhancement.
-    
-    Scans parameter space to identify the configuration giving maximum
-    negative energy from LQG corrections.
+    Find optimal LQG parameters for maximizing negative energy generation.
     
     Args:
-        R_range: Range of bubble radii to scan
-        mu_range: Range of polymer scales to scan  
-        N_scan: Number of points per dimension
+        mu_range: (min, max) for polymer scale
+        R_range: (min, max) for bubble radius
+        steps: Number of points to scan
         
     Returns:
-        Optimization results with best parameters
+        Dict with optimal parameters
     """
-    R_vals = np.linspace(R_range[0], R_range[1], N_scan)
-    mu_vals = np.linspace(mu_range[0], mu_range[1], N_scan)
+    # Parameter space scan
+    mu_vals = np.linspace(mu_range[0], mu_range[1], steps)
+    R_vals = np.linspace(R_range[0], R_range[1], steps)
+    energies = np.zeros((steps, steps))
+    enhancements = np.zeros((steps, steps))
     
-    best_enhancement = 0
-    best_params = None
-    best_energy = 0
+    # Build scan grid
+    scan_results = []
+    best_energy = 0.0
+    best_mu = 0.0
+    best_R = 0.0
+    best_enhancement = 0.0
     
-    results = []
-    
-    for R in R_vals:
-        for mu in mu_vals:
-            # Compute LQG enhancement at this point
-            analysis = compute_lqg_energy_integral(mu, R)
-            enhancement = analysis["enhancement_ratio"]
-            energy = analysis["E_lqg"]
+    for i, mu in enumerate(mu_vals):
+        for j, R in enumerate(R_vals):
+            # Get base and enhanced energies
+            base_energy = toy_negative_energy(mu, R)
+            enhanced_energy = lqg_negative_energy(mu, R, "polymer_field")
+            enhancement = abs(enhanced_energy / base_energy)
             
-            results.append({
+            energies[i, j] = enhanced_energy
+            enhancements[i, j] = enhancement
+            
+            result = {
                 "mu": mu,
                 "R": R,
                 "enhancement": enhancement,
-                "energy": energy
-            })
+                "energy": enhanced_energy
+            }
+            scan_results.append(result)
             
-            # Track best configuration
-            if enhancement > best_enhancement:
+            if enhanced_energy < best_energy:  # More negative is better
+                best_energy = enhanced_energy
+                best_mu = mu
+                best_R = R
                 best_enhancement = enhancement
-                best_params = (mu, R)
-                best_energy = energy
     
-    logger.info(f"Optimal LQG parameters: mu={best_params[0]:.3f}, R={best_params[1]:.2f}")
-    logger.info(f"Maximum enhancement: {best_enhancement:.2f}x")
-    
-    return {
-        "best_mu": best_params[0],
-        "best_R": best_params[1], 
-        "best_enhancement": best_enhancement,
-        "best_energy": best_energy,
-        "scan_results": results,
-        "R_range": R_range,
-        "mu_range": mu_range
+    optimal = {
+        "mu_optimal": best_mu,
+        "R_optimal": best_R,
+        "energy_optimal": best_energy,
+        "enhancement_factor": best_enhancement,
+        "scan_results": scan_results,
+        "mu_range": mu_range,
+        "R_range": R_range
     }
+    
+    logger.info(f"Found optimal LQG parameters: mu={best_mu:.3f}, R={best_R:.1f}")
+    logger.info(f"Enhancement factor: {best_enhancement:.2f}x")
+    return optimal
 
 
-def compare_profile_types(mu: float = 0.10, R: float = 2.3) -> Dict:
+def compare_profile_types(mu: float = 0.10, R: float = 2.3, rho0: float = 1.0,
+                      sigma: Optional[float] = None) -> Dict:
     """
     Compare different LQG profile types at fixed parameters.
     
@@ -260,38 +269,40 @@ def compare_profile_types(mu: float = 0.10, R: float = 2.3) -> Dict:
     Args:
         mu: Polymer scale parameter
         R: Bubble radius
+        rho0: Peak energy density
+        sigma: Profile width
         
     Returns:
         Comparison of all profile types
     """
-    profiles = ["bojo", "ashtekar", "polymer_field", "holonomy", "spin_foam"]
-    
-    # Baseline toy energy
-    E_toy = toy_negative_energy(mu, R)
-    
-    results = {"toy": E_toy}
+    base_energy = toy_negative_energy(mu, R, rho0, sigma)
+    energies = {"toy_model": base_energy}
     enhancements = {}
     
-    for profile in profiles:
-        E_lqg = lqg_negative_energy(mu, R, profile=profile)
-        results[profile] = E_lqg
-        enhancements[profile] = E_lqg / E_toy if E_toy != 0 else 0
+    # Get energies and enhancements for each profile
+    profiles = ["bojo", "ashtekar", "polymer_field", "holonomy", "spin_foam"]
     
+    for profile in profiles:
+        energy = lqg_negative_energy(mu, R, profile, rho0, sigma)
+        energies[profile] = energy
+        enhancements[profile] = abs(energy / base_energy)
+        
     # Find best profile
-    best_profile = max(enhancements.keys(), key=lambda p: enhancements[p])
+    best_profile = max(profiles, key=lambda p: abs(energies[p]))
+    best_enhancement = abs(energies[best_profile] / base_energy)
     
-    logger.info(f"Profile comparison at mu={mu:.3f}, R={R:.2f}:")
-    for profile in profiles:
-        logger.info(f"  {profile}: {enhancements[profile]:.2f}x enhancement")
-    
-    return {
-        "mu": mu,
+    results = {
+        "mu": mu, 
         "R": R,
-        "energies": results,
+        "toy_model": base_energy,
+        "energies": energies,
         "enhancements": enhancements,
         "best_profile": best_profile,
-        "best_enhancement": enhancements[best_profile]
+        "best_enhancement": best_enhancement
     }
+    
+    logger.info(f"Best profile: {best_profile} ({best_enhancement:.1f}x enhancement)")
+    return results
 
 
 # Empirical fitting functions for discovered optimal parameters
@@ -327,6 +338,39 @@ def empirical_lqg_enhancement(mu: float, R: float) -> float:
     enhancement = base_enhancement + (max_enhancement - base_enhancement) * mu_factor * R_factor
     
     return enhancement
+
+
+def scan_lqg_parameter_space(mu_range: Tuple[float, float], 
+                           R_range: Tuple[float, float],
+                           n_points: int = 50) -> Dict[str, np.ndarray]:
+    """
+    Scan the LQG parameter space to find optimal configurations.
+    
+    Args:
+        mu_range: (min, max) values for polymer scale parameter
+        R_range: (min, max) values for bubble radius
+        n_points: Number of points to sample in each dimension
+        
+    Returns:
+        Dictionary containing:
+            - mu_vals: Array of mu values
+            - R_vals: Array of R values
+            - energy_grid: 2D array of negative energy values
+    """
+    mu_vals = np.linspace(mu_range[0], mu_range[1], n_points)
+    R_vals = np.linspace(R_range[0], R_range[1], n_points)
+    
+    energy_grid = np.zeros((n_points, n_points))
+    
+    for i, mu in enumerate(mu_vals):
+        for j, R in enumerate(R_vals):
+            energy_grid[i,j] = lqg_negative_energy(mu, R)
+            
+    return {
+        'mu_vals': mu_vals,
+        'R_vals': R_vals,
+        'energy_grid': energy_grid
+    }
 
 
 if __name__ == "__main__":

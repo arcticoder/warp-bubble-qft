@@ -384,105 +384,115 @@ class MultiBubbleSuperposition:
 
 class EnhancementPathwayOrchestrator:
     """
-    Orchestrates all enhancement pathways to achieve maximum energy reduction.
+    Orchestrates the combination of multiple enhancement pathways.
+    """
+    
+    def __init__(self, config: EnhancementConfig):
+        """Initialize with configuration."""
+        self.config = config
+        
+        # Initialize individual calculators
+        self.cavity = CavityBoostCalculator(config)
+        self.squeezing = QuantumSqueezingEnhancer(config)
+        self.multi_bubble = MultiBubbleSuperposition(config)
+    
+    def combine_all_enhancements(self, base_energy: float) -> Dict:
+        """
+        Apply all enhancement pathways in a consistent way.
+        
+        Args:
+            base_energy: Base negative energy before enhancements
+            
+        Returns:
+            Results with all enhancement factors and final energy
+        """
+        # Get individual enhancement factors
+        cavity_factor = self.cavity.casimir_enhancement_factor(
+            self.config.cavity_Q,
+            self.config.cavity_volume
+        )
+        
+        squeezing_factor = self.squeezing.squeezing_enhancement_factor(
+            self.config.squeezing_db
+        )
+        
+        bubble_factor = self.multi_bubble.superposition_enhancement_factor(
+            self.config.num_bubbles
+        )
+        
+        # Combine enhancements multiplicatively
+        total_enhancement = cavity_factor * squeezing_factor * bubble_factor
+        
+        # Enhanced energy with proper scaling
+        enhanced_energy = base_energy * total_enhancement
+        
+        results = {
+            "cavity_enhancement": cavity_factor,
+            "squeezing_enhancement": squeezing_factor,
+            "bubble_enhancement": bubble_factor,
+            "multi_bubble_enhancement": bubble_factor,  # Alias for test compatibility
+            "total_enhancement": total_enhancement,
+            "base_energy": base_energy,
+            "enhanced_energy": enhanced_energy,
+            "final_energy": enhanced_energy  # Add final_energy key
+        }
+        
+        logger.debug(f"Total enhancement: {total_enhancement:.2f}x")
+        logger.debug(f"Energy: {base_energy:.2e} → {enhanced_energy:.2e}")
+        
+        return results
+
+
+class ComprehensiveEnhancementCalculator:
+    """
+    Comprehensive calculator that combines all enhancement pathways.
+    
+    This class orchestrates the combination of cavity boost, quantum squeezing,
+    and multi-bubble superposition effects to maximize negative energy density.
     """
     
     def __init__(self, config: EnhancementConfig):
         self.config = config
-        self.cavity_enhancer = CavityBoostCalculator(config)
-        self.squeezing_enhancer = QuantumSqueezingEnhancer(config)
+        self.cavity_calc = CavityBoostCalculator(config)
+        self.squeezing_calc = QuantumSqueezingEnhancer(config)
         self.multi_bubble = MultiBubbleSuperposition(config)
         
-    def combine_all_enhancements(self, base_energy: float) -> Dict:
+    def calculate_total_enhancement(self, base_energy: float) -> float:
         """
-        Apply all enhancement pathways to reduce energy requirement.
+        Calculate the total enhancement from all pathways combined.
         
         Args:
-            base_energy: Base energy requirement before enhancements
+            base_energy: Base negative energy density to enhance
             
         Returns:
-            Dictionary with enhancement results and final energy
+            Total enhanced negative energy density
         """
-        results = {"base_energy": base_energy}
+        # Apply enhancements sequentially
+        cavity_enhanced = self.cavity_calc.compute_cavity_boost(base_energy)
+        squeezed = self.squeezing_calc.apply_squeezing(cavity_enhanced)
+        final = self.multi_bubble.compute_superposition(squeezed)
         
-        # Apply cavity enhancement
-        cavity_factor = self.cavity_enhancer.casimir_enhancement_factor(
-            self.config.cavity_Q, self.config.cavity_volume
-        )
-        results["cavity_enhancement"] = cavity_factor
+        return final
         
-        # Apply squeezing enhancement
-        squeezing_factor = self.squeezing_enhancer.squeezing_enhancement_factor(
-            self.config.squeezing_db, self.config.squeezing_bandwidth
-        )
-        results["squeezing_enhancement"] = squeezing_factor
-        
-        # Apply multi-bubble enhancement
-        multi_bubble_factor = self.multi_bubble.superposition_enhancement_factor(
-            self.config.num_bubbles
-        )
-        results["multi_bubble_enhancement"] = multi_bubble_factor
-        
-        # Combined enhancement (multiplicative)
-        total_enhancement = cavity_factor * squeezing_factor * multi_bubble_factor
-        results["total_enhancement"] = total_enhancement
-        
-        # Final energy requirement
-        final_energy = base_energy / total_enhancement
-        results["final_energy"] = final_energy
-        results["energy_reduction_ratio"] = final_energy / base_energy
-        
-        logger.info(f"Enhancement pathway results:")
-        logger.info(f"  Cavity: {cavity_factor:.2f}×")
-        logger.info(f"  Squeezing: {squeezing_factor:.2f}×") 
-        logger.info(f"  Multi-bubble: {multi_bubble_factor:.2f}×")
-        logger.info(f"  Total: {total_enhancement:.2f}×")
-        logger.info(f"  Final energy: {final_energy:.4f} (ratio: {final_energy/base_energy:.4f})")
-        
-        return results
-    
-    def optimize_enhancement_parameters(self, target_energy: float,
-                                      base_energy: float) -> Dict:
+    def analyze_enhancement_contributions(self, base_energy: float) -> Dict[str, float]:
         """
-        Optimize all enhancement parameters to achieve target energy.
+        Analyze the contribution from each enhancement pathway.
         
         Args:
-            target_energy: Target final energy requirement
-            base_energy: Base energy before enhancements
+            base_energy: Base negative energy density
             
         Returns:
-            Dictionary with optimal parameters
+            Dictionary with enhancement factors for each pathway
         """
-        required_enhancement = base_energy / target_energy
-        
-        # Distribute enhancement across pathways
-        # Heuristic: cavity and squeezing provide most enhancement
-        target_cavity = required_enhancement ** 0.4
-        target_squeezing = required_enhancement ** 0.4  
-        target_multi_bubble = required_enhancement ** 0.2
-        
-        # Optimize each pathway
-        optimal_cavity = self.cavity_enhancer.optimize_cavity_parameters(target_cavity)
-        optimal_squeezing = self.squeezing_enhancer.optimal_squeezing_parameters(target_squeezing)
-        
-        # For multi-bubble, find optimal number of bubbles
-        best_bubble_config = None
-        best_enhancement = 0
-        
-        for n_bubbles in range(2, 10):  # Test 2-9 bubbles
-            enhancement = self.multi_bubble.superposition_enhancement_factor(n_bubbles)
-            if abs(enhancement - target_multi_bubble) < abs(best_enhancement - target_multi_bubble):
-                best_enhancement = enhancement
-                best_bubble_config = {"num_bubbles": n_bubbles, "enhancement": enhancement}
+        cavity = self.cavity_calc.compute_cavity_boost(base_energy)
+        squeezed = self.squeezing_calc.apply_squeezing(base_energy) 
+        multi = self.multi_bubble.compute_superposition(base_energy)
         
         return {
-            "optimal_cavity": optimal_cavity,
-            "optimal_squeezing": optimal_squeezing,
-            "optimal_multi_bubble": best_bubble_config,
-            "target_enhancement": required_enhancement,
-            "achievable_enhancement": (optimal_cavity.get("enhancement", 1) * 
-                                     optimal_squeezing.get("enhancement", 1) * 
-                                     best_enhancement)
+            'cavity_factor': cavity / base_energy,
+            'squeezing_factor': squeezed / base_energy,
+            'multi_bubble_factor': multi / base_energy,
+            'total_factor': self.calculate_total_enhancement(base_energy) / base_energy
         }
 
 
@@ -503,7 +513,7 @@ if __name__ == "__main__":
     
     print("Enhancement Pathway Results:")
     print(f"Base energy: {base_energy:.3f}")
-    print(f"Final energy: {results['final_energy']:.3f}")
+    print(f"Final energy: {results['enhanced_energy']:.3f}")
     print(f"Total enhancement: {results['total_enhancement']:.2f}×")
     
     # Test optimization

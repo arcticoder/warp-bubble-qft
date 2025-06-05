@@ -9,7 +9,9 @@ print("Testing imports...")
 
 try:
     import numpy as np
-    print("✓ NumPy imported")    try:
+    print("✓ NumPy imported")
+    
+    try:
         from scipy.integrate import simpson as simps
     except ImportError:
         from scipy.integrate import simps

@@ -45,9 +45,8 @@ def ford_roman_bounds(energy_density: float, spatial_scale: float,
     # Convert to maximum density for given spatial extent
     max_negative_density = max_negative_integral / spatial_scale
     
-    # FIX: Violation occurs when energy_density is more negative than max_negative_density
-    # Ford-Roman inequality says: energy_density ≥ max_negative_density
-    violates_bound = energy_density < max_negative_density
+    # Violation occurs when magnitude of negative energy density exceeds bound
+    violates_bound = abs(energy_density) > abs(max_negative_density) if energy_density < 0 else False
     
     # Violation factor - higher means more severe violation
     violation_factor = abs(energy_density / max_negative_density) if max_negative_density != 0 else np.inf
@@ -87,37 +86,27 @@ def polymer_modified_bounds(energy_density: float, spatial_scale: float,
     if polymer_scale == 0:
         return {**classical_bounds, "bound_type": "polymer_classical_limit"}
     
-    # FIX: Polymer modification factor calculation
-    # For bounds to be more negative (relaxed), we need polymer_factor > 1
-    # Use 1/sinc(μ̄/π) which is always > 1 for μ̄ > 0
-    polymer_factor = 1.0 / np.sinc(polymer_scale / np.pi)
+    # Polymer modification factor - enhanced by sinc function
+    # For μ̄ > 0, this factor makes the bound more negative
+    polymer_factor = 1.0 + (polymer_scale * np.pi)**2 / 6  # Second-order correction
     
-    # FIX: The bound is negative, so we need to multiply by enhancement factor
-    # To make it more negative (i.e., more relaxed)
+    # Make bound more negative with polymer effects
     max_negative_density_polymer = classical_bounds["ford_roman_bound"] * polymer_factor
     max_negative_integral_polymer = classical_bounds["max_negative_integral"] * polymer_factor
     
-    # Violation check for polymer-modified bound
-    violates_polymer_bound = energy_density < max_negative_density_polymer
-    
-    # Violation factor - higher means more severe violation
-    polymer_violation_factor = (abs(energy_density / max_negative_density_polymer)
-                               if max_negative_density_polymer != 0 else np.inf)
-    
-    # Enhancement over classical bound (should be > 1)
-    enhancement_factor = polymer_factor
+    # Check violation against polymer-modified bound
+    violates_bound = abs(energy_density) > abs(max_negative_density_polymer) if energy_density < 0 else False
     
     return {
         "ford_roman_bound": max_negative_density_polymer,
-        "classical_bound": classical_bounds["ford_roman_bound"],
         "max_negative_integral": max_negative_integral_polymer,
         "spatial_scale": spatial_scale,
         "temporal_scale": temporal_scale,
         "polymer_scale": polymer_scale,
         "energy_density": energy_density,
-        "violates_bound": violates_polymer_bound,
-        "violation_factor": polymer_violation_factor,
-        "enhancement_factor": enhancement_factor,
+        "violates_bound": violates_bound,
+        "violation_factor": abs(energy_density / max_negative_density_polymer) if max_negative_density_polymer != 0 else np.inf,
+        "enhancement_factor": polymer_factor,
         "bound_type": "polymer_modified"
     }
 

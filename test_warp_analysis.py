@@ -18,11 +18,10 @@ def test_basic_imports():
             run_warp_analysis,
             scan_3d_shell,
             find_optimal_mu,
-            compare_neg_energy,
-            visualize_scan
+            compare_neg_energy,            visualize_scan
         )
         print("✓ All core functions imported successfully")
-        return True
+        assert True  # Verify imports succeeded
     except ImportError as e:
         print(f"❌ Import error: {e}")
         return False
@@ -40,7 +39,8 @@ def test_basic_calculations():
         bound = polymer_QI_bound(mu=0.5, tau=1.0)
         print(f"✓ Polymer QI bound: {bound:.2e} J")
         
-        return True
+        assert energy < 0  # Energy should be negative
+        assert bound < 0  # Bound should be negative
     except Exception as e:
         print(f"❌ Calculation error: {e}")
         return False
@@ -61,28 +61,24 @@ def test_quick_analysis():
             generate_plots=False
         )
         
-        if result:
-            print("✓ Analysis completed successfully!")
-            print(f"Result keys: {list(result.keys())}")
-            
-            # Check for expected keys
-            expected_keys = ['scan_results', 'violations', 'optimal_mu', 'optimal_bound']
-            for key in expected_keys:
-                if key in result:
-                    print(f"  ✓ Found {key}")
-                else:
-                    print(f"  ⚠ Missing {key}")
-                    
-            return True
-        else:
-            print("❌ Analysis returned None")
-            return False
+        assert result is not None, "Analysis returned None"
+        print(f"Result keys: {list(result.keys())}")
+        
+        # Check for expected keys
+        expected_keys = ['scan_results', 'violations', 'optimal_mu', 'optimal_bound']
+        for key in expected_keys:
+            if key in result:
+                print(f"  ✓ Found {key}")
+            else:
+                print(f"  ⚠ Missing {key}")
+                
+            assert key in result, f"Missing expected key: {key}"
             
     except Exception as e:
         print(f"❌ Analysis error: {e}")
         import traceback
         traceback.print_exc()
-        return False
+        raise
 
 def test_optimization():
     """Test parameter optimization functionality."""
@@ -98,10 +94,13 @@ def test_optimization():
         print(f"✓ Optimal bound = {opt_bound:.2e} J")
         print(f"✓ Scanned {len(mu_array)} parameter values")
         
-        return True
+        assert opt_mu > 0, "Optimal mu should be positive"
+        assert opt_bound < 0, "Optimal bound should be negative"
+        assert len(mu_array) == 20, "Should have 20 parameter values"
+            
     except Exception as e:
         print(f"❌ Optimization error: {e}")
-        return False
+        raise
 
 def test_energy_comparison():
     """Test energy requirement vs availability comparison."""
@@ -120,15 +119,18 @@ def test_energy_comparison():
         print(f"✓ Available energy: {E_avail:.2e} J")
         print(f"✓ Feasibility ratio: {feasibility_ratio:.2e}")
         
+        assert E_req > 0, "Required energy should be positive"
+        assert E_avail != 0, "Available energy should not be zero"
+        assert isinstance(feasibility_ratio, float), "Feasibility ratio should be a float"
+        
         if feasibility_ratio > 1:
             print("🎯 Energy analysis suggests feasible configuration!")
         else:
             print("⚠ Energy gap remains challenging")
             
-        return True
     except Exception as e:
         print(f"❌ Energy comparison error: {e}")
-        return False
+        raise
 
 def main():
     """Run all tests."""

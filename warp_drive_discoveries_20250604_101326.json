@@ -1,7 +1,5 @@
 {
   "backreaction_analysis": {
-    "energy_reduction_percent": 15.464109651534708,
     "refined_requirement": 1.9443254780147017
-  },
-  "convergence_analysis": {
-    "converged": 
+  }
+}

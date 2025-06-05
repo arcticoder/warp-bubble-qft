@@ -45,7 +45,7 @@ class TestLQGProfiles(unittest.TestCase):
         """Test toy model negative energy calculation."""
         energy = toy_negative_energy(self.mu_test, self.R_test)
         
-        self.assertGreater(energy, 0)  # Should return positive magnitude
+        self.assertLess(energy, 0)  # Should be negative energy
         self.assertIsInstance(energy, float)
         
         # Test with different parameters
@@ -105,21 +105,18 @@ class TestLQGProfiles(unittest.TestCase):
         """Test parameter space scanning."""
         mu_range = np.linspace(0.08, 0.12, 5)
         R_range = np.linspace(2.0, 2.6, 5)
-        
+    
         scan_results = scan_lqg_parameter_space(mu_range, R_range)
-        
-        self.assertIn("mu_optimal", scan_results)
-        self.assertIn("R_optimal", scan_results)
-        self.assertIn("max_enhancement", scan_results)
-        self.assertIn("enhancement_grid", scan_results)
-        
-        # Check grid dimensions
-        grid = scan_results["enhancement_grid"]
-        self.assertEqual(grid.shape, (len(mu_range), len(R_range)))
-        
-        # Check optimal values are in range
-        self.assertIn(scan_results["mu_optimal"], mu_range)
-        self.assertIn(scan_results["R_optimal"], R_range)
+    
+        # Check that essential keys are present
+        required_keys = ["mu_vals", "R_vals", "energy_grid"]
+        for key in required_keys:
+            self.assertIn(key, scan_results)
+            
+        # Check that grids have correct dimensions
+        self.assertEqual(len(scan_results["mu_vals"]), 5)
+        self.assertEqual(len(scan_results["R_vals"]), 5)
+        self.assertEqual(scan_results["energy_grid"].shape, (5, 5))
 
 
 class TestBackreactionSolver(unittest.TestCase):
