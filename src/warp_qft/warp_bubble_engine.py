@@ -63,10 +63,10 @@ def pi_shell(r: np.ndarray, R: float, sigma: float, A: float,
     return A * np.exp(- ((r - R)**2) / (2 * sigma**2)) * np.sin(omega * t)
 
 def energy_density_polymer(pi_r: np.ndarray, mu: float) -> np.ndarray:
-    """ρ_eff(r) = ½ [ (sin(μ π(r))/μ)² ]."""
+    """ρ_eff(r) = ½ [ (sin(π μ π(r))/(π μ))² ] - CORRECTED SINC DEFINITION."""
     if mu == 0:
         return 0.5 * pi_r**2
-    return 0.5 * (np.sin(mu * pi_r) / mu)**2
+    return 0.5 * (np.sin(np.pi * mu * pi_r) / (np.pi * mu))**2
 
 def polymer_QI_bound(mu: float, tau: float = 1.0, 
                     hbar: float = 1.055e-34) -> float:

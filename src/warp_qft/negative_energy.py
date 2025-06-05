@@ -21,16 +21,15 @@ def compute_energy_density(phi, pi, mu, dx):
     """
     phi, pi: arrays of shape (N,) at a single time slice
     mu: polymer scale
-    dx: lattice spacing
-    Returns array ρ_i for i=0…N−1.
+    dx: lattice spacing    Returns array ρ_i for i=0…N−1.
     """
-    # Kinetic term: [sin(μ π_i)/μ]^2
+    # Kinetic term: [sin(π μ π_i)/(π μ)]^2
     if mu == 0.0:
         # Classical limit: kinetic = π²/2  
         kinetic = pi**2
     else:
-        # Polymer-modified kinetic term
-        kinetic = (np.sin(mu * pi) / mu)**2
+        # Polymer-modified kinetic term with corrected sinc
+        kinetic = (np.sin(np.pi * mu * pi) / (np.pi * mu))**2
     
     # Gradient term: use periodic boundary for simplicity
     grad = np.roll(phi, -1) - np.roll(phi, 1)
