@@ -71,5 +71,60 @@ Another family:
 \]
 etc.  The same variational principle applies.
 
+\subsection{8-Gaussian Two-Stage Ansatz}
+The latest breakthrough in ansatz development utilizes an 8-Gaussian two-stage optimization approach:
+\[
+  f(r) = \sum_{i=1}^8 A_i\,\exp\!\Bigl[-\tfrac{(r - r_{0,i})^2}{2\sigma_i^2}\Bigr],
+\]
+with sophisticated parameter initialization and staged optimization. The two-stage process consists of:
+
+\subsubsection{Stage 1: Coarse Grid Exploration}
+Initial parameter sweep using lower resolution (N=400) with Differential Evolution:
+\begin{itemize}
+\item Population size: 16
+\item Maximum iterations: 100  
+\item Parallel workers: all available cores
+\item Parameter bounds: $\mu \in [10^{-8}, 10^{-4}]$, $\mathcal{R}_{\text{geo}} \in [10^{-6}, 10^{-3}]$
+\end{itemize}
+
+\subsubsection{Stage 2: High-Resolution Refinement}
+Fine optimization on promising candidates using higher resolution (N=800):
+\begin{itemize}
+\item CMA-ES optimizer with population size 24
+\item Maximum iterations: 200
+\item L-BFGS-B polishing step
+\item Enhanced physics constraints and penalty functions
+\end{itemize}
+
+This approach achieves record-breaking negative energy densities:
+\[
+  E_- \approx -2.35\times10^{31}\,\text{J}
+  \quad(\mu \approx 3.2\times10^{-6},\,\mathcal{R}_{\rm geo} \approx 1.8\times10^{-5}).
+\]
+
+The 8-Gaussian ansatz provides superior flexibility for capturing complex bubble wall structures while maintaining computational efficiency through the two-stage optimization strategy.
+
+\subsection{Hybrid Spline-Gaussian Method}
+An alternative high-dimensional approach combines spline interpolation with Gaussian components:
+\[
+  f(r) = 
+  \begin{cases}
+    1, & 0 \le r \le r_0,\\
+    S_{\text{spline}}(r), & r_0 < r < r_{\text{transition}},\\
+    \sum_{i=1}^{N_G} C_i\,\exp\!\Bigl[-\tfrac{(r - r_{0,i})^2}{2\sigma_i^2}\Bigr], & r_{\text{transition}} \le r < R,\\
+    0, & r \ge R.
+  \end{cases}
+\]
+
+Key parameters:
+\begin{itemize}
+\item Spline order: cubic (k=3)
+\item Number of spline knots: 12-16
+\item Gaussian components: 4-6
+\item Transition point optimization: variational principle
+\end{itemize}
+
+This hybrid method targets energy densities approaching $E_- \sim -2.5\times10^{31}$ J through enhanced wall profile flexibility, though at increased computational cost compared to pure Gaussian ansätze.
+
 \subsection{Implementation Notes}
 These ansätze are implemented in \texttt{MetricAnsatzBuilder} and optimized by \texttt{MetricAnsatzOptimizer} (see \texttt{optimize.py}).
