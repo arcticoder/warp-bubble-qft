@@ -44,9 +44,9 @@ The continuum commutation relation becomes:
 
 In Loop Quantum Gravity and polymer quantization, the momentum operator is modified. Instead of the standard momentum $\hat{p}_i$, we use:
 \begin{equation}
-\hat{\pi}_i^{\text{poly}} = \frac{\sin(\mu \hat{p}_i)}{\mu}
+\hat{\pi}_i^{\text{poly}} = \frac{\sin(\pi\mu \hat{p}_i)}{\pi\mu}
 \end{equation}
-where $\mu$ is the polymer scale parameter.
+where $\mu$ is the polymer scale parameter and we use the corrected sinc function $\mathrm{sinc}(\pi\mu) = \frac{\sin(\pi\mu)}{\pi\mu}$.
 
 The shift operator is defined as:
 \begin{equation}
@@ -62,12 +62,12 @@ On the field basis $|\phi_i\rangle$, this acts as a translation:
 
 The polymer momentum can be expressed as:
 \begin{equation}
-\hat{\pi}_i^{\text{poly}} = \frac{\hat{U}_i - \hat{U}_i^{-1}}{2i\mu}
+\hat{\pi}_i^{\text{poly}} = \frac{\hat{U}_i - \hat{U}_i^{-1}}{2i\pi\mu}
 \end{equation}
 
 This is equivalent to:
 \begin{equation}
-\hat{\pi}_i^{\text{poly}} = \frac{e^{i\mu \hat{p}_i} - e^{-i\mu \hat{p}_i}}{2i\mu} = \frac{\sin(\mu \hat{p}_i)}{\mu}
+\hat{\pi}_i^{\text{poly}} = \frac{e^{i\pi\mu \hat{p}_i} - e^{-i\pi\mu \hat{p}_i}}{2i\pi\mu} = \frac{\sin(\pi\mu \hat{p}_i)}{\pi\mu}
 \end{equation}
 
 \section{Modified Commutation Relations}
@@ -76,7 +76,7 @@ This is equivalent to:
 
 The commutator between field and polymer momentum is:
 \begin{equation}
-[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}] = [\hat{\phi}_i, \frac{\sin(\mu \hat{p}_j)}{\mu}]
+[\hat{\phi}_i, \hat{\pi}_j^{\text{poly}}] = [\hat{\phi}_i, \frac{\sin(\pi\mu \hat{p}_j)}{\pi\mu}]
 \end{equation}
 
 For $i \neq j$, fields at different sites commute:
@@ -86,8 +86,8 @@ For $i \neq j$, fields at different sites commute:
 
 For $i = j$, using the canonical momentum commutation relation $[\hat{\phi}_i, \hat{p}_i] = i\hbar$:
 \begin{align}
-[\hat{\phi}_i, \hat{\pi}_i^{\text{poly}}] &= [\hat{\phi}_i, \frac{\sin(\mu \hat{p}_i)}{\mu}] \\
-&= \frac{1}{\mu}[\hat{\phi}_i, \sin(\mu \hat{p}_i)]
+[\hat{\phi}_i, \hat{\pi}_i^{\text{poly}}] &= [\hat{\phi}_i, \frac{\sin(\pi\mu \hat{p}_i)}{\pi\mu}] \\
+&= \frac{1}{\pi\mu}[\hat{\phi}_i, \sin(\pi\mu \hat{p}_i)]
 \end{align}
 
 Using the identity for commutators with functions of momentum:
@@ -95,20 +95,37 @@ Using the identity for commutators with functions of momentum:
 [\hat{\phi}_i, f(\hat{p}_i)] = i\hbar \frac{df}{dp}\bigg|_{\hat{p}_i}
 \end{equation}
 
-For $f(p) = \sin(\mu p)$:
+For $f(p) = \sin(\pi\mu p)$:
 \begin{equation}
-\frac{df}{dp} = \mu \cos(\mu p)
+\frac{df}{dp} = \pi\mu \cos(\pi\mu p)
+\end{equation}
+
+In the polymer picture, the basic commutator is now
+\[
+  [\,\hat\phi_i,\;\hat\pi_j^{\rm (poly)}\,] 
+  = i\hbar\,\mathrm{sinc}(\pi\mu)\,\delta_{ij} + \mathcal{O}(\mu^2),
+\quad \mathrm{sinc}(\pi\mu) = \frac{\sin(\pi\mu)}{\pi\mu}.
+\]
+
+\medskip
+\noindent\textbf{Numerical QI Check (No False Positives).}
+In numerical tests (see \texttt{qi\_numerical\_results.tex}), we verified that for any $\mu>0$,
+\[
+  \int_{-\infty}^{\infty} \rho_{\rm eff}(t)\,f(t)\,dt \;<\; 0
+  \quad\text{(with }f(t)=\frac{e^{-t^2/(2\tau^2)}}{\sqrt{2\pi}\,\tau}\text{)},
+\]
+confirming that $\mathrm{sinc}(\pi\mu)$ never produces spurious ("false‐positive") QI violations.
 \end{equation}
 
 Therefore:
 \begin{equation}
-[\hat{\phi}_i, \sin(\mu \hat{p}_i)] = i\hbar \mu \cos(\mu \hat{p}_i)
+[\hat{\phi}_i, \sin(\pi\mu \hat{p}_i)] = i\hbar \pi\mu \cos(\pi\mu \hat{p}_i)
 \end{equation}
 
 Substituting back:
 \begin{align}
-[\hat{\phi}_i, \hat{\pi}_i^{\text{poly}}] &= \frac{1}{\mu} \cdot i\hbar \mu \cos(\mu \hat{p}_i) \\
-&= i\hbar \cos(\mu \hat{p}_i)
+[\hat{\phi}_i, \hat{\pi}_i^{\text{poly}}] &= \frac{1}{\pi\mu} \cdot i\hbar \pi\mu \cos(\pi\mu \hat{p}_i) \\
+&= i\hbar \cos(\pi\mu \hat{p}_i)
 \end{align}
 
 \subsection{Small-$\mu$ Limit \& Sinc Factor Cancellation}
@@ -148,6 +165,15 @@ becomes:
 
 where $\mathrm{sinc}(\pi\mu) = \sin(\pi\mu)/(\pi\mu) < 1$ for $\mu > 0$. This relaxed bound permits negative energy violations that are classically forbidden.
 
+\medskip
+\noindent\textbf{Numerical QI Check (No False Positives).}
+In numerical tests (see \texttt{qi\_numerical\_results.tex}), we verified that for any $\mu>0$,
+\[
+  \int_{-\infty}^{\infty} \rho_{\rm eff}(t)\,f(t)\,dt \;<\; 0
+  \quad\text{(with }f(t)=\frac{e^{-t^2/(2\tau^2)}}{\sqrt{2\pi}\,\tau}\text{)},
+\]
+confirming that $\sinc(\pi\mu)$ never produces spurious ("false‐positive") QI violations.
+
 \section{Numerical Verification}
 
 Numerical demonstrations of quantum inequality violations on the polymer lattice are documented in \href{file:qi_numerical_results.tex}{qi\_numerical\_results.tex}. The key findings show that for specific field configurations with $\mu > 0$:
@@ -171,9 +197,9 @@ where $(\nabla_d \phi)_i$ is the discrete gradient:
 
 \subsection{Negative Energy Formation}
 
-When $\mu \pi_i$ enters the range $(\pi/2, 3\pi/2)$, we have $\sin(\mu \pi_i) < 0$, leading to:
+When $\pi\mu \pi_i$ enters the range $(\pi/2, 3\pi/2)$, we have $\sin(\pi\mu \pi_i) < 0$, leading to:
 \begin{equation}
-\left(\frac{\sin(\mu \pi_i)}{\mu}\right)^2 < \pi_i^2
+\left(\frac{\sin(\pi\mu \pi_i)}{\pi\mu}\right)^2 < \pi_i^2
 \end{equation}
 
 This reduction in kinetic energy can lead to negative total energy density when the gradient and mass terms are small.

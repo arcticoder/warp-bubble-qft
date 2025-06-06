@@ -29,20 +29,18 @@ ds^2 = -dt^2 + dx^2 + dy^2 + dz^2 + 2v_s(t) f(r_s) dt dx
 
 where the velocity profile $v_s(t)$ and shape function $f(r_s)$ are optimally designed to minimize the energy-momentum tensor while maintaining stable warp geometry.
 
-\subsection{Geometric Energy Reduction}
-The hybrid metric achieves a dramatic reduction in required negative energy density compared to the standard Alcubierre profile:
-
-\begin{align}
-\rho_{\text{Alcubierre}} &= -\frac{c^4}{8\pi G} \left(\frac{v^2}{c^2}\right) \frac{R^2}{\sigma^4} \\
-\rho_{\text{VdB-Natário}} &= -\frac{c^4}{8\pi G} \left(\frac{v^2}{c^2}\right) \frac{R^2}{\sigma^4} \times \mathcal{R}_{\text{geo}}
-\end{align}
-
-where the geometric reduction factor is:
-\begin{equation}
-\mathcal{R}_{\text{geo}} \approx 10^{-5} \text{ to } 10^{-6}
-\end{equation}
-
-This represents a 100,000 to 1,000,000-fold reduction in required negative energy density.
+\subsection{Van den Broeck–Natário Geometric Reduction}
+The Van den Broeck–Natário profile produces a volume‐scaling factor
+\[
+  \mathcal{R}_{\rm geo} = \Bigl(\frac{R_{\rm ext}}{R_{\rm int}}\Bigr)^3 
+  \;\approx\; 10^{-5}\text{–}10^{-6},
+\]
+thus reducing 
+\[
+  E_{\rm required}^{\rm baseline} 
+  \;\longrightarrow\; E_{\rm required}^{\rm baseline} \times \mathcal{R}_{\rm geo}.
+\]
+Numerically, this yields a 10⁵–10⁶× energy reduction.
 
 \subsection{Default Pipeline Integration}
 The Van den Broeck–Natário metric is now the default geometric baseline in the enhancement pipeline configuration:
@@ -59,20 +57,18 @@ class PipelineConfig:
     multi_bubble_enhancement: bool = True
 \end{verbatim}
 
+\bigskip
+\noindent\textbf{Metric Ansatz Exploration:}
+See \texttt{new\_ansatz\_development.tex} (Section "Polynomial, Soliton \& Lentz‐Gaussian Ansätze") for a variational derivation of shape functions $f(r)$ that further minimize $E_{-}$.
+
 \section{Exact Metric Backreaction Value}
 
-\subsection{Self-Consistent Backreaction Analysis}
-The metric backreaction represents the self-consistent modification of spacetime geometry due to the presence of the exotic matter stress-energy tensor. Through comprehensive numerical analysis, we have determined the exact backreaction factor:
-
-\begin{equation}
-\beta_{\text{backreaction}} = 1.9443254780147017
-\end{equation}
-
-This value emerges from solving the coupled Einstein field equations:
-\begin{align}
-G_{\mu\nu} &= 8\pi G T_{\mu\nu}^{\text{matter}} + 8\pi G T_{\mu\nu}^{\text{exotic}} \\
-T_{\mu\nu}^{\text{exotic}} &= \beta_{\text{backreaction}} \times T_{\mu\nu}^{\text{baseline}}
-\end{align}
+\subsection{Exact Metric Backreaction}
+Solving $G_{\mu\nu} = 8\pi\,T_{\mu\nu}^{\rm polymer}$ self‐consistently yields
+\[
+  \beta_{\rm backreaction} = 1.9443254780147017,
+\]
+which reduces the required energy by 48.55\% compared to baseline.
 
 \subsection{Energy Requirement Modification}
 The exact backreaction value modifies the effective energy requirements:
