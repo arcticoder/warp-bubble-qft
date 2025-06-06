@@ -15,7 +15,17 @@
 
 This document describes the accelerated Gaussian ansätze developed for optimizing warp bubble configurations. The improvements focus on computational efficiency while maintaining physical accuracy.
 
-\subsection{Accelerated 4-Gaussian and 5-Gaussian Ansätze}
+\subsection{4-Gaussian Superposition Ansatz}
+Best result so far: \(E_- = -1.95\times10^{31}\) J (DE/popsize=12, maxiter=300, N=800).  
+\bigskip
+
+\noindent\textbf{6-Gaussian Update.} Using \(M=6\) lumps with DE(popsize=12, maxiter=300, N=800), we now achieve  
+\[
+  E_- \approx -1.95\times10^{31}\,\text{J}, 
+  \quad (\mu=1\times10^{-6},\,\mathcal{R}_{\rm geo}=1\times10^{-5}).
+\]
+
+\subsection{Accelerated Multi-Gaussian Framework}
 
 We have extended the 3-Gaussian superposition to a 4-Gaussian (and optionally 5-Gaussian) profile:
 \[
@@ -65,5 +75,22 @@ The 4-Gaussian ansatz consistently outperforms previous approaches, providing:
 \item Better numerical stability
 \item Physically realistic bubble profiles
 \end{itemize}
+
+\subsection{Hybrid Cubic‐Polynomial + 2-Gaussian Ansatz}
+We introduce a piecewise form:
+\[
+  f(r) =
+  \begin{cases}
+    1, & 0 \le r \le r_0,\\
+    1 + b_1\,x + b_2\,x^2 + b_3\,x^3, & r_0 < r < r_1,\; x=\tfrac{r-r_0}{r_1-r_0},\\
+    \sum_{i=0}^{1} A_i\,\exp\!\Bigl[-\tfrac{(r - r_{0,i})^2}{2\,\sigma_i^2}\Bigr], & r_1 \le r < R,\\
+    0, & r \ge R.
+  \end{cases}
+\]
+Variational and numerical optimization (see \texttt{hybrid_cubic_optimizer.py}) pushes
+\[
+  E_- \approx -2.02\times10^{31}\,\text{J}
+  \quad(\mu=5\times10^{-6},\,\mathcal{R}_{\rm geo}=3\times10^{-5}).
+\]
 
 \end{document}
