@@ -1,0 +1,45 @@
+{
+  "scan_summary": {
+    "total_time": 0.0,
+    "total_evaluations": 900,
+    "average_evaluations_per_second": 0,
+    "adaptive_levels_completed": 1,
+    "peak_evaluation_rate": 0
+  },
+  "optimization_results": {
+    "best_configuration": {
+      "mu": 0.2,
+      "R": 4.0,
+      "energy": 1.6196847696565075e-06
+    },
+    "best_energy_achieved": 1.6196847696565075e-06,
+    "feasible": "True",
+    "unity_configurations_found": 0,
+    "unity_configurations": [],
+    "improvement_factor": 617404.0891994518
+  },
+  "scan_levels": [
+    {
+      "level": 0,
+      "resolution": 30,
+      "best_energy": 1.6196847696565075e-06,
+      "best_mu": 0.2,
+      "best_R": 4.0,
+      "scan_time": 0.0,
+      "evaluations": 900,
+      "evaluations_per_second": 0
+    }
+  ],
+  "performance_analysis": {
+    "vectorization_used": true,
+    "adaptive_grid_used": true,
+    "chunked_processing": true,
+    "estimated_speedup": 1.0
+  },
+  "discoveries_validation": {
+    "vdb_natario_reduction": 8.83442445964124e-06,
+    "exact_backreaction_factor": 1.9443254780147017,
+    "corrected_sinc_implemented": true,
+    "geometric_baseline_active": true
+  }
+}

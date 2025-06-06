@@ -2,15 +2,17 @@
 Enhancement Pipeline Orchestrator
 
 This module orchestrates the complete warp bubble enhancement pipeline,
-integrating LQG profiles, metric backreaction, and enhancement pathways
+starting with Van den Broeck–Natário geometric reduction as Step 0,
+then integrating LQG profiles, metric backreaction, and enhancement pathways
 to achieve feasible warp bubble configurations.
 
-Key integration points:
-- LQG-corrected negative energy profiles 
-- Metric backreaction energy reduction (~15%)
-- Cavity boost, squeezing, and multi-bubble enhancements
-- Systematic parameter space scanning
-- Convergence to unity energy requirements
+Enhancement Stack:
+Step 0: Van den Broeck–Natário geometry (10^5-10^6× baseline reduction)
+Step 1: LQG-corrected negative energy profiles 
+Step 2: Metric backreaction energy reduction (~15%)
+Step 3: Cavity boost, squeezing, and multi-bubble enhancements
+Step 4: Systematic parameter space scanning
+Step 5: Convergence to unity energy requirements
 """
 
 import numpy as np
@@ -19,6 +21,16 @@ import logging
 import json
 from dataclasses import dataclass, asdict
 from pathlib import Path
+
+# Import VdB-Natário baseline geometry (Step 0)
+try:
+    from .metrics.van_den_broeck_natario import (
+        energy_requirement_comparison, optimal_vdb_parameters
+    )
+    HAS_VDB_NATARIO = True
+except ImportError:
+    HAS_VDB_NATARIO = False
+    logging.warning("Van den Broeck-Natário geometry not available, using standard Alcubierre baseline")
 
 # Import enhancement modules
 from .lqg_profiles import (
@@ -38,18 +50,24 @@ logger = logging.getLogger(__name__)
 @dataclass
 class PipelineConfig:
     """Complete configuration for the enhancement pipeline."""
-    # LQG parameters
+    # Van den Broeck–Natário baseline geometry (Step 0)
+    use_vdb_natario: bool = True
+    R_int: float = 100.0  # Interior radius for payload
+    R_ext: float = 2.3    # Exterior neck radius (key to energy reduction)
+    vdb_sigma: Optional[float] = None  # Smoothing parameter (auto-computed if None)
+    
+    # LQG parameters (Step 1)
     mu_min: float = 0.05
     mu_max: float = 0.20
     R_min: float = 1.5
     R_max: float = 4.0
     lqg_profile: str = "polymer_field"
     
-    # Backreaction settings
+    # Backreaction settings (Step 2)
     use_backreaction: bool = True
     backreaction_quick: bool = True
     
-    # Enhancement pathways
+    # Enhancement pathways (Step 3)
     enhancement_config: EnhancementConfig = None
     use_cavity_boost: bool = True
     use_squeezing: bool = True 
@@ -64,6 +82,8 @@ class PipelineConfig:
     def __post_init__(self):
         if self.enhancement_config is None:
             self.enhancement_config = EnhancementConfig()
+        if self.vdb_sigma is None:
+            self.vdb_sigma = (self.R_int - self.R_ext) / 10.0
 
 
 class WarpBubbleEnhancementPipeline:
@@ -75,31 +95,56 @@ class WarpBubbleEnhancementPipeline:
         self.config = config
         self.results_history = []
         self.convergence_data = []
-        
-        # Initialize enhancement orchestrator
+          # Initialize enhancement orchestrator
         self.enhancement_orchestrator = EnhancementPathwayOrchestrator(
             self.config.enhancement_config
         )
         
-    def compute_base_energy_requirement(self, mu: float, R: float) -> float:
+    def compute_base_energy_requirement(self, mu: float, R: float, v_bubble: float = 1.0) -> float:
         """
-        Compute base energy requirement using LQG-corrected profiles.
+        Compute base energy requirement starting with Van den Broeck–Natário geometry,
+        then applying LQG corrections.
         
         Args:
             mu: Polymer scale parameter
-            R: Bubble radius
+            R: Bubble radius (used as R_int for VdB-Natário if enabled)
+            v_bubble: Warp speed parameter
             
         Returns:
-            Base energy requirement (before backreaction and enhancements)
+            Base energy requirement (after geometric reduction and LQG corrections)
         """
-        # Get LQG-enhanced negative energy
+        # Step 0: Apply Van den Broeck–Natário geometric reduction
+        if self.config.use_vdb_natario and HAS_VDB_NATARIO:
+            # Use R as R_int, with configured R_ext for dramatic volume reduction
+            comparison = energy_requirement_comparison(
+                R_int=R,
+                R_ext=self.config.R_ext,
+                v_bubble=v_bubble,
+                σ=self.config.vdb_sigma
+            )
+            base_energy = comparison['vdb_natario_energy']
+            geometric_reduction = comparison['reduction_factor']
+            
+            logger.info(f"VdB-Natário geometric reduction: {geometric_reduction:.2e}×")
+        else:
+            # Fallback to standard Alcubierre
+            base_energy = 4 * np.pi * R**3 * v_bubble**2 / 3
+            geometric_reduction = 1.0
+            logger.warning("Using standard Alcubierre baseline (VdB-Natário not available)")
+        
+        # Step 1: Apply LQG corrections to the geometrically-reduced baseline
         lqg_energy = lqg_negative_energy(mu, R, self.config.lqg_profile)
         
-        # Convert to mass-energy equivalent requirement
-        # This is a simplified model - in practice would involve full spacetime calculation
-        mass_energy_ratio = 1.0 / lqg_energy if lqg_energy > 0 else float('inf')
+        # LQG enhancement factor applied to reduced baseline
+        lqg_enhancement = abs(lqg_energy) if lqg_energy < 0 else 1.0        
+        # Combined energy requirement
+        total_requirement = base_energy / lqg_enhancement
         
-        return mass_energy_ratio
+        logger.debug(f"Base energy (post-geometric): {base_energy:.3e}")
+        logger.debug(f"LQG enhancement factor: {lqg_enhancement:.3f}")
+        logger.debug(f"Combined requirement: {total_requirement:.3e}")
+        
+        return total_requirement
     
     def apply_all_corrections(self, base_energy: float, mu: float, R: float) -> Dict:
         """

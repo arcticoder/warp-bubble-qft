@@ -1,0 +1,75 @@
+\section{Metric Ansatz Exploration}
+
+\subsection{General Variational Principle}
+To minimize the total negative energy
+\[
+  E_{-}[f] \;=\;\int_0^R \rho_{\rm eff}\bigl(f(r),\,f'(r)\bigr)\;4\pi\,r^2\,dr,
+\]
+we solve
+\[
+  \frac{\delta E_{-}}{\delta f(r)} = 0,
+\]
+subject to $f(0)=1$, $f(R)=0$, and smoothness conditions.
+
+\subsection{Polynomial Ansatz}
+Let
+\[
+  f(r; a_0,\,a_1,\dots,\,a_N) 
+  = 
+  \begin{cases}
+    1 & 0 \le r \le r_0, \\
+    \displaystyle 
+    \sum_{k=0}^N a_k \bigl(\tfrac{r - r_0}{R - r_0}\bigr)^k 
+      & r_0 < r < R, \\
+    0 & r \ge R,
+  \end{cases}
+\]
+with $a_0=1$, $a_N=0$.  Enforce $\partial_r f|_{r_0}=\partial_r f|_{R}=0$.  
+The Euler–Lagrange equation gives
+\[
+  \frac{d}{dr}\Bigl( r^2\,\frac{\partial \rho_{\rm eff}}{\partial f'}\Bigr) 
+    - r^2\,\frac{\partial \rho_{\rm eff}}{\partial f} = 0.
+\]
+Insert $\rho_{\rm eff}(r)= -\tfrac{v^2}{8\pi}\,\beta_{\rm backreaction}\,\sinc(\pi\mu)\,(f')^2 / \mathcal{R}_{\rm geo}$,
+then project onto the polynomial basis to get a linear system for $\{a_k\}$.
+
+\subsection{Exponential Ansatz}
+A simpler two‐parameter family:
+\[
+  f(r;\alpha,\beta) 
+  = 
+  \begin{cases}
+    1 & r \le r_0, \\
+    \exp\bigl[-\alpha\,\frac{r-r_0}{R-r_0}\bigr] & r_0 < r < R, \\
+    0 & r \ge R.
+  \end{cases}
+\]
+With continuity at $r=r_0$ and $r=R$, determine $\alpha$ by minimizing
+\[
+  E_{-}(\alpha) = \int_0^R 
+    \Bigl[-\tfrac{v^2}{8\pi}\,\beta_{\rm backreaction}\,\sinc(\pi\mu)\,(f'(r;\alpha))^2 / \mathcal{R}_{\rm geo}\Bigr]\;4\pi\,r^2\,dr.
+\]
+Set $dE_{-}/d\alpha = 0$ to solve for $\alpha$.
+
+\subsection{Soliton‐Like (Lentz) Ansatz}
+Following Lentz (2019),
+\[
+  f(r) = \sum_{i=1}^M A_i \,\sech^2\!\Bigl(\tfrac{r - r_{0,i}}{\sigma_i}\Bigr),
+\]
+with parameters $\{A_i,\;r_{0,i},\;\sigma_i\}$.  Again enforce $f(0)=1$, $f(R)=0$, and apply
+\[
+  \frac{\partial E_{-}}{\partial A_i} = 0,\quad
+  \frac{\partial E_{-}}{\partial r_{0,i}} = 0,\quad
+  \frac{\partial E_{-}}{\partial \sigma_i} = 0,
+\]
+to find the global optimum.
+
+\subsection{Lentz‐Gaussian Superposition}
+Another family:
+\[
+  f(r) = \sum_{i=1}^M B_i\,\exp\!\Bigl[-\tfrac{(r - r_{0,i})^2}{2\sigma_i^2}\Bigr],
+\]
+etc.  The same variational principle applies.
+
+\subsection{Implementation Notes}
+These ansätze are implemented in \texttt{MetricAnsatzBuilder} and optimized by \texttt{MetricAnsatzOptimizer} (see \texttt{optimize.py}).

@@ -55,8 +55,7 @@ class TestRecentDiscoveries:
         # Check that peak_height * tau is approximately constant
         scaled_peaks = [h * tau for h, tau in zip(peak_heights, tau_vals)]
         expected_value = 1.0 / np.sqrt(2 * np.pi)
-        
-        for scaled_peak in scaled_peaks:
+          for scaled_peak in scaled_peaks:
             assert abs(scaled_peak - expected_value) < 1e-10, \
                 f"Peak scaling incorrect: got {scaled_peak}, expected {expected_value}"
     
@@ -76,7 +75,7 @@ class TestRecentDiscoveries:
         pi_val = 5.0  # This gives μπ = 2.5
         
         classical_T = pi_val**2 / 2
-        polymer_T = (np.sin(mu * pi_val) / mu)**2 / 2
+        polymer_T = (np.sin(np.pi * mu * pi_val) / (np.pi * mu))**2 / 2
         
         # Should have polymer_T < classical_T
         assert polymer_T < classical_T, \

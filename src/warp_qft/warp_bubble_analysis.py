@@ -79,7 +79,7 @@ def pi_shell(r, R, sigma, A, omega, t):
 
 def energy_density_polymer(pi_r, mu):
     """
-    ρ_eff(r) = ½ [ (sin(μ π(r))/μ)^2 ].
+    ρ_eff(r) = ½ [ (sin(π μ π(r))/(π μ))^2 ].
     
     Args:
         pi_r (array): π field values
@@ -88,12 +88,12 @@ def energy_density_polymer(pi_r, mu):
     Returns:
         array: Effective energy density
     """
-    return 0.5 * (np.sin(mu * pi_r) / mu)**2
+    return 0.5 * (np.sin(np.pi * mu * pi_r) / (np.pi * mu))**2
 
 def polymer_QI_bound(mu, tau=1.0, hbar=1.055e-34):
     """
     Polymer-modified Ford–Roman bound:
-      Bound(μ,τ) = - (ħ * sin(μ)/μ) / (12 π τ^2).
+      Bound(μ,τ) = - (ħ * sin(πμ)/(πμ)) / (12 π τ^2).
       
     Args:
         mu (float): Polymer scale parameter
@@ -103,7 +103,7 @@ def polymer_QI_bound(mu, tau=1.0, hbar=1.055e-34):
     Returns:
         float: Quantum inequality bound
     """
-    sinc_mu = 1.0 if mu == 0 else np.sin(mu)/mu
+    sinc_mu = 1.0 if mu == 0 else np.sin(np.pi * mu)/(np.pi * mu)
     return - (hbar * sinc_mu) / (12 * np.pi * tau**2)
 
 def compute_I_3d(mu, tau, R, sigma, A, omega, 
