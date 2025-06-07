@@ -20,13 +20,14 @@ This document provides a comprehensive overview of the integrated warp bubble qu
 
 \subsection{Core Components}
 
-The unified framework consists of four primary components:
+The unified framework consists of five primary components:
 
 \begin{itemize}
 \item \textbf{Polymer Field Theory Module**: Implements discrete commutation relations and quantum inequality modifications
 \item \textbf{Optimization Engine**: Advanced multi-stage optimization with multiple ansatz support
 \item \textbf{Ansatz Library**: Comprehensive collection from 2-lump solitons to hybrid methods
 \item \textbf{Analysis Tools**: Energy density calculation, backreaction analysis, and visualization
+\item \textbf{Spacetime Integration Framework**: Four-dimensional warp bubble dynamics with time-dependent smearing and \texttt{TimeDependentWarpEngine} workflow
 \end{itemize}
 
 \subsection{Integration Methodology}
@@ -304,5 +305,44 @@ The integrated warp bubble QFT framework represents a comprehensive solution for
 \end{enumerate}
 
 The framework provides a solid foundation for continued research in warp bubble physics and quantum field theory applications, with particular strength in the Ultimate B-Spline method that represents the current pinnacle of optimization technology, surpassing previous records achieved by 8-Gaussian two-stage and hybrid spline-Gaussian methodologies.
+
+\section{Spacetime Integration Framework}
+
+\subsection{Four-Dimensional Warp Bubble Dynamics}
+
+The spacetime integration framework represents the fourth pillar of the unified architecture, implementing comprehensive 4D time-dependent warp bubble analysis through the \texttt{spacetime_integrator.py} module and \texttt{TimeDependentWarpEngine} workflow.
+
+\subsubsection{Time-Dependent Smearing Implementation}
+
+The framework implements sophisticated temporal smearing with T⁻⁴ decay profiles:
+
+\begin{itemize}
+\item \textbf{Temporal Ansatz Form**: 
+\[f(r,t) = f_{\text{spatial}}(r) \cdot g(t) \cdot \text{window}(r, R(t))\]
+\item \textbf{Radius Ramp Function**: 
+\[R(t) = R_0 + (R_f - R_0) \cdot \tanh\left(\frac{t - t_{\text{center}}}{t_{\text{width}}}\right)\]
+\item \textbf{Acceleration Profile**: Smooth temporal evolution with configurable ramping
+\item \textbf{Long-Duration Stability**: Maintains near-zero $|E_-|$ over extended time periods
+\end{itemize}
+
+\subsubsection{TimeDependentWarpEngine Workflow}
+
+The \texttt{TimeDependentWarpEngine} class provides:
+
+\begin{itemize}
+\item \textbf{Integrated 4D Analysis**: Seamless spatial and temporal optimization
+\item \textbf{Distance-Independent Results**: Robust performance across spatial scales
+\item \textbf{Multi-Stage Time Evolution**: Sophisticated temporal parameter optimization
+\item \textbf{Quantum Inequality Compliance**: Full temporal QI bound verification
+\end{itemize}
+
+\subsubsection{Computational Architecture}
+
+\begin{itemize}
+\item \textbf{Vectorized Time Integration**: Efficient temporal quadrature methods
+\item \textbf{Adaptive Grid Refinement**: Dynamic resolution adjustment for time-dependent features
+\item \textbf{Memory-Optimized Storage**: Efficient handling of 4D parameter spaces
+\item \textbf{Parallel Time-Slice Processing**: Multi-core utilization for temporal evolution
+\end{itemize}
 
 \end{document}
