@@ -40,6 +40,15 @@ except ImportError:
     FAST_SCAN_AVAILABLE = False
     print("Warning: Fast scanning not available. Using standard pipeline.")
 
+# PLATINUM-ROAD INTEGRATION: Import running coupling Schwinger
+try:
+    from warp_running_schwinger import integrate_running_schwinger_into_warp_pipeline
+    RUNNING_SCHWINGER_AVAILABLE = True
+    print("✓ Running Schwinger module loaded successfully")
+except ImportError as e:
+    RUNNING_SCHWINGER_AVAILABLE = False
+    print(f"⚠ Warning: Running Schwinger module not available: {e}")
+
 
 class EnhancedFastPipeline:
     """Enhanced pipeline with fast scanning capabilities."""
@@ -231,6 +240,31 @@ class EnhancedFastPipeline:
                 print(f"Warning: Could not save results: {e}")
         
         return complete_results
+    
+    def run_enhanced_pipeline(self, config: EnhancementConfig) -> dict:
+        """
+        Run the enhanced pipeline with all optimizations.
+        
+        PLATINUM-ROAD INTEGRATION: Now includes running coupling Schwinger rates.
+        """
+        print("🚀 Running Enhanced Fast Pipeline...")
+        
+        # PLATINUM-ROAD TASK 2: Integrate running coupling Schwinger rates
+        if RUNNING_SCHWINGER_AVAILABLE:
+            print("\n🔷 PLATINUM-ROAD TASK 2: Running Coupling Integration")
+            try:
+                schwinger_success = integrate_running_schwinger_into_warp_pipeline()
+                if schwinger_success:
+                    print("✅ Running coupling Schwinger rates integrated successfully")
+                else:
+                    print("⚠ Running coupling integration had issues (continuing)")
+            except Exception as e:
+                print(f"⚠ Running coupling integration error: {e}")
+        else:
+            print("⚠ Running coupling integration skipped - module not available")
+        
+        # Run the standard enhanced pipeline
+        # ...existing code...
 
 
 def setup_logging(verbose: bool = False):
