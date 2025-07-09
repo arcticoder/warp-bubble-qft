@@ -1,5 +1,15 @@
 # LQG-Enhanced Warp Bubble QFT
 
+## Related Repositories
+
+- [energy](https://github.com/arcticoder/energy): Central meta-repo for all energy, quantum, and warp bubble research. This QFT framework is fundamental to warp bubble technology.
+- [unified-lqg](https://github.com/arcticoder/unified-lqg): Provides LQG enhancement and polymer field quantization for energy requirement reduction.
+- [warp-field-coils](https://github.com/arcticoder/warp-field-coils): Primary integration for warp bubble generation using Van den Broeck–Natário geometry.
+- [lqg-ftl-metric-engineering](https://github.com/arcticoder/lqg-ftl-metric-engineering): Uses QFT framework for zero-exotic-energy FTL with systematic energy reduction.
+- [negative-energy-generator](https://github.com/arcticoder/negative-energy-generator): Provides energy source and vacuum fluctuation control for warp bubble applications.
+
+All repositories are part of the [arcticoder](https://github.com/arcticoder) ecosystem and link back to the energy framework for unified documentation and integration.
+
 This repository contains the implementation of a Loop Quantum Gravity (LQG) enhanced quantum field theory framework for generating warp bubble configurations. The system integrates theoretical developments to reduce energy requirements.
 
 ## Key Developments Achieved
