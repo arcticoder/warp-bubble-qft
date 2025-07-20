@@ -119,3 +119,5 @@ dmypy.json
 
 # macOS
 .DS_Store
+
+.github/instructions/copilot-instructions.md
