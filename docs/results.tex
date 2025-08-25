@@ -21,7 +21,7 @@ This document presents the latest numerical results from the enhanced warp bubbl
 
 \subsection{Optimized Energy Profiles}
 
-Table~\ref{tab:energy_results} summarizes the updated best negative energy density results obtained using accelerated Gaussian ansätze and optimized computational methods. The computational speedups represent a dramatic improvement over the baseline 3-Gaussian approach, enabling rapid parameter space exploration.
+Table~\ref{tab:energy_results} summarizes the updated negative energy density results obtained using accelerated Gaussian ansätze and optimized computational methods. The computational speedups represent a substantial, measured improvement over the baseline 3-Gaussian approach (see benchmarking and uncertainty analysis in the repository), enabling more extensive parameter space exploration.
 
 Table~\ref{tab:energy_results_lqg} shows the optimal results across different LQG prescriptions using the accelerated 4-Gaussian and 5-Gaussian ansätze.
 
@@ -64,25 +64,25 @@ Hybrid Spline & $-4.951$ & $0.025$ & $1.6$ & Spline-Gaussian & $80\times$ \\
 
 \subsection{Convergence Analysis}
 
-The enhanced optimization pipeline demonstrates robust convergence properties:
+The enhanced optimization pipeline shows improved convergence behavior in the project's experiments; see the validation artifacts for full diagnostics:
 \begin{itemize}
-\item \textbf{Convergence Rate}: All configurations converge within 1-3 iterations
-\item \textbf{Feasibility Ratio}: Typical ratios of $5.8:1$ for base configurations
-\item \textbf{Energy Reduction}: Metric backreaction analysis shows $15.5\%$ energy requirement reduction
+\item \textbf{Convergence Rate (observed)}: Many tested configurations converged within a small number of iterations for the project's parameter sets; see diagnostics for distributions and seed sensitivity
+\item \textbf{Feasibility Ratio (observed)}: Representative ratios (e.g., ~5.8:1) are reported for baseline configurations in these experiments
+\item \textbf{Energy Reduction (model-derived)}: Metric backreaction analysis within the project's models indicates reductions on the order of 15.5\% under stated assumptions
 \end{itemize}
 
-\subsection{Record-Breaking 8-Gaussian Results}
+\subsection{8-Gaussian Two-Stage Results (model-based)}
 
-The introduction of the 8-Gaussian Two-Stage ansatz represents a breakthrough in warp bubble optimization, achieving unprecedented negative energy densities. Key highlights include:
+The 8-Gaussian Two-Stage ansatz produced improved negative-energy values in the project's simulations compared with earlier ansätze; these are model-derived results and include associated uncertainty analyses. Key model-derived observations include:
 
 \begin{itemize}
-\item \textbf{Maximum Negative Energy}: $E_- = -2.35\times10^{31}$ J, representing a 20.5\% improvement over previous 6-Gaussian results
-\item \textbf{Optimal Parameters}: $\mu \approx 3.2\times10^{-6}$, $\mathcal{R}_{\text{geo}} \approx 1.8\times10^{-5}$
-\item \textbf{Two-Stage Efficiency}: Coarse-to-fine optimization strategy reduces total computation time by 40\% while improving result quality
-\item \textbf{Enhanced Convergence}: CMA-ES with L-BFGS-B polishing ensures robust convergence to global optima
+\item \textbf{Maximum Negative Energy (model estimate)}: $E_- = -2.35\times10^{31}$ J (approximate; see tables and uncertainty discussion), representing a measured improvement over earlier 6-Gaussian results in the project's benchmarks
+\item \textbf{Optimal Parameters (reported)}: $\mu \approx 3.2\times10^{-6}$, $\mathcal{R}_{\text{geo}} \approx 1.8\times10^{-5}$ (estimates include sensitivity ranges)
+\item \textbf{Two-Stage Efficiency (observed)}: Coarse-to-fine optimization reduced total computation time in the project's experiments; reported reductions (e.g., ~40\%) depend on hardware and implementation
+\item \textbf{Convergence Behavior (observed)}: CMA-ES with L-BFGS-B polishing improved convergence behavior for these experiments; convergence diagnostics and seeds are available for reproduction
 \end{itemize}
 
-The hybrid spline-Gaussian approach achieves even higher performance ($E_- = -2.48\times10^{31}$ J) through enhanced wall profile flexibility, though with increased computational overhead. This establishes a new performance benchmark for warp bubble feasibility calculations.
+The hybrid spline-Gaussian approach produced higher negative-energy values in the project's experiments ($E_- = -2.48\times10^{31}$ J) with increased computational cost. These results constitute internal benchmarks for the methods used here and require independent replication for broader validation.
 
 \section{Enhancement Factors}
 
@@ -182,10 +182,10 @@ Ultra-fast (GPU) & $50 \times 50$ & $< 0.1$ s & $>1000\times$ \\
 
 \subsection{Backreaction Integration}
 
-Self-consistent metric backreaction calculations have been successfully integrated with exact value preservation:
+Self-consistent metric backreaction calculations have been integrated with the modelling pipeline; reported numeric values are model outputs with accompanying diagnostics:
 \begin{itemize}
-\item \textbf{Exact Backreaction Factor}: $1.9443254780147017$ (48.55\% energy reduction)
-\item \textbf{Van den Broeck-Natário Integration}: $10^5-10^6\times$ baseline improvement
+\item \textbf{Backreaction factor (model estimate)}: reported value ≈ 1.94 (model-derived; see derivations and uncertainty bounds in `docs/`)
+\item \textbf{Van den Broeck-Natário Integration (reported)}: large performance differences are observed between methods in the project's benchmarks; see scripts for reproduction
 \item \textbf{Corrected Sinc Function}: $\sin(\pi\mu)/(\pi\mu)$ mathematical convention
 \end{itemize}
 
