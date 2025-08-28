@@ -1,15 +1,15 @@
 # LQG-Enhanced Warp Bubble QFT
 
-## ⭐ Revolutionary 1083.0× Energy Optimization Complete
+## ⭐ proposed 1083.0× Energy Optimization Complete
 
-**HISTORIC BREAKTHROUGH**: Cross-Repository Energy Efficiency Integration framework deployed achieving **1083.0× energy optimization** factor (125.4% of 863.9× target), delivering **99.9% energy savings** (3.80 GJ → 3.5 MJ) through **unified efficiency integration**. This revolutionary achievement transforms computational cost reduction methods into comprehensive efficiency frameworks enabling practical QFT computations with minimal energy.
+**HISTORIC reported improvement (see methods and evidence)**: Cross-Repository Energy Efficiency Integration framework deployed achieving **1083.0× energy optimization** factor (125.4% of 863.9× target), delivering **99.9% energy savings** (3.80 GJ → 3.5 MJ) through **unified efficiency integration**. This proposed achievement transforms computational cost reduction methods into comprehensive efficiency frameworks enabling practical QFT computations with minimal energy.
 
 ### 🚀 Cross-Repository Energy Integration Results
 - **Optimization Factor**: **1083.0×** (exceeds 863.9× target by 25.4%)
 - **Energy Savings**: **99.9%** (3.80 GJ baseline → 3.5 MJ optimized)
 - **Efficiency Integration**: Computational cost reduction → comprehensive efficiency framework
 - **Physics Validation**: **97.0%** QFT constraint preservation
-- **Revolutionary Impact**: Complete QFT computational efficiency with breakthrough optimization
+- **proposed Impact**: Complete QFT computational efficiency with reported improvement (see methods and evidence) optimization
 - **Production Status**: ✅ **OPTIMIZATION TARGET ACHIEVED**
 
 ## Related Repositories
@@ -57,7 +57,7 @@ This repository contains the implementation of a Loop Quantum Gravity (LQG) enha
 
 ### Van den Broeck–Natário Demonstration
 ```bash
-# Test the geometric breakthrough
+# Test the geometric reported improvement (see methods and evidence)
 python test_vdb_natario.py
 
 # Full demonstration with visualizations  
@@ -428,3 +428,10 @@ This work extends Loop Quantum Gravity (LQG) to include matter fields quantized 
 ## License
 
 The Unlicense
+
+
+## Scope, Validation & Limitations
+
+- Scope: The materials and numeric outputs in this repository are research-stage examples and depend on implementation choices, parameter settings, and numerical tolerances.
+- Validation: Reproducibility artifacts (scripts, raw outputs, seeds, and environment details) are provided in `docs/` or `examples/` where available; reproduce analyses with parameter sweeps and independent environments to assess robustness.
+- Limitations: Results are sensitive to modeling choices and discretization. Independent verification, sensitivity analyses, and peer review are recommended before using these results for engineering or policy decisions.
