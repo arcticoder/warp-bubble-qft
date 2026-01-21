@@ -187,7 +187,13 @@ class WarpBubbleEnhancementPipeline:
         
         return corrections
     
-    def scan_parameter_space(self, detailed_scan: bool = True) -> Dict:
+    def scan_parameter_space(
+        self,
+        detailed_scan: bool = True,
+        mu_range: Optional[Tuple[float, float]] = None,
+        R_range: Optional[Tuple[float, float]] = None,
+        resolution: Optional[int] = None,
+    ) -> Dict:
         """
         Perform systematic scan of parameter space to find optimal configurations.
         
@@ -197,15 +203,25 @@ class WarpBubbleEnhancementPipeline:
         Returns:
             Dictionary with scan results and optimal parameters
         """
-        resolution = self.config.grid_resolution if detailed_scan else 20
-        
+        if resolution is None:
+            resolution = self.config.grid_resolution if detailed_scan else 20
+
         # Parameter ranges
-        mu_range = np.linspace(self.config.mu_min, self.config.mu_max, resolution)
-        R_range = np.linspace(self.config.R_min, self.config.R_max, resolution)
+        if mu_range is None:
+            mu_vals = np.linspace(self.config.mu_min, self.config.mu_max, resolution)
+        else:
+            mu_min, mu_max = mu_range
+            mu_vals = np.linspace(mu_min, mu_max, resolution)
+
+        if R_range is None:
+            R_vals = np.linspace(self.config.R_min, self.config.R_max, resolution)
+        else:
+            R_min, R_max = R_range
+            R_vals = np.linspace(R_min, R_max, resolution)
         
         # Initialize result arrays
-        energy_grid = np.zeros((len(mu_range), len(R_range)))
-        feasibility_grid = np.zeros((len(mu_range), len(R_range)), dtype=bool)
+        energy_grid = np.zeros((len(mu_vals), len(R_vals)))
+        feasibility_grid = np.zeros((len(mu_vals), len(R_vals)), dtype=bool)
         
         # Track best configuration found
         best_config = None
@@ -214,8 +230,8 @@ class WarpBubbleEnhancementPipeline:
         
         logger.info(f"Starting parameter space scan ({resolution}×{resolution} grid)")
         
-        for i, mu in enumerate(mu_range):
-            for j, R in enumerate(R_range):
+        for i, mu in enumerate(mu_vals):
+            for j, R in enumerate(R_vals):
                 try:
                     # Compute base energy
                     base_energy = self.compute_base_energy_requirement(mu, R)
@@ -257,8 +273,8 @@ class WarpBubbleEnhancementPipeline:
         
         for idx_i, idx_j in zip(feasible_indices[0], feasible_indices[1]):
             feasible_configs.append({
-                "mu": mu_range[idx_i],
-                "R": R_range[idx_j],
+                "mu": mu_vals[idx_i],
+                "R": R_vals[idx_j],
                 "energy": energy_grid[idx_i, idx_j]
             })
         
@@ -266,8 +282,8 @@ class WarpBubbleEnhancementPipeline:
         unity_configurations.sort(key=lambda x: x["deviation_from_unity"])
         
         scan_results = {
-            "mu_range": mu_range,
-            "R_range": R_range,
+            "mu_range": mu_vals,
+            "R_range": R_vals,
             "energy_grid": energy_grid,
             "feasibility_grid": feasibility_grid,
             "best_configuration": best_config,
@@ -316,7 +332,7 @@ class WarpBubbleEnhancementPipeline:
                 resolution=5
             )
             
-            current_ratio = scan_result['best_configuration']['energy']
+            current_ratio = scan_result['best_configuration']['final_energy']
             
             # Apply enhancement factors
             cavity_boost = 1.2  # 20% cavity enhancement

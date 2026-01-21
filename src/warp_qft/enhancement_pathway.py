@@ -355,17 +355,27 @@ class MultiBubbleSuperposition:
             }
     
     def superposition_enhancement_factor(self, num_bubbles: int, 
-                                       configuration: Optional[Dict] = None) -> float:
+                                       configuration: Optional[Dict] = None,
+                                       use_simple_model: bool = True) -> float:
         """
         Compute enhancement factor from multi-bubble superposition.
         
         Args:
             num_bubbles: Number of bubbles
             configuration: Bubble positions and phases (if None, use optimal)
+            use_simple_model: If True, use fast analytical approximation (recommended for scans)
             
         Returns:
             Enhancement factor from superposition
         """
+        if use_simple_model:
+            # Fast analytical approximation: sqrt(N) with realistic efficiency factor
+            # Based on typical coherent superposition limits
+            theoretical_max = np.sqrt(num_bubbles)
+            efficiency = 0.7  # Typical experimental coherence efficiency
+            enhancement = 1 + (theoretical_max - 1) * efficiency
+            return np.clip(enhancement, 1.0, 2 * theoretical_max)
+        
         if configuration is None:
             configuration = self.optimal_bubble_configuration(num_bubbles)
         
@@ -423,8 +433,10 @@ class EnhancementPathwayOrchestrator:
         # Combine enhancements multiplicatively
         total_enhancement = cavity_factor * squeezing_factor * bubble_factor
         
-        # Enhanced energy with proper scaling
-        enhanced_energy = base_energy * total_enhancement
+        # Enhanced energy with proper scaling:
+        # A larger enhancement factor represents *more available negative energy / stronger effect*,
+        # so the *required* energy should decrease.
+        enhanced_energy = base_energy / total_enhancement
         
         results = {
             "cavity_enhancement": cavity_factor,
@@ -441,6 +453,65 @@ class EnhancementPathwayOrchestrator:
         logger.debug(f"Energy: {base_energy:.2e} → {enhanced_energy:.2e}")
         
         return results
+
+    def optimize_enhancement_parameters(self, target_energy: float, base_energy: float) -> Dict:
+        """Estimate whether the configured enhancement pathways can reach a target.
+
+        Args:
+            target_energy: Target final energy requirement (e.g., unity ratio).
+            base_energy: Pre-enhancement energy requirement.
+
+        Returns:
+            Dictionary describing required vs achievable enhancement, plus suggested parameters.
+        """
+        if target_energy <= 0:
+            raise ValueError("target_energy must be > 0")
+        if base_energy <= 0:
+            # The pipeline treats energy requirement as a positive scalar; keep output well-defined.
+            base_energy = abs(base_energy)
+
+        required_enhancement = base_energy / target_energy
+
+        current_cavity = self.cavity.casimir_enhancement_factor(
+            self.config.cavity_Q,
+            self.config.cavity_volume,
+        )
+        current_squeezing = self.squeezing.squeezing_enhancement_factor(
+            self.config.squeezing_db,
+            self.config.squeezing_bandwidth,
+        )
+        current_bubbles = self.multi_bubble.superposition_enhancement_factor(
+            self.config.num_bubbles,
+        )
+
+        achievable_enhancement = current_cavity * current_squeezing * current_bubbles
+
+        suggestion = {
+            "cavity": self.cavity.optimize_cavity_parameters(
+                target_enhancement=max(1.0, required_enhancement / max(1.0, current_squeezing * current_bubbles))
+            ),
+            "squeezing": self.squeezing.optimal_squeezing_parameters(
+                target_enhancement=max(1.0, required_enhancement / max(1.0, current_cavity * current_bubbles))
+            ),
+            "multi_bubble": {
+                "num_bubbles": self.config.num_bubbles,
+                "enhancement": current_bubbles,
+            },
+        }
+
+        return {
+            "target_energy": float(target_energy),
+            "base_energy": float(base_energy),
+            "target_enhancement": float(required_enhancement),
+            "achievable_enhancement": float(achievable_enhancement),
+            "meets_target": achievable_enhancement >= required_enhancement,
+            "current_factors": {
+                "cavity": float(current_cavity),
+                "squeezing": float(current_squeezing),
+                "multi_bubble": float(current_bubbles),
+            },
+            "suggested_parameters": suggestion,
+        }
 
 
 class ComprehensiveEnhancementCalculator:

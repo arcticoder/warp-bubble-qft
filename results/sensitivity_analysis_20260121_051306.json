@@ -1,0 +1,23 @@
+{
+  "timestamp": "20260121_051306",
+  "monte_carlo": {
+    "n_trials": 50,
+    "feasible_count": 50,
+    "feasibility_rate": 1.0,
+    "noise_level": 0.1,
+    "mu_range": [
+      0.05,
+      0.2
+    ],
+    "R_range": [
+      1.5,
+      4.0
+    ],
+    "results": [
+      {
+        "trial": 0,
+        "mu": 0.11305824064815247,
+        "R": 4.467231812880131,
+        "base_energy": 0.5743137765581853,
+        "final_energy": 0.029342626679473006,
+        "feasible": 
