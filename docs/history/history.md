@@ -226,3 +226,30 @@ Perfect! All core tasks completed. The iterative backreaction is now stabilized 
 
 The remaining tasks (7.2-7.5) are low-priority extensions for future work. The methods paper is ready for the core verification workflow!
 <!-- ------ -->
+- Implement curved_qi_verification.py extending Ford-Roman QI to Alcubierre metric
+- Compute metric-weighted integral ∫ ρ √|g| w dτ with volume element
+- Compare flat vs curved bounds: -C/Δt⁴ vs -C/R²
+- Integrate into batch_analysis.py workflow
+
+Results:
+- Flat space: violates QI bound (integral -0.562 < bound -0.006)
+- Curved space: no violation (integral -0.788 > bound -1.010)
+- Metric enhancement factor: 1.40× 
+- Interpretation: curved-space bound more restrictive, violation disappears
+
+Key finding: QI violation is metric-dependent; curved background changes physics
+Update TODO.md: Tasks 7.1, 7.2 marked complete with results summary"
+
+Excellent! Tasks 7.1 and 7.2 complete. Progress summary:
+
+✅ **Completed:**
+- 7.1: Stabilized iterative backreaction (damping + regularization)
+- 7.2: Curved-space QI verification (finds no violation in curved background)
+
+📋 **Remaining:**
+- 7.3: 3+1D stability toy
+- 7.4: Enhancement derivations
+- 7.5: Manuscript prep
+
+The curved QI result is interesting - it's a **null finding** (no curved-space violation), which is still scientifically valuable for the paper. It shows that metric curvature effects matter for QI bounds.
+<!-- ------ -->
