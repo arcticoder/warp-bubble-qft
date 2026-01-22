@@ -84,6 +84,8 @@ def main() -> int:
     parser.add_argument("--inner-iters", type=int, default=50)
     parser.add_argument("--outer-iters", type=int, default=10)
     parser.add_argument("--rel-tol", type=float, default=1e-4)
+    parser.add_argument("--damping", type=float, default=0.7, help="Damping factor (0 < β < 1) for stability")
+    parser.add_argument("--regularization", type=float, default=1e-3, help="L2 regularization λ to bound norms")
 
     parser.add_argument("--results-dir", type=str, default="results")
     parser.add_argument("--save-results", action="store_true")
@@ -110,6 +112,8 @@ def main() -> int:
         max_inner_iterations=int(args.inner_iters),
         max_outer_iterations=int(args.outer_iters),
         relative_energy_tolerance=float(args.rel_tol),
+        damping_factor=float(args.damping),
+        regularization_lambda=float(args.regularization),
     )
 
     run = {
@@ -156,7 +160,10 @@ def main() -> int:
             print(f"Plotting failed: {exc}")
 
     # Always print a short summary.
-    print(f"Energy: {args.energy:.6g} -> {corrected:.6g} (factor {corrected/args.energy if args.energy else float('nan'):.6g})")
+    diverged_flag = " [DIVERGED]" if diagnostics.get("divergence_detected", False) else ""
+    print(f"Energy: {args.energy:.6g} -> {corrected:.6g} (factor {corrected/args.energy if args.energy else float('nan'):.6g}){diverged_flag}")
+    if diagnostics.get("divergence_detected"):
+        print(f"  ⚠ {diagnostics.get('stability_note', 'Stability issue detected')}")
     return 0
 
 

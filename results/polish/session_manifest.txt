@@ -1,0 +1,10 @@
+Session: polish
+Timestamp: 20260121_215136
+Tasks:
+  [0] Quick feasibility check (baseline)
+  [0] Quick feasibility check (iterative backreaction)
+  [0] QI verification scan
+  [0] Sensitivity analysis (Monte Carlo + enhancement sweeps)
+  [0] Toy 1D evolution
+  [0] Discrepancy analysis
+  [0] Baseline comparison (factor isolation)

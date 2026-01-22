@@ -1,0 +1,143 @@
+{
+  "timestamp": "20260121_215027",
+  "params": {
+    "mu": 0.1,
+    "R": 2.3,
+    "energy_in": 1.0,
+    "energy_out": 0.19731046593560156
+  },
+  "diagnostics": {
+    "method": "iterative",
+    "grid_size": 400,
+    "solver_tolerance": 1e-06,
+    "damping_factor": 0.7,
+    "regularization_lambda": 0.001,
+    "max_inner_iterations": 50,
+    "max_outer_iterations": 10,
+    "relative_energy_tolerance": 0.0001,
+    "history": [
+      {
+        "outer_iteration": 1,
+        "energy_in": 1.0,
+        "rho_scale": 1.0,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.8501880810456011,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 2,
+        "energy_in": 0.8501880810456011,
+        "rho_scale": 0.8501880810456011,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.7228197731520015,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 3,
+        "energy_in": 0.7228197731520015,
+        "rho_scale": 0.7228197731520015,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.6145327558779169,
+        "relative_delta": 0.14981191895439888
+      },
+      {
+        "outer_iteration": 4,
+        "energy_in": 0.6145327558779169,
+        "rho_scale": 0.6145327558779169,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.522468424459511,
+        "relative_delta": 0.14981191895439885
+      },
+      {
+        "outer_iteration": 5,
+        "energy_in": 0.522468424459511,
+        "rho_scale": 0.522468424459511,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.4441964271981503,
+        "relative_delta": 0.1498119189543989
+      },
+      {
+        "outer_iteration": 6,
+        "energy_in": 0.4441964271981503,
+        "rho_scale": 0.4441964271981503,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.3776505080469074,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 7,
+        "energy_in": 0.3776505080469074,
+        "rho_scale": 0.3776505080469074,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.32107396074229655,
+        "relative_delta": 0.1498119189543989
+      },
+      {
+        "outer_iteration": 8,
+        "energy_in": 0.32107396074229655,
+        "rho_scale": 0.32107396074229655,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.2729732545572037,
+        "relative_delta": 0.14981191895439902
+      },
+      {
+        "outer_iteration": 9,
+        "energy_in": 0.2729732545572037,
+        "rho_scale": 0.2729732545572037,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.2320786074687614,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 10,
+        "energy_in": 0.2320786074687614,
+        "rho_scale": 0.2320786074687614,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 0.19731046593560156,
+        "relative_delta": 0.14981191895439896
+      }
+    ],
+    "final_reduction_factor": 0.19731046593560156,
+    "final_energy": 0.19731046593560156,
+    "divergence_detected": false
+  },
+  "solution_summary": {
+    "metric_converged": true,
+    "metric_iterations": 1,
+    "metric_final_error": 1.1102230246251565e-16,
+    "g_tt_min": -1.0,
+    "g_tt_max": -1.0,
+    "g_rr_min": 0.9000000004122307,
+    "g_rr_max": 1.0999999995443004
+  }
+}

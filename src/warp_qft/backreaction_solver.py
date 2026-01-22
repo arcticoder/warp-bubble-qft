@@ -29,16 +29,21 @@ class BackreactionSolver:
     - Energy requirement optimization through backreaction
     """
     
-    def __init__(self, grid_size: int = 1000, tolerance: float = 1e-6):
+    def __init__(self, grid_size: int = 1000, tolerance: float = 1e-6,
+                 damping_factor: float = 0.7, regularization_lambda: float = 1e-3):
         """
         Initialize the backreaction solver.
         
         Args:
             grid_size: Number of spatial grid points
             tolerance: Convergence tolerance for iterative solutions
+            damping_factor: Damping factor β ∈ (0, 1) for metric updates (default 0.7)
+            regularization_lambda: L2 regularization strength λ (default 1e-3)
         """
         self.grid_size = grid_size
         self.tolerance = tolerance
+        self.damping_factor = damping_factor
+        self.regularization_lambda = regularization_lambda
         self.convergence_history = []
         
     def setup_spatial_grid(self, R_max: float) -> np.ndarray:
@@ -141,8 +146,8 @@ class BackreactionSolver:
         G_rr = g_rr * (d2g_tt_dr2 + dg_tt_dr/r) / g_tt
         
         # Field equation residuals (8πG = 1 in natural units)
-        residual_00 = G_00 - 8 * np.pi * stress_energy["T_00"]
-        residual_rr = G_rr - 8 * np.pi * stress_energy["T_rr"]
+        residual_00 = G_00 - 8 * np.pi * stress_energy["T_00"] + self.regularization_lambda * g_tt
+        residual_rr = G_rr - 8 * np.pi * stress_energy["T_rr"] + self.regularization_lambda * g_rr
         
         return np.concatenate([residual_00, residual_rr])
     
@@ -163,6 +168,7 @@ class BackreactionSolver:
         g_tt, g_rr = self.initial_metric_guess(r, np.max(r)/2)
         
         convergence_errors = []
+        had_nonfinite = False
         
         for iteration in range(max_iterations):
             # Compute stress-energy with current metric
@@ -172,16 +178,32 @@ class BackreactionSolver:
             metric_vars = np.concatenate([g_tt, g_rr])
             
             try:
+                # Use adaptive tolerance if errors are large
+                adaptive_tol = self.tolerance
+                if convergence_errors:
+                    last_err = convergence_errors[-1]
+                    adaptive_tol = self.tolerance * (1.0 + last_err / max(1e-6, self.tolerance))
+                
                 # Use fsolve to find metric that satisfies Einstein equations
                 solution = fsolve(
                     lambda vars: self.einstein_equations(vars, r, stress_energy),
                     metric_vars,
-                    xtol=self.tolerance
+                    xtol=adaptive_tol
                 )
                 
                 n = len(r)
                 g_tt_new = solution[:n]
                 g_rr_new = solution[n:]
+                
+                # Apply damping: g_new = β*g_solve + (1-β)*g_old
+                g_tt_new = self.damping_factor * g_tt_new + (1 - self.damping_factor) * g_tt
+                g_rr_new = self.damping_factor * g_rr_new + (1 - self.damping_factor) * g_rr
+                
+                # Check for NaN or inf (divergence detection)
+                if np.any(~np.isfinite(g_tt_new)) or np.any(~np.isfinite(g_rr_new)):
+                    logger.warning(f"Nonfinite values detected at iteration {iteration+1}, stopping")
+                    had_nonfinite = True
+                    break
                 
                 # Check convergence
                 error_tt = np.max(np.abs(g_tt_new - g_tt))
@@ -210,7 +232,8 @@ class BackreactionSolver:
             "stress_energy": stress_energy,
             "converged": max_error < self.tolerance if 'max_error' in locals() else False,
             "iterations": len(convergence_errors),
-            "final_error": convergence_errors[-1] if convergence_errors else float('inf')
+            "final_error": convergence_errors[-1] if convergence_errors else float('inf'),
+            "had_nonfinite": had_nonfinite
         }
     
     def compute_energy_reduction(self, original_energy: float, 
@@ -238,16 +261,34 @@ class BackreactionSolver:
         """Compute an effective energy reduction factor from a backreaction solution."""
         if not backreaction_solution.get("converged", False):
             return 1.0
+        
+        # Check for divergence flag
+        if backreaction_solution.get("had_nonfinite", False):
+            logger.warning("Reduction factor from diverged solution, returning 1.0")
+            return 1.0
 
         g_tt = backreaction_solution["g_tt"]
         g_rr = backreaction_solution["g_rr"]
+        
+        # Safety check for nonfinite values
+        if not np.all(np.isfinite(g_tt)) or not np.all(np.isfinite(g_rr)):
+            logger.warning("Nonfinite metric components, returning 1.0")
+            return 1.0
 
-        # Based on metric volume element changes.
-        volume_factor = float(np.mean(np.sqrt(g_rr * np.abs(g_tt))))
+        try:
+            # Based on metric volume element changes.
+            volume_factor = float(np.mean(np.sqrt(g_rr * np.abs(g_tt))))
+            
+            if not np.isfinite(volume_factor):
+                logger.warning("Nonfinite volume factor, returning 1.0")
+                return 1.0
 
-        # Empirical scaling: ~15% reduction observed.
-        reduction_factor = 0.85 + 0.15 * (1 - volume_factor)
-        return float(np.clip(reduction_factor, 0.75, 1.0))  # Reasonable bounds
+            # Empirical scaling: ~15% reduction observed.
+            reduction_factor = 0.85 + 0.15 * (1 - volume_factor)
+            return float(np.clip(reduction_factor, 0.75, 1.0))  # Reasonable bounds
+        except Exception as e:
+            logger.warning(f"Error computing reduction factor: {e}, returning 1.0")
+            return 1.0
 
 
 def apply_backreaction_correction(original_energy: float, 
@@ -303,6 +344,8 @@ def apply_backreaction_correction_iterative(
     *,
     grid_size: int = 400,
     solver_tolerance: float = 1e-6,
+    damping_factor: float = 0.7,
+    regularization_lambda: float = 1e-3,
     max_inner_iterations: int = 50,
     max_outer_iterations: int = 10,
     relative_energy_tolerance: float = 1e-4,
@@ -317,7 +360,12 @@ def apply_backreaction_correction_iterative(
     Returns:
         (corrected_energy, diagnostics)
     """
-    solver = BackreactionSolver(grid_size=grid_size, tolerance=solver_tolerance)
+    solver = BackreactionSolver(
+        grid_size=grid_size,
+        tolerance=solver_tolerance,
+        damping_factor=damping_factor,
+        regularization_lambda=regularization_lambda
+    )
     r = solver.setup_spatial_grid(3 * R_bubble)
     rho_base = rho_profile(r)
 
@@ -358,12 +406,15 @@ def apply_backreaction_correction_iterative(
         "method": "iterative",
         "grid_size": int(grid_size),
         "solver_tolerance": float(solver_tolerance),
+        "damping_factor": float(damping_factor),
+        "regularization_lambda": float(regularization_lambda),
         "max_inner_iterations": int(max_inner_iterations),
         "max_outer_iterations": int(max_outer_iterations),
         "relative_energy_tolerance": float(relative_energy_tolerance),
         "history": history,
         "final_reduction_factor": float(energy / float(original_energy)) if original_energy != 0 else 1.0,
         "final_energy": float(energy),
+        "divergence_detected": last_solution.get("had_nonfinite", False) if last_solution else False,
     }
 
     # Include last solution for downstream analysis (large arrays; users can drop it when archiving).

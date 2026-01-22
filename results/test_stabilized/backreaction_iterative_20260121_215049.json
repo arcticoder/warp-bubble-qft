@@ -1,0 +1,253 @@
+{
+  "timestamp": "20260121_215049",
+  "params": {
+    "mu": 0.1,
+    "R": 2.3,
+    "energy_in": 100.0,
+    "energy_out": 3.893141996772417
+  },
+  "diagnostics": {
+    "method": "iterative",
+    "grid_size": 400,
+    "solver_tolerance": 1e-06,
+    "damping_factor": 0.7,
+    "regularization_lambda": 0.001,
+    "max_inner_iterations": 50,
+    "max_outer_iterations": 20,
+    "relative_energy_tolerance": 0.0001,
+    "history": [
+      {
+        "outer_iteration": 1,
+        "energy_in": 100.0,
+        "rho_scale": 1.0,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 85.01880810456011,
+        "relative_delta": 0.1498119189543989
+      },
+      {
+        "outer_iteration": 2,
+        "energy_in": 85.01880810456011,
+        "rho_scale": 0.8501880810456011,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 72.28197731520015,
+        "relative_delta": 0.14981191895439896
+      },
+      {
+        "outer_iteration": 3,
+        "energy_in": 72.28197731520015,
+        "rho_scale": 0.7228197731520015,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 61.45327558779169,
+        "relative_delta": 0.1498119189543989
+      },
+      {
+        "outer_iteration": 4,
+        "energy_in": 61.45327558779169,
+        "rho_scale": 0.6145327558779169,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 52.246842445951096,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 5,
+        "energy_in": 52.246842445951096,
+        "rho_scale": 0.5224684244595109,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 44.41964271981502,
+        "relative_delta": 0.14981191895439888
+      },
+      {
+        "outer_iteration": 6,
+        "energy_in": 44.41964271981502,
+        "rho_scale": 0.4441964271981502,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 37.76505080469074,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 7,
+        "energy_in": 37.76505080469074,
+        "rho_scale": 0.37765050804690736,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 32.10739607422965,
+        "relative_delta": 0.14981191895439902
+      },
+      {
+        "outer_iteration": 8,
+        "energy_in": 32.10739607422965,
+        "rho_scale": 0.3210739607422965,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 27.29732545572037,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 9,
+        "energy_in": 27.29732545572037,
+        "rho_scale": 0.27297325455720367,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 23.207860746876136,
+        "relative_delta": 0.149811918954399
+      },
+      {
+        "outer_iteration": 10,
+        "energy_in": 23.207860746876136,
+        "rho_scale": 0.23207860746876136,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 19.73104659356015,
+        "relative_delta": 0.14981191895439896
+      },
+      {
+        "outer_iteration": 11,
+        "energy_in": 19.73104659356015,
+        "rho_scale": 0.1973104659356015,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 16.77510064040025,
+        "relative_delta": 0.14981191895439885
+      },
+      {
+        "outer_iteration": 12,
+        "energy_in": 16.77510064040025,
+        "rho_scale": 0.1677510064040025,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 14.261990622808723,
+        "relative_delta": 0.1498119189543989
+      },
+      {
+        "outer_iteration": 13,
+        "energy_in": 14.261990622808723,
+        "rho_scale": 0.14261990622808723,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 12.125374439496104,
+        "relative_delta": 0.14981191895439896
+      },
+      {
+        "outer_iteration": 14,
+        "energy_in": 12.125374439496104,
+        "rho_scale": 0.12125374439496105,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 10.308848826674573,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 15,
+        "energy_in": 10.308848826674573,
+        "rho_scale": 0.10308848826674573,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 8.764460401739651,
+        "relative_delta": 0.149811918954399
+      },
+      {
+        "outer_iteration": 16,
+        "energy_in": 8.764460401739651,
+        "rho_scale": 0.08764460401739652,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 7.451439770355192,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 17,
+        "energy_in": 7.451439770355192,
+        "rho_scale": 0.07451439770355192,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 6.335125279385155,
+        "relative_delta": 0.14981191895439894
+      },
+      {
+        "outer_iteration": 18,
+        "energy_in": 6.335125279385155,
+        "rho_scale": 0.06335125279385155,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 5.386048004463942,
+        "relative_delta": 0.14981191895439896
+      },
+      {
+        "outer_iteration": 19,
+        "energy_in": 5.386048004463942,
+        "rho_scale": 0.05386048004463942,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 4.579153817334688,
+        "relative_delta": 0.1498119189543989
+      },
+      {
+        "outer_iteration": 20,
+        "energy_in": 4.579153817334688,
+        "rho_scale": 0.04579153817334688,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.8501880810456011,
+        "energy_out": 3.893141996772417,
+        "relative_delta": 0.14981191895439894
+      }
+    ],
+    "final_reduction_factor": 0.03893141996772417,
+    "final_energy": 3.893141996772417,
+    "divergence_detected": false
+  },
+  "solution_summary": {
+    "metric_converged": true,
+    "metric_iterations": 1,
+    "metric_final_error": 1.1102230246251565e-16,
+    "g_tt_min": -1.0,
+    "g_tt_max": -1.0,
+    "g_rr_min": 0.9000000004122307,
+    "g_rr_max": 1.0999999995443004
+  }
+}
