@@ -139,6 +139,25 @@ def main() -> int:
             "Curved-space QI verification",
         )
     )
+    
+    # 3D stability analysis (small grid for batch runs)
+    tasks.append(
+        (
+            [
+                "python",
+                "full_3d_evolution.py",
+                "--grid-size",
+                "16",
+                "--t-final",
+                "0.5",
+                "--save-results",
+                "--save-plots",
+                "--results-dir",
+                str(session_dir),
+            ],
+            "3+1D stability analysis (polymer-corrected ADM)",
+        )
+    )
 
     # Discrepancy analysis
     tasks.append(
