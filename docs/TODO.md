@@ -44,12 +44,14 @@ This task is to **reconcile definitions** and either:
 (A) reproduce 1083× under a clear definition within the pipeline, or
 (B) update documentation to clearly separate “computational energy optimization” from “warp bubble feasibility ratio”.
 
-- [ ] Define the quantities precisely and in writing
-  - Pipeline: what does “base energy requirement” mean (post-VdB? post-LQG?)
-  - Cross-repo report: what does “baseline_energy_GJ” measure (compute/operations accounting)
-- [ ] Add a discrepancy-analysis run that logs intermediate factors and saves a JSON artifact
-  - Log: geometric reduction (VdB), LQG factor, backreaction factor, cavity/squeezing/multi factors
-  - Save: `results/discrepancy_*.json` (+ optional plot)
+- [x] Define the quantities precisely and in writing
+  - Pipeline: "base energy requirement" = dimensionless feasibility ratio (target <= 1) after VdB-Natário + LQG
+  - Cross-repo report: "baseline_energy_GJ" = computational energy accounting (J/GJ/MJ) from cross-repository integration
+  - Documented in `discrepancy_analysis.py` output under "interpretation" key
+- [x] Add a discrepancy-analysis run that logs intermediate factors and saves a JSON artifact
+  - Script: `discrepancy_analysis.py --save-results`
+  - Logs: pipeline quick-check result (base/final energy ratio) + ENERGY_OPTIMIZATION_REPORT.json contents
+  - Output: `results/discrepancy_*.json` with explicit note that these are not the same physical quantity
 - [ ] Re-run pipeline at multiple baselines to isolate missing factors
   - Toggle/compare: with vs without VdB-Natário baseline
   - Toggle/compare: quick backreaction vs full backreaction solve
@@ -89,11 +91,14 @@ Publishable angle:
 The repo mentions linear backreaction (~15% reduction). Upgrade this into a testable, convergent iterative loop.
 
 - [x] Locate backreaction implementation (`src/warp_qft/backreaction_solver.py`)
-- [ ] Implement a nonlinear/iterative coupling mode (PRIORITY)
-  - Iterate $G^{(n+1)} \leftarrow 8\pi(T_{\mathrm{class}} + \langle T \rangle^{(n)})$
-  - Convergence test on $\beta$ or $\Delta E/E$
-  - Save `results/backreaction_iterative_*.json` and a convergence plot
-- [ ] Integrate the iterative mode into the pipeline (toggle via config/flag)
+- [x] Implement a nonlinear/iterative coupling mode
+  - Added `apply_backreaction_correction_iterative(...)` in `src/warp_qft/backreaction_solver.py`
+  - Outer loop scales stress-energy by current energy estimate; convergence on relative energy delta
+  - Standalone runner: `backreaction_iterative_experiment.py --save-results --save-plots`
+  - Example artifacts: `results/backreaction_iterative_*.json` and `.png`
+- [x] Integrate the iterative mode into the pipeline (toggle via config/flag)
+  - Config flags: `backreaction_iterative`, `backreaction_outer_iterations`, `backreaction_relative_energy_tolerance`
+  - CLI flags: `--backreaction-iterative`, `--backreaction-outer-iters`, `--backreaction-rel-tol`
 
 Publishable angle:
 - **Null result** if nonlinear/iterative coupling removes feasibility.
@@ -105,10 +110,11 @@ Publishable angle:
 
 A full 3+1D evolution is likely out of scope short-term; do the smallest honest step that adds value.
 
-- [ ] Add `toy_evolution.py` (toy 1D/2D time evolution) (PRIORITY)
-  - Must save plots to `results/` with timestamps (`--save-plots`)
-  - Must save numeric summary to JSON (`--save-results`)
-  - Include explicit non-claims (no full GR gauge, no full 3+1 constraints)
+- [x] Add `toy_evolution.py` (toy 1D/2D time evolution)
+  - Simple reaction-diffusion PDE driven by negative energy density profile
+  - Saves plots and JSON to `results/` with timestamps (`--save-results`, `--save-plots`)
+  - Explicit non-claims documented in JSON output: no constrained 3+1 GR, no gauge conditions
+  - Example artifacts: `results/toy_evolution_*.json` and `.png`
 
 Publishable angle:
 - “Failure modes / instability signatures under time evolution.”
@@ -118,10 +124,12 @@ Publishable angle:
 ## 5) Quantum-Optics Analogies (Squeezing) & Causality Checks
 
 - [x] Verify squeezing model (currently effective-factor based)
-- [ ] Add coarse causality/CTC screening (PRIORITY)
-  - Start with simple metric-signature / sign-flip screens on toy/backreaction metrics
-  - Produce `results/causality_screen_*.json` and plots (if applicable)
-  - (Optional) add QuTiP-based squeezing micro-model only if dependency is acceptable
+- [x] Add coarse causality/CTC screening
+  - Added `src/warp_qft/causality.py` with `screen_spherical_metric(...)` helper
+  - Checks: signature violations (g_tt >= 0, g_rr <= 0), nonfinite values, null-geodesic slopes
+  - Standalone runner: `causality_screen.py <input.json> --save-results`
+  - Integrated into `toy_evolution.py` output; example: `results/causality_screen_*.json`
+  - (QuTiP-based squeezing micro-model deferred; effective model sufficient for current scope)
 
 Publishable angle:
 - “Causality constraints in polymer-enhanced warp metrics” (likely null/constraints-heavy).

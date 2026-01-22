@@ -267,8 +267,13 @@ def main():
     parser.add_argument("--noise", type=float, default=0.05, help="Noise level (0.05 = 5%)")
     parser.add_argument("--save-results", action="store_true", help="Save results to JSON")
     parser.add_argument("--save-plots", action="store_true", help="Save plots to results/")
+    parser.add_argument("--results-dir", type=str, default="results", help="Output directory for artifacts")
     
     args = parser.parse_args()
+    
+    # Create results directory
+    results_dir = Path(args.results_dir)
+    results_dir.mkdir(parents=True, exist_ok=True)
     
     print("=" * 60)
     print("SENSITIVITY & ROBUSTNESS ANALYSIS")
@@ -300,7 +305,6 @@ def main():
     
     # Save results
     if args.save_results:
-        Path("results").mkdir(exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         output = {
@@ -310,17 +314,16 @@ def main():
             "squeezing_sensitivity": sqz_sens,
         }
         
-        filename = f"results/sensitivity_analysis_{timestamp}.json"
+        filename = results_dir / f"sensitivity_analysis_{timestamp}.json"
         with open(filename, 'w') as f:
             json.dump(output, f, indent=2)
         print(f"\n  Results saved to {filename}")
     
     # Save plots
     if args.save_plots:
-        Path("results").mkdir(exist_ok=True)
-        plot_monte_carlo_results(mc_result, "results/monte_carlo_feasibility.png")
-        plot_sensitivity_scan(cavity_sens, "results/cavity_Q_sensitivity.png")
-        plot_sensitivity_scan(sqz_sens, "results/squeezing_sensitivity.png")
+        plot_monte_carlo_results(mc_result, str(results_dir / "monte_carlo_feasibility.png"))
+        plot_sensitivity_scan(cavity_sens, str(results_dir / "cavity_Q_sensitivity.png"))
+        plot_sensitivity_scan(sqz_sens, str(results_dir / "squeezing_sensitivity.png"))
     
     print("\n" + "=" * 60)
     print("Analysis complete.")

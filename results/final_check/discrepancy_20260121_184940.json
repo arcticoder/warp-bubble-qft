@@ -1,0 +1,50 @@
+{
+  "timestamp": "20260121_184940",
+  "pipeline": {
+    "parameters": {
+      "mu": 0.1,
+      "R": 2.3
+    },
+    "base_energy_ratio": 1.1103433326571543,
+    "final_energy_ratio": 0.056729250152159606,
+    "feasible": true
+  },
+  "energy_optimization_report": {
+    "path": "ENERGY_OPTIMIZATION_REPORT.json",
+    "achieved_optimization_factor": 1082.973963355834,
+    "energy_metrics": {
+      "total_baseline_energy_GJ": 3.8,
+      "total_optimized_energy_MJ": 3.5088562870199214,
+      "total_energy_savings_GJ": 3.7964911437129802,
+      "energy_savings_percentage": 99.90766167665738
+    },
+    "system_optimization_results": {
+      "quantum_field_calculations": {
+        "baseline_energy_J": 1520000000.0,
+        "optimized_energy_J": 1353464.3344339137,
+        "optimization_factor": 1123.0439999999999,
+        "energy_savings_J": 1518646535.665566,
+        "savings_percentage": 99.91095629378724
+      },
+      "warp_bubble_qft_states": {
+        "baseline_energy_J": 1140000000.0,
+        "optimized_energy_J": 1055702.1808584526,
+        "optimization_factor": 1079.85,
+        "energy_savings_J": 1138944297.8191416,
+        "savings_percentage": 99.90739454553874
+      },
+      "energy_momentum_tensors": {
+        "baseline_energy_J": 1140000000.0,
+        "optimized_energy_J": 1099689.771727555,
+        "optimization_factor": 1036.6559999999997,
+        "energy_savings_J": 1138900310.2282724,
+        "savings_percentage": 99.90353598493617
+      }
+    }
+  },
+  "interpretation": {
+    "pipeline_quantity": "dimensionless feasibility ratio (target <= 1)",
+    "report_quantity": "computational energy accounting (J/GJ/MJ) from cross-repository integration",
+    "note": "These are not the same physical quantity; do not compare ratios directly without a mapping."
+  }
+}

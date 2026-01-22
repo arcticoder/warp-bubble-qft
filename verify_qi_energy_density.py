@@ -217,8 +217,13 @@ def main():
     parser.add_argument("--R", type=float, default=2.3, help="Bubble radius")
     parser.add_argument("--save-plots", action="store_true", help="Save plots to results/")
     parser.add_argument("--scan", action="store_true", help="Run parameter scan over μ")
+    parser.add_argument("--results-dir", type=str, default="results", help="Output directory for artifacts")
     
     args = parser.parse_args()
+    
+    # Create results directory
+    results_dir = Path(args.results_dir)
+    results_dir.mkdir(parents=True, exist_ok=True)
     
     print("=" * 60)
     print("QUANTUM INEQUALITY & ENERGY DENSITY VERIFICATION")
@@ -258,12 +263,11 @@ def main():
         print(f"  QI violations found: {num_violations}/{len(scan_result['results'])}")
         
         if args.save_plots:
-            plot_qi_scan(scan_result, "results/qi_scan.png")
+            plot_qi_scan(scan_result, str(results_dir / "qi_scan.png"))
     
     # 4. Save plots if requested
     if args.save_plots:
-        Path("results").mkdir(exist_ok=True)
-        plot_energy_density_profiles(energy_check, "results/energy_density_profile.png")
+        plot_energy_density_profiles(energy_check, str(results_dir / "energy_density_profile.png"))
     
     print("\n" + "=" * 60)
     print("Verification complete.")

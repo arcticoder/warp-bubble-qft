@@ -78,3 +78,32 @@ All scripts are executable with `--save-results` and `--save-plots` flags for co
 
 Note: full `pytest` is currently blocked by an unrelated `IndentationError` in warp-bubble-qft/tests/test_recent_discoveries.py; I validated the specific pipeline scan test still passes after the scan-resolution tweak.
 <!-- ------ -->
+Completed the priority TODO items:
+
+**Implemented**:
+1. ✅ **Iterative/nonlinear backreaction** - backreaction_solver.py + backreaction_iterative_experiment.py
+   - Outer-loop coupling scales stress-energy by current energy estimate
+   - CLI: `--backreaction-iterative --backreaction-outer-iters N`
+
+2. ✅ **Toy 1D evolution** - toy_evolution.py
+   - Reaction-diffusion PDE with polymer energy density drive
+   - Explicit non-claims documented in JSON output
+
+3. ✅ **Causality screening** - causality.py + causality_screen.py
+   - Signature violations, nonfinite values, null-geodesic checks
+
+4. ✅ **Discrepancy analysis** - discrepancy_analysis.py
+   - Explicitly separates pipeline feasibility ratio from 1083× computational accounting
+
+5. ✅ **Batch runner** - batch_analysis.py
+   - Orchestrates all verification scripts into timestamped sessions
+
+All scripts now support `--results-dir` for organized archiving. Batch test run produced results/final_check/ with all artifacts (QI scan, sensitivity, toy evolution, discrepancy report, plots).
+
+**Run a full verification batch**:
+```bash
+python batch_analysis.py --session-name my_verification
+```
+
+Updated docs/TODO.md marking completed tasks. See docs/COMPLETED_TASKS.md for detailed documentation.
+<!-- ------ -->

@@ -82,6 +82,9 @@ def save_config_template(filename: str):
         "lqg_profile": config.lqg_profile,
         "use_backreaction": config.use_backreaction,
         "backreaction_quick": config.backreaction_quick,
+        "backreaction_iterative": config.backreaction_iterative,
+        "backreaction_outer_iterations": config.backreaction_outer_iterations,
+        "backreaction_relative_energy_tolerance": config.backreaction_relative_energy_tolerance,
         "use_cavity_boost": config.use_cavity_boost,
         "use_squeezing": config.use_squeezing,
         "use_multi_bubble": config.use_multi_bubble,
@@ -331,6 +334,14 @@ Examples:
     parser.add_argument('--output', type=str, default='lqg_pipeline_results.json',
                        help='Output file for results')
     
+    # Backreaction arguments
+    parser.add_argument('--backreaction-iterative', action='store_true',
+                       help='Use iterative/nonlinear backreaction coupling')
+    parser.add_argument('--backreaction-outer-iters', type=int, default=10,
+                       help='Max outer iterations for iterative backreaction (default: 10)')
+    parser.add_argument('--backreaction-rel-tol', type=float, default=1e-4,
+                       help='Relative energy tolerance for iterative backreaction (default: 1e-4)')
+    
     # General arguments
     parser.add_argument('--verbose', '-v', action='store_true',
                        help='Enable verbose logging')
@@ -352,6 +363,13 @@ Examples:
     else:
         config = PipelineConfig()
         print("Using default configuration")
+    
+    # Apply CLI backreaction overrides if provided
+    if args.backreaction_iterative:
+        config.backreaction_iterative = True
+        config.backreaction_outer_iterations = args.backreaction_outer_iters
+        config.backreaction_relative_energy_tolerance = args.backreaction_rel_tol
+        print(f"Iterative backreaction enabled: max_iters={config.backreaction_outer_iterations}, rel_tol={config.backreaction_relative_energy_tolerance}")
     
     # Execute requested analysis
     if args.quick_check:

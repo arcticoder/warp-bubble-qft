@@ -1,0 +1,8 @@
+Session: verification_20260121
+Timestamp: 20260121_184750
+Tasks:
+  [0] Quick feasibility check (baseline)
+  [0] Quick feasibility check (iterative backreaction)
+  [2] QI verification scan
+  [0] Toy 1D evolution
+  [0] Discrepancy analysis
