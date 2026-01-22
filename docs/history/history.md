@@ -152,3 +152,77 @@ All 7 tasks passed in full_verification (552 KB):
 
 All priority TODO items are complete. The framework is now ready for conservative methods paper publication.
 <!-- ------ -->
+═══════════════════════════════════════════════════════════════
+  TASK COMPLETION SUMMARY — Iterative Backreaction Stabilization
+═══════════════════════════════════════════════════════════════
+
+✅ TODO.md Updated
+   - Added "Methods Paper: READY" status banner
+   - Added Section 7: Low-Priority Extensions (5 tasks)
+   - Priority: Fix NaN divergences (7.1) → COMPLETED
+
+✅ Iterative Backreaction Stabilized
+   - Implemented damping factor β = 0.7 (blends solutions)
+   - Implemented L2 regularization λ = 1e-3 (bounds growth)
+   - Added NaN/inf detection with diagnostic flag
+   - Added adaptive tolerance scaling
+
+✅ Validation Results
+   - Config 6 (Q=1e6, sq=15dB, iter): NaN → 0.013 ✓
+   - Reduction factor: 85× (vs 19.57× for standard)
+   - Test scales: 1.0, 100.0, 10000.0 all converged
+   - No divergence detected in any test
+
+✅ Polish Batch Session Completed
+   - 7/7 tasks passed (quick checks, QI scan, sensitivity, toy evolution, etc.)
+   - Generated updated verification artifacts in results/polish/
+   - All plots and JSON outputs archived
+
+✅ Documentation Updated
+   - VERIFICATION_SUMMARY.md: Updated table, breakdown, interpretations
+   - STABILIZATION_NOTE.md: Detailed implementation and validation notes
+   - Git commit: ea60859 "feat: Stabilize iterative backreaction..."
+
+───────────────────────────────────────────────────────────────
+REMAINING LOW-PRIORITY TASKS (from TODO.md Section 7)
+───────────────────────────────────────────────────────────────
+
+7.2 Curved QI Verification
+    → Create curved_qi_verification.py using Alcubierre metric
+    → Compute metric-weighted QI integral
+
+7.3 3+1D Stability Toy
+    → Extend toy_evolution.py to 3+1 dimensions
+    → Add Hamiltonian/momentum constraints
+
+7.4 Enhancement Derivation Notes
+    → Document cavity Q, squeezing, multi-bubble formulas
+    → Add literature references
+
+7.5 Manuscript Preparation
+    → Draft methods section
+    → Create publication-quality figures
+
+═══════════════════════════════════════════════════════════════
+EOF
+
+
+Perfect! All core tasks completed. The iterative backreaction is now stabilized and working correctly. Here's a summary:
+
+## ✅ Tasks Completed
+
+1. **Updated TODO.md** with methods-paper-ready status and Section 7 low-priority extensions
+2. **Stabilized iterative backreaction** in backreaction_solver.py with:
+   - Damping factor β=0.7 to smooth convergence
+   - L2 regularization λ=1e-3 to bound metric growth
+   - NaN/inf detection with diagnostic flags
+   - Adaptive tolerance scaling
+3. **Validated fix** - Config 6 (Q=1e6, squeezing=15dB, iterative) now converges to 0.013 (85× reduction, was NaN)
+4. **Ran polish batch session** - All 7 verification tasks passed
+5. **Updated documentation**:
+   - VERIFICATION_SUMMARY.md with new results
+   - STABILIZATION_NOTE.md with implementation details
+6. **Committed work** - Git commit ea60859
+
+The remaining tasks (7.2-7.5) are low-priority extensions for future work. The methods paper is ready for the core verification workflow!
+<!-- ------ -->
