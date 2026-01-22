@@ -1,0 +1,17 @@
+{
+  "timestamp": "20260121_183024",
+  "input": "results/toy_evolution_20260121_183019.json",
+  "screen": {
+    "nonfinite": false,
+    "signature_violation_tt": false,
+    "signature_violation_rr": false,
+    "null_slope_nonfinite": false,
+    "g_tt_min": -1.0557253898473318,
+    "g_tt_max": -1.0,
+    "g_rr_min": 0.9442746101526683,
+    "g_rr_max": 1.0,
+    "null_slope_min": 0.9457441706091482,
+    "null_slope_max": 1.0,
+    "ok": true
+  }
+}

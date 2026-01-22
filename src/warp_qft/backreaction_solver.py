@@ -229,22 +229,25 @@ class BackreactionSolver:
             logger.warning("Using non-converged backreaction solution")
             return original_energy
         
-        # Extract metric components
-        g_tt = backreaction_solution["g_tt"]
-        g_rr = backreaction_solution["g_rr"]
-        
-        # Compute effective energy reduction factor
-        # Based on metric volume element changes
-        volume_factor = np.mean(np.sqrt(g_rr * np.abs(g_tt)))
-        
-        # Empirical scaling: ~15% reduction observed
-        reduction_factor = 0.85 + 0.15 * (1 - volume_factor)
-        reduction_factor = np.clip(reduction_factor, 0.75, 1.0)  # Reasonable bounds
-        
+        reduction_factor = self.compute_reduction_factor(backreaction_solution)
         reduced_energy = original_energy * reduction_factor
-        
         logger.info(f"Backreaction reduces energy by {(1-reduction_factor)*100:.1f}%")
         return reduced_energy
+
+    def compute_reduction_factor(self, backreaction_solution: Dict) -> float:
+        """Compute an effective energy reduction factor from a backreaction solution."""
+        if not backreaction_solution.get("converged", False):
+            return 1.0
+
+        g_tt = backreaction_solution["g_tt"]
+        g_rr = backreaction_solution["g_rr"]
+
+        # Based on metric volume element changes.
+        volume_factor = float(np.mean(np.sqrt(g_rr * np.abs(g_tt))))
+
+        # Empirical scaling: ~15% reduction observed.
+        reduction_factor = 0.85 + 0.15 * (1 - volume_factor)
+        return float(np.clip(reduction_factor, 0.75, 1.0))  # Reasonable bounds
 
 
 def apply_backreaction_correction(original_energy: float, 
@@ -291,6 +294,83 @@ def apply_backreaction_correction(original_energy: float,
         }
     
     return corrected_energy, diagnostics
+
+
+def apply_backreaction_correction_iterative(
+    original_energy: float,
+    R_bubble: float,
+    rho_profile: Callable[[np.ndarray], np.ndarray],
+    *,
+    grid_size: int = 400,
+    solver_tolerance: float = 1e-6,
+    max_inner_iterations: int = 50,
+    max_outer_iterations: int = 10,
+    relative_energy_tolerance: float = 1e-4,
+) -> Tuple[float, Dict]:
+    """Apply an iterative backreaction correction.
+
+    This implements a simple nonlinear coupling loop where the stress-energy
+    profile amplitude is scaled in proportion to the current energy estimate.
+    It is intended as a reproducible *toy* self-consistency step that can be
+    archived and compared across runs.
+
+    Returns:
+        (corrected_energy, diagnostics)
+    """
+    solver = BackreactionSolver(grid_size=grid_size, tolerance=solver_tolerance)
+    r = solver.setup_spatial_grid(3 * R_bubble)
+    rho_base = rho_profile(r)
+
+    energy = float(original_energy)
+    history = []
+    last_solution: Optional[Dict] = None
+
+    for outer_idx in range(1, max_outer_iterations + 1):
+        scale = energy / float(original_energy) if original_energy != 0 else 1.0
+        rho_scaled = rho_base * scale
+
+        solution = solver.solve_backreaction(r, rho_scaled, max_iterations=max_inner_iterations)
+        last_solution = solution
+
+        reduction_factor = solver.compute_reduction_factor(solution)
+        next_energy = float(energy * reduction_factor)
+
+        rel_delta = abs(next_energy - energy) / max(abs(energy), 1e-12)
+        history.append(
+            {
+                "outer_iteration": int(outer_idx),
+                "energy_in": float(energy),
+                "rho_scale": float(scale),
+                "metric_converged": bool(solution.get("converged", False)),
+                "metric_iterations": int(solution.get("iterations", 0)),
+                "metric_final_error": float(solution.get("final_error", float("inf"))),
+                "reduction_factor": float(reduction_factor),
+                "energy_out": float(next_energy),
+                "relative_delta": float(rel_delta),
+            }
+        )
+
+        energy = next_energy
+        if rel_delta < relative_energy_tolerance:
+            break
+
+    diagnostics = {
+        "method": "iterative",
+        "grid_size": int(grid_size),
+        "solver_tolerance": float(solver_tolerance),
+        "max_inner_iterations": int(max_inner_iterations),
+        "max_outer_iterations": int(max_outer_iterations),
+        "relative_energy_tolerance": float(relative_energy_tolerance),
+        "history": history,
+        "final_reduction_factor": float(energy / float(original_energy)) if original_energy != 0 else 1.0,
+        "final_energy": float(energy),
+    }
+
+    # Include last solution for downstream analysis (large arrays; users can drop it when archiving).
+    if last_solution is not None:
+        diagnostics["last_solution"] = last_solution
+
+    return float(energy), diagnostics
 
 
 def optimize_backreaction_parameters(energy_profile: Callable,

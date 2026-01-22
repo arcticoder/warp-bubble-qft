@@ -38,7 +38,9 @@ from .lqg_profiles import (
     scan_lqg_parameter_space, compare_profile_types
 )
 from .backreaction_solver import (
-    apply_backreaction_correction, BackreactionSolver
+    apply_backreaction_correction,
+    apply_backreaction_correction_iterative,
+    BackreactionSolver,
 )
 from .enhancement_pathway import (
     EnhancementConfig, EnhancementPathwayOrchestrator
@@ -66,6 +68,9 @@ class PipelineConfig:
     # Backreaction settings (Step 2)
     use_backreaction: bool = True
     backreaction_quick: bool = True
+    backreaction_iterative: bool = False
+    backreaction_outer_iterations: int = 10
+    backreaction_relative_energy_tolerance: float = 1e-4
     
     # Enhancement pathways (Step 3)
     enhancement_config: EnhancementConfig = None
@@ -166,10 +171,19 @@ class WarpBubbleEnhancementPipeline:
             def rho_profile(r):
                 from .lqg_profiles import polymer_field_profile
                 return polymer_field_profile(r, mu, R)
-            
-            corrected_energy, backreaction_info = apply_backreaction_correction(
-                current_energy, R, rho_profile, self.config.backreaction_quick
-            )
+
+            if self.config.backreaction_iterative:
+                corrected_energy, backreaction_info = apply_backreaction_correction_iterative(
+                    current_energy,
+                    R,
+                    rho_profile,
+                    max_outer_iterations=self.config.backreaction_outer_iterations,
+                    relative_energy_tolerance=self.config.backreaction_relative_energy_tolerance,
+                )
+            else:
+                corrected_energy, backreaction_info = apply_backreaction_correction(
+                    current_energy, R, rho_profile, self.config.backreaction_quick
+                )
             corrections["backreaction"] = backreaction_info
             corrections["energy_after_backreaction"] = corrected_energy
             current_energy = corrected_energy
@@ -204,7 +218,9 @@ class WarpBubbleEnhancementPipeline:
             Dictionary with scan results and optimal parameters
         """
         if resolution is None:
-            resolution = self.config.grid_resolution if detailed_scan else 20
+            resolution = self.config.grid_resolution
+            if not detailed_scan:
+                resolution = min(resolution, 20)
 
         # Parameter ranges
         if mu_range is None:

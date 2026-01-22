@@ -55,3 +55,26 @@ Three options identified:
 
 All scripts are executable with `--save-results` and `--save-plots` flags for complete reproducibility. The verification framework is now ready for independent validation or further development toward publication.
 <!-- ------ -->
+**Updated roadmap + reprioritized work**
+- Updated warp-bubble-qft/docs/TODO.md to mark completed reproducibility/QI/sensitivity items and to prioritize: (1) the 1083× discrepancy reconciliation, (2) iterative backreaction coupling, (3) toy evolution, (4) causality screening.
+
+**Implemented the “next priorities”**
+- Iterative/nonlinear backreaction mode:
+  - Added `apply_backreaction_correction_iterative(...)` and a reusable reduction-factor helper in warp-bubble-qft/src/warp_qft/backreaction_solver.py.
+  - Exposed pipeline toggles (`backreaction_iterative`, `backreaction_outer_iterations`, `backreaction_relative_energy_tolerance`) and wired them in warp-bubble-qft/src/warp_qft/enhancement_pipeline.py.
+  - Added runnable experiment script warp-bubble-qft/backreaction_iterative_experiment.py and generated artifacts: warp-bubble-qft/results/backreaction_iterative_20260121_183031.json, warp-bubble-qft/results/backreaction_iterative_20260121_183031.png.
+- Toy evolution harness + causality screen:
+  - Added coarse screening helper warp-bubble-qft/src/warp_qft/causality.py.
+  - Added toy evolution runner warp-bubble-qft/toy_evolution.py and produced artifacts: warp-bubble-qft/results/toy_evolution_20260121_183019.json, warp-bubble-qft/results/toy_evolution_20260121_183019.png.
+  - Added standalone screen runner warp-bubble-qft/causality_screen.py and produced: warp-bubble-qft/results/causality_screen_20260121_183024.json.
+- Discrepancy reconciliation artifact:
+  - Added warp-bubble-qft/discrepancy_analysis.py to explicitly compare pipeline “energy ratio” vs ENERGY_OPTIMIZATION_REPORT.json “computational energy accounting”, and produced: warp-bubble-qft/results/discrepancy_20260121_183146.json.
+
+**How to run the new pieces**
+- Iterative backreaction experiment: `python backreaction_iterative_experiment.py --save-results --save-plots`
+- Toy evolution: `python toy_evolution.py --save-results --save-plots`
+- Screen a saved toy run: `python causality_screen.py results/toy_evolution_*.json --save-results`
+- Discrepancy report: `python discrepancy_analysis.py --save-results`
+
+Note: full `pytest` is currently blocked by an unrelated `IndentationError` in warp-bubble-qft/tests/test_recent_discoveries.py; I validated the specific pipeline scan test still passes after the scan-resolution tweak.
+<!-- ------ -->

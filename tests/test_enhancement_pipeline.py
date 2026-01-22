@@ -21,7 +21,7 @@ from src.warp_qft.lqg_profiles import (
     compare_profile_types, scan_lqg_parameter_space
 )
 from src.warp_qft.backreaction_solver import (
-    BackreactionSolver, apply_backreaction_correction
+    BackreactionSolver, apply_backreaction_correction, apply_backreaction_correction_iterative
 )
 from src.warp_qft.enhancement_pathway import (
     EnhancementConfig, CavityBoostCalculator, QuantumSqueezingEnhancer,
@@ -198,6 +198,39 @@ class TestBackreactionSolver(unittest.TestCase):
         # Reduction should be reasonable (not more than 50%)
         self.assertGreater(corrected, 0.5 * original_energy)
         self.assertLess(corrected, original_energy)
+
+    def test_apply_backreaction_correction_iterative_mocked(self):
+        """Test iterative correction plumbing without heavy nonlinear solve."""
+        from unittest.mock import patch
+
+        original_energy = 1.0
+
+        def test_profile(r):
+            return -np.exp(-(r**2) / 4)
+
+        fake_solution = {
+            "g_tt": -np.ones(10),
+            "g_rr": np.ones(10),
+            "stress_energy": {"T_00": -np.ones(10), "T_rr": np.ones(10), "T_theta": -np.ones(10), "T_phi": -np.ones(10)},
+            "converged": True,
+            "iterations": 1,
+            "final_error": 0.0,
+        }
+
+        with patch("src.warp_qft.backreaction_solver.BackreactionSolver.solve_backreaction", return_value=fake_solution):
+            corrected, diagnostics = apply_backreaction_correction_iterative(
+                original_energy,
+                2.0,
+                test_profile,
+                grid_size=10,
+                max_inner_iterations=1,
+                max_outer_iterations=3,
+                relative_energy_tolerance=0.2,  # stop after first update
+            )
+
+        self.assertLess(corrected, original_energy)
+        self.assertEqual(diagnostics["method"], "iterative")
+        self.assertTrue(len(diagnostics["history"]) >= 1)
 
 
 class TestEnhancementPathways(unittest.TestCase):
