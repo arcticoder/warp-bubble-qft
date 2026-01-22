@@ -124,6 +124,21 @@ def main() -> int:
             "Toy 1D evolution",
         )
     )
+    
+    # Curved QI verification
+    tasks.append(
+        (
+            [
+                "python",
+                "curved_qi_verification.py",
+                "--save-results",
+                "--save-plots",
+                "--results-dir",
+                str(session_dir),
+            ],
+            "Curved-space QI verification",
+        )
+    )
 
     # Discrepancy analysis
     tasks.append(
