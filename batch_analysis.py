@@ -133,6 +133,14 @@ def main() -> int:
         )
     )
 
+    # Baseline comparison (isolate reduction factors)
+    tasks.append(
+        (
+            ["python", "baseline_comparison.py", "--save-results", "--results-dir", str(session_dir)],
+            "Baseline comparison (factor isolation)",
+        )
+    )
+
     # Iterative backreaction experiment (optional; can be slow)
     if not args.skip_slow:
         tasks.append(

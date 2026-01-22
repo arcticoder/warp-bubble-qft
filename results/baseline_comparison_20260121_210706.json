@@ -1,0 +1,157 @@
+{
+  "timestamp": "20260121_210706",
+  "parameters": {
+    "mu": 0.1,
+    "R": 2.3
+  },
+  "configurations": [
+    {
+      "label": "1_baseline",
+      "config": {
+        "use_vdb_natario": false,
+        "use_backreaction": false,
+        "backreaction_quick": true,
+        "backreaction_iterative": false,
+        "cavity_Q": 10000.0,
+        "squeezing_db": 0.0,
+        "num_bubbles": 1
+      },
+      "energies": {
+        "base_energy": 11.103433326571542,
+        "final_energy": 10.094030388647129,
+        "reduction_factor": 1.0999999900000004
+      },
+      "enhancement_factors": {
+        "cavity": 1.0999999900000004,
+        "squeezing": 1.0,
+        "multi_bubble": 1.0,
+        "total": 1.0999999900000004
+      },
+      "description": "Baseline (no VdB, no BR, no enh)"
+    },
+    {
+      "label": "2_vdb",
+      "config": {
+        "use_vdb_natario": true,
+        "use_backreaction": false,
+        "backreaction_quick": true,
+        "backreaction_iterative": false,
+        "cavity_Q": 10000.0,
+        "squeezing_db": 0.0,
+        "num_bubbles": 1
+      },
+      "energies": {
+        "base_energy": 1.1103433326571543,
+        "final_energy": 1.009403038864713,
+        "reduction_factor": 1.0999999900000004
+      },
+      "enhancement_factors": {
+        "cavity": 1.0999999900000004,
+        "squeezing": 1.0,
+        "multi_bubble": 1.0,
+        "total": 1.0999999900000004
+      },
+      "description": "+ VdB-Nat\u00e1rio geometric reduction"
+    },
+    {
+      "label": "3_vdb_br_quick",
+      "config": {
+        "use_vdb_natario": true,
+        "use_backreaction": true,
+        "backreaction_quick": true,
+        "backreaction_iterative": false,
+        "cavity_Q": 10000.0,
+        "squeezing_db": 0.0,
+        "num_bubbles": 1
+      },
+      "energies": {
+        "base_energy": 1.1103433326571543,
+        "final_energy": 0.857992583035006,
+        "reduction_factor": 1.2941176352941182
+      },
+      "backreaction_factor": 0.85,
+      "enhancement_factors": {
+        "cavity": 1.0999999900000004,
+        "squeezing": 1.0,
+        "multi_bubble": 1.0,
+        "total": 1.0999999900000004
+      },
+      "description": "+ quick backreaction (~15%)"
+    },
+    {
+      "label": "4_vdb_br_full",
+      "config": {
+        "use_vdb_natario": true,
+        "use_backreaction": true,
+        "backreaction_quick": false,
+        "backreaction_iterative": false,
+        "cavity_Q": 10000.0,
+        "squeezing_db": 0.0,
+        "num_bubbles": 1
+      },
+      "energies": {
+        "base_energy": 1.1103433326571543,
+        "final_energy": 0.8581710340641778,
+        "reduction_factor": 1.2938485320329722
+      },
+      "backreaction_factor": 0.8501767886783583,
+      "enhancement_factors": {
+        "cavity": 1.0999999900000004,
+        "squeezing": 1.0,
+        "multi_bubble": 1.0,
+        "total": 1.0999999900000004
+      },
+      "description": "+ full backreaction solve"
+    },
+    {
+      "label": "5_vdb_br_enh_std",
+      "config": {
+        "use_vdb_natario": true,
+        "use_backreaction": true,
+        "backreaction_quick": true,
+        "backreaction_iterative": false,
+        "cavity_Q": 1000000.0,
+        "squeezing_db": 15.0,
+        "num_bubbles": 3
+      },
+      "energies": {
+        "base_energy": 1.1103433326571543,
+        "final_energy": 0.056729250152159606,
+        "reduction_factor": 19.572677757576265
+      },
+      "backreaction_factor": 0.85,
+      "enhancement_factors": {
+        "cavity": 10.999990000010001,
+        "squeezing": 1.0,
+        "multi_bubble": 1.512435565298214,
+        "total": 16.636776093939826
+      },
+      "description": "+ standard enhancements (Q=1e6, sqz=15dB, N=3)"
+    },
+    {
+      "label": "6_vdb_br_iter_enh",
+      "config": {
+        "use_vdb_natario": true,
+        "use_backreaction": true,
+        "backreaction_quick": false,
+        "backreaction_iterative": true,
+        "cavity_Q": 1000000.0,
+        "squeezing_db": 15.0,
+        "num_bubbles": 3
+      },
+      "energies": {
+        "base_energy": 1.1103433326571543,
+        "final_energy": NaN,
+        "reduction_factor": Infinity
+      },
+      "backreaction_factor": 1.0,
+      "enhancement_factors": {
+        "cavity": 10.999990000010001,
+        "squeezing": 1.0,
+        "multi_bubble": 1.512435565298214,
+        "total": 16.636776093939826
+      },
+      "description": "+ iterative backreaction + standard enh"
+    }
+  ]
+}

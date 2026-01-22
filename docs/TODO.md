@@ -52,10 +52,12 @@ This task is to **reconcile definitions** and either:
   - Script: `discrepancy_analysis.py --save-results`
   - Logs: pipeline quick-check result (base/final energy ratio) + ENERGY_OPTIMIZATION_REPORT.json contents
   - Output: `results/discrepancy_*.json` with explicit note that these are not the same physical quantity
-- [ ] Re-run pipeline at multiple baselines to isolate missing factors
+- [x] Re-run pipeline at multiple baselines to isolate missing factors
+  - Script: `baseline_comparison.py --save-results`
   - Toggle/compare: with vs without VdB-Natário baseline
   - Toggle/compare: quick backreaction vs full backreaction solve
   - Toggle/compare: conservative enhancement parameters (low Q, low squeezing, N=1)
+  - Output: `results/baseline_comparison_*.json` with table of reduction factors
 
 Publishable angle:
 - **Verification paper** if the results reproduce.
@@ -65,9 +67,10 @@ Publishable angle:
 
 - [x] Provide a standalone verification script (`verify_qi_energy_density.py`)
 - [x] Re-run QI checks with fixed seeds and save plots (`results/qi_scan.png`)
-- [ ] Tighten the Ford–Roman comparison against literature formulas
+- [x] Tighten the Ford–Roman comparison against literature formulas
   - Document sampling function and coefficient choices
   - Add explicit mapping between code quantities and literature symbols
+  - Deliverable: `docs/LITERATURE_MAPPING.md` with formula mappings, assumptions, and limitations
 
 Deliverable: a minimal script that recomputes QI integrals *and* documents the sampling function and bound used.
 
@@ -138,11 +141,14 @@ Publishable angle:
 
 ## 6) Benchmark Against Literature / Known Bounds
 
-- [ ] Add a comparison table in docs
+- [x] Add a comparison table in docs
   - what bounds are being used
   - what integral/averaging procedure is applied
   - parameter mapping between code and literature
-- [ ] Ensure the paper-style narrative acknowledges known objections and limitations
+  - Deliverable: `docs/LITERATURE_MAPPING.md` includes benchmarking table (Section 4)
+- [x] Ensure the paper-style narrative acknowledges known objections and limitations
+  - Deliverable: `docs/LITERATURE_MAPPING.md` Section 5 documents known objections
+  - Includes recommended interpretation guidelines (Section 6)
 
 Deliverable: a small “Methods & limitations” doc section suitable for arXiv.
 
