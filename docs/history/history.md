@@ -512,3 +512,25 @@ All TODO items (tasks 0-7.5) are now **COMPLETE**:
 - Add a Makefile target for building the REVTeX manuscript (e.g., `make manuscript` that runs pdflatex twice and optionally bibtex or bibtex -> pdflatex twice).
 - Convert the reference list to a refs.bib BibTeX file and switch to `\bibliography{refs}` (recommended for arXiv/JHEP/APS workflows).
 <!-- ------ -->
+Status: moved the selected paper drafts into papers and committed the change. ✅
+
+## What I did 🔧
+- Moved these files from docs → papers:
+  - manuscript.tex  
+  - `ANEC_violation.tex`  
+  - `warp_bubble_proof.tex`  
+  - `recent_discoveries.tex`  
+  - `polymer_field_algebra.tex`  
+  - `metamaterial_casimir.tex`  
+  - `ghost_scalar.tex`  
+  - `benchmark_results.tex`  
+  - `results.tex`
+
+- Created a git commit:
+  - Message: `docs: move paper files to papers/`
+  - Commit (HEAD): 5f3b891
+
+## Current status ✅
+- Files are now in papers (confirmed).
+- Remaining `.tex` files still in docs (e.g., `ansatz_*`, `integration_overview.tex`, overview.tex, etc.). These look like sectional docs or drafts
+<!-- ------ -->
