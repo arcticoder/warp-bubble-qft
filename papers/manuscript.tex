@@ -61,9 +61,9 @@ outputs (12 tasks, 20 files, all passed).
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{1. Introduction}\label{introduction}
+\section{Introduction}\label{introduction}
 
-\subsubsection{1.1 The Warp Drive Energy
+\subsection{The Warp Drive Energy
 Problem}\label{the-warp-drive-energy-problem}
 
 Alcubierre~\cite{Alcubierre1994}'s warp drive metric achieves apparent
@@ -93,7 +93,7 @@ Clear separation of distinct physical quantities (feasibility ratio vs
 computational energy accounting) 4. Stability analysis (most
 calculations assume static configurations)
 
-\subsubsection{1.2 Purpose and Scope}\label{purpose-and-scope}
+\subsection{Purpose and Scope}\label{purpose-and-scope}
 
 This paper provides a \textbf{methods and verification framework} for
 evaluating such claims. We: - Reproduce energy reduction calculations
@@ -115,9 +115,9 @@ uncertainties.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{2. Methods}\label{methods}
+\section{Methods}\label{methods}
 
-\subsubsection{2.1 Pipeline Architecture}\label{pipeline-architecture}
+\subsection{Pipeline Architecture}\label{pipeline-architecture}
 
 \textbf{Implementation}: Python 3.12, NumPy/SciPy, SymPy for symbolic
 derivations\\
@@ -141,7 +141,7 @@ accounting'' (absolute energy in joules from integrated system
 analysis). The 1083$\times$ figure is the latter; pipeline yields
 \(\sim\)30$\times$ for the former.
 
-\subsubsection{2.2 Backreaction Solver}\label{backreaction-solver}
+\subsection{Backreaction Solver}\label{backreaction-solver}
 
 \textbf{Implementation}: \texttt{src/warp\_qft/backreaction\_solver.py}
 
@@ -166,7 +166,7 @@ flag if nonfinite values appear
 squeezing=15dB, iterative mode) now converges to 85$\times$ reduction; tested
 across energy scales 1.0, 100.0, 10000.0 with no instabilities.
 
-\subsubsection{2.3 Enhancement Factor
+\subsection{Enhancement Factor
 Derivations}\label{enhancement-factor-derivations}
 
 \textbf{Implementation}: \texttt{derive\_enhancements.py} (SymPy
@@ -198,7 +198,7 @@ macroscopic metrics requires spin-foam transition amplitudes
 Multiplicative (independent mechanisms → product of factors) -
 \textbf{Dominant mechanism}: Cavity (highest individual factor at Q=\(10^{6}\))
 
-\subsubsection{2.4 Quantum Inequality
+\subsection{Quantum Inequality
 Verification}\label{quantum-inequality-verification}
 
 \textbf{Implementation}: \texttt{verify\_qi\_energy\_density.py},
@@ -225,7 +225,7 @@ Flat-space: integral = -0.562, bound = -0.0063 → \textbf{violates}
 curved bound is less restrictive; violation only in flat limit. Rigorous
 curved QI inequalities remain open research question.
 
-\subsubsection{2.5 Stability Analysis}\label{stability-analysis}
+\subsection{Stability Analysis}\label{stability-analysis}
 
 \textbf{3D evolution}: \texttt{full\_3d\_evolution.py}
 
@@ -250,9 +250,9 @@ null-geodesic slopes. No pathologies detected in tested configurations.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{3. Results}\label{results}
+\section{Results}\label{results}
 
-\subsubsection{3.1 Energy Discrepancy
+\subsection{Energy Discrepancy
 Resolution}\label{energy-discrepancy-resolution}
 
 \textbf{Finding}: Pipeline feasibility ratio (\(\sim\)30$\times$) \(\neq\)
@@ -287,7 +287,7 @@ rigorously verified
 on warp bubble energy reduction mechanisms; cross-repo includes broader
 energy infrastructure. Both are now documented separately.
 
-\subsubsection{3.2 Backreaction
+\subsection{Backreaction
 Convergence}\label{backreaction-convergence}
 
 \textbf{Configuration 6} (previously divergent): - Parameters: Q=\(10^{6}\),
@@ -314,7 +314,7 @@ No instabilities observed; reduction factor scales consistently.
 
 No instabilities observed; reduction factor scales consistently.
 
-\subsubsection{3.3 Enhancement Factor
+\subsection{Enhancement Factor
 Validation}\label{enhancement-factor-validation}
 
 \textbf{Numerical at standard parameters}: - Cavity (Q=\(10^{6}\)):
@@ -332,7 +332,7 @@ justification and identifies limitations.
 \textbf{Dominant mechanism}: Cavity (highest individual factor);
 squeezing and polymer provide O(10) corrections.
 
-\subsubsection{3.4 Quantum Inequality
+\subsection{Quantum Inequality
 Cross-Checks}\label{quantum-inequality-cross-checks}
 
 \textbf{Flat-space Ford-Roman} (\(\mu\)=0.3, R=2.3, \(\tau\)=1.0): - Integral: -0.289
@@ -352,7 +352,7 @@ Interpretation: Less restrictive bound; violation disappears.
 violates (toy bound) but evolution stable → likely indicates toy-model
 limitations, not physical instability
 
-\subsubsection{3.5 Sensitivity Analysis}\label{sensitivity-analysis}
+\subsection{Sensitivity Analysis}\label{sensitivity-analysis}
 
 \textbf{Monte Carlo} (100 trials, Gaussian perturbations ±10\% on all
 parameters): - Mean feasibility: 0.61 (±0.18 std) - Failure rate: 3\%
@@ -368,9 +368,9 @@ and squeezing have strong leverage.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{4. Discussion}\label{discussion}
+\section{Discussion}\label{discussion}
 
-\subsubsection{4.1 Interpretation of
+\subsection{Interpretation of
 ``Feasibility''}\label{interpretation-of-feasibility}
 
 Numerical results show dimensionless energy ratios approaching
@@ -396,7 +396,7 @@ curved spacetime, spin-foam polymer calculations) - Sensitivity
 structure: cavity Q dominates; squeezing/polymer provide
 \(\sim\)10$\times$ corrections
 
-\subsubsection{4.2 Comparison to Literature
+\subsection{Comparison to Literature
 Claims}\label{comparison-to-literature-claims}
 
 \textbf{Headline ``1000$\times$ reduction''}: - Our analysis:
@@ -411,7 +411,7 @@ quantity (absolute energy accounting, not pipeline feasibility ratio) -
 Includes system-level optimizations beyond warp bubble mechanisms - Now
 clearly separated in documentation. Related theoretical constructs (e.g., Krasnikov tube) are discussed in the literature (see Everett and Roman~\cite{EverettRoman1997}).
 
-\subsubsection{4.3 Null Results and
+\subsection{Null Results and
 Limitations}\label{null-results-and-limitations}
 
 \textbf{Null findings}: 1. \textbf{Curved QI}: Toy bound shows no
@@ -432,7 +432,7 @@ models
 stability analysis, numerical ``feasibility'' is \textbf{parameter-space
 exploration}, not proof.
 
-\subsubsection{4.4 Theoretical Uncertainties Requiring
+\subsection{Theoretical Uncertainties Requiring
 Resolution}\label{theoretical-uncertainties-requiring-resolution}
 
 For these results to inform physics (not just computational methods),
@@ -464,7 +464,7 @@ available.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\subsection{5. Conclusion}\label{conclusion}
+\section{Conclusion}\label{conclusion}
 
 We have presented a reproducible verification framework for LQG-enhanced
 warp bubble energy optimizations. Key contributions:
