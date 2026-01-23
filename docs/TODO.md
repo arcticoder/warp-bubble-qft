@@ -1,43 +1,96 @@
-# TODO — Publishable-Grade Verification & Extensions (warp-bubble-qft)
+#+#+#+#+### TODO — Consolidation + Next Extensions (warp-bubble-qft)
 
-This file is a working roadmap to turn the current research-stage framework into a reproducible, publishable-quality result (positive, negative/null, or methods/benchmark paper).
+This TODO is the working roadmap for the *next phase* after the methods/verification work: make the repo cleaner to operate, reduce manuscript/TeX duplication, and extend the verification framework in a controlled way.
 
-Guiding principle: **treat all headline claims as hypotheses** until reproduced under controlled sweeps with archived configs, versions, and deterministic outputs.
-
----
-
-## Status (as of 2026-01-22)
-
-**🎯 Methods Paper: COMPLETE ✅** — All high-priority verification tasks complete. Manuscript finalized with 7 integrated figures. Repository ready for DawsonInstitute organization transfer and publication submission.
-
-**Key findings**:
-- Energy discrepancy **resolved**: Pipeline ~30× (feasibility ratio) ≠ cross-repo 1083× (computational accounting) — different quantities
-- Factor breakdown: VdB-Natário 10× + backreaction 1.29× + enhancements 16.6× ≈ **~340× total** (~20× verified, rest heuristic)
-- **Stability**: Iterative backreaction stabilized via adaptive damping (no divergences in tested parameter space)
-- **Robustness**: 24/24 integration points feasible, 2/3 edge cases robust (D < 0.1), 1/3 fragile (D=0.123 for large-R/high-squeezing)
-
-**Completed deliverables**:
-- `docs/VERIFICATION_SUMMARY.md` — comprehensive 12-section analysis with robustness testing
-- `docs/LITERATURE_MAPPING.md` — formula mappings, benchmarking table, limitations
-- `docs/STATUS_UPDATE.md` — quick-start guide
-- `results/full_verification/` — complete batch session (11 files, 552 KB, all tasks passed)
-- `results/final_integration/` — end-to-end integration + stress tests (21 files, 928 KB)
-- `papers/lqg_warp_verification_methods.pdf` — 17-page manuscript with figures (REVTeX 4.2)
-- `ORG_MOVE_CHECKLIST.md` — comprehensive transfer guide
-- `README.md` — Contributing section + CoC link
-- `batch_analysis.py --session-name <name>` — reproducible orchestration
-
-**Next phase**: Organization transfer to DawsonInstitute → publication submission → community engagement.
+Guiding principle: keep the repo honest and reproducible; treat all headline claims as hypotheses, and keep toy/heuristic bounds clearly labeled.
 
 ---
 
-## Recommended Next Steps (2026-01-22 → final integration)
+## Status (rolling)
 
-With the recent stabilization + extensions work (iterative backreaction damping/regularization, derivation scripts, and 3+1D toy ADM evolution), the repo is now in the “wrap-up” phase.
+- ✅ Methods + verification deliverables exist (integration runners, stress tests, manuscript PDF).
+- 🔄 Current priority: **consolidate manuscripts/TeX + simplify run entrypoints**.
 
-Goal: **prove the repo stays consistent end-to-end** under parameter grids and edge cases, then finalize a reproducible manuscript bundle.
+---
 
-### 8.1 Run End-to-End Full-System Integration Tests (highest priority)
+## Phase A — Manuscript consolidation (highest priority)
+
+Goal: one canonical paper build, one canonical “docs compilation” build, and a clear story for what lives where.
+
+- [ ] Decide canonical manuscript source of truth
+  - Recommended: `papers/lqg_warp_verification_methods.tex` (REVTeX methods/verification paper)
+  - Ensure any “paper-like” content in `docs/` is either:
+    - explicitly *documentation* (derivations, notes), or
+    - migrated into `papers/` as `\input{}` sections (if intended for publication)
+- [ ] Resolve `docs/main.tex` duplication
+  - Archive legacy wrapper under `docs/history/` (keep for provenance)
+  - Replace `docs/main.tex` with a short stub pointing to:
+    - `docs/warp-bubble-qft-docs-compilation.tex` (docs compilation)
+    - `papers/lqg_warp_verification_methods.tex` (paper)
+- [ ] Normalize TeX inclusion style
+  - Avoid “standalone article” TeX in `papers/` if it’s meant to be `\input{}` into the manuscript
+  - If a file is standalone (has `\documentclass`), keep it as such and do *not* `\input{}` it elsewhere
+- [ ] Add a lightweight manuscript build helper
+  - Script (recommended): `compile_manuscript.py` that runs `pdflatex/bibtex` (or falls back to `make manuscript`)
+  - Optional: hook into `batch_analysis.py` via `--include-manuscript-build`
+
+---
+
+## Phase B — Script organization + central entrypoint
+
+Goal: fewer top-level scripts, clearer “what should I run?” story.
+
+- [ ] Create a central CLI entrypoint (recommended: `main.py`)
+  - Subcommands (suggested): `batch`, `full-integration`, `stress-test`, `compile-manuscript`, `demo`
+  - Consistent `--results-dir`/`--session-name` semantics
+- [ ] Create `demos/` folder and move demo-only scripts
+  - Candidates: `demo_fast_scanning.py`, `demo_van_den_broeck_natario.py`, any `simple_*demo.py`
+  - Update `README.md`/`docs/README.md` links accordingly
+- [ ] Split “library code” vs “runner scripts”
+  - Any reusable logic should live under `src/warp_qft/…`
+  - Runner scripts should mostly parse args + call into modules
+
+---
+
+## Phase C — Synergy-enabled 3+1D integration (research extension)
+
+Goal: carry synergy into the 3+1D toy evolution and ensure it’s traceable as a *model choice*.
+
+- [ ] Implement synergy factor plumbing
+  - Define $S = \exp(\sum_{i<j}\gamma_{ij}) - 1$ (or equivalent) with explicit defaults
+  - Add a “synergy off” baseline (all $\gamma_{ij}=0$)
+- [ ] Extend toy 3+1D source term(s)
+  - Add a synergy-modulated effective energy density $\rho_{\mathrm{syn}}$
+  - Record both $\rho$ and $\rho_{\mathrm{syn}}$ in outputs to keep comparisons honest
+
+---
+
+## Phase D — Expanded stress tests + fragility fits
+
+Goal: quantify fragility boundaries and produce publishable-quality plots.
+
+- [ ] Expand edge-case sets (include extreme $\mu$, $Q$, squeezing, $R$, bubble counts)
+- [ ] Add “fragility vs parameter” sweeps
+  - Example: compute $D(\mu)$ at fixed noise level and fit $D(\mu)=a e^{b\mu}$
+  - Produce plots and record fit coefficients + goodness-of-fit
+
+---
+
+## Phase E — Curved-space QI refinements (research extension)
+
+Goal: improve the “toy curved QI” so it’s less ad hoc while remaining clearly labeled.
+
+- [ ] Add a 4D proxy integral option (document assumptions)
+- [ ] Add a normalized margin option $\bar{\Delta} = \langle (I-B)/|B|\rangle_t$
+- [ ] Parameterize bound family in code (flat Ford–Roman vs curved toy vs alternate scalings)
+
+---
+
+## Archived: prior wrap-up snapshot (2026-01-22)
+
+The repo previously reached a “methods paper complete” milestone (integration runners, robustness section, REVTeX manuscript build). This phase is about consolidation + maintainability + controlled extensions.
+
+### (Context) Full-system integration tests
 
 Run comprehensive batches that combine VdB–Natário + LQG + backreaction + cavity/squeezing/multi-bubble + QI checks + 3+1D toy stability.
 
@@ -64,7 +117,7 @@ Run comprehensive batches that combine VdB–Natário + LQG + backreaction + cav
 - [x] Add a dedicated integration runner that writes `results/<session>/full_integration_*.json` and (optionally) plots.
 - [x] Ensure it runs from `batch_analysis.py` when `--session-name final_integration` is used.
 
-### 8.2 Perform Edge-Case Stress Testing
+### (Context) Edge-case stress testing
 
 Probe numerical and modeling limits: extreme $\mu$, $Q$, squeezing, radius, and multi-bubble counts; add controlled noise to test robustness.
 
@@ -78,7 +131,7 @@ Probe numerical and modeling limits: extreme $\mu$, $Q$, squeezing, radius, and 
 - [x] Add a `stress_test.py` runner that writes `results/<session>/stress_tests_*.json`.
 - [x] Update `docs/VERIFICATION_SUMMARY.md` with a short robustness section once the stress runs are available.
 
-### 8.3 Finalize Derivations + Visualizations for the Manuscript
+### (Context) Derivations + manuscript plots
 
 Consolidate derivations and key plots (synergy discussion, QI-vs-$\mu$ trend fits, stability summaries) into a single TeX-friendly bundle.
 
@@ -88,7 +141,7 @@ $$\rho_{\mathrm{eff}} = \rho_0 \prod_i (1/F_i)\,\exp\!\left(\sum_{i<j} \gamma_{i
 **Deliverable**:
 - [x] Add a script that emits a small TeX fragment (equations + parameter definitions) and plots under `results/<session>/plots/`.
 
-### 8.4 Manuscript Finalization + Packaging
+### (Context) Manuscript packaging
 
 - [x] Rename manuscript output to something descriptive (avoid "manuscript" as the final name).
   - Renamed to `lqg_warp_verification_methods.tex/.pdf`
@@ -100,7 +153,7 @@ $$\rho_{\mathrm{eff}} = \rho_0 \prod_i (1/F_i)\,\exp\!\left(\sum_{i<j} \gamma_{i
   - Author config already in place via `author_config.tex` (Ryan Sherrington, Dawson Institute)
   - Added comprehensive Appendix A with reproducibility checklist (6 items: deterministic outputs, version control, archived configs, Docker container, data availability, documentation)
 
-### 8.5 Org Move / Spotlight Checklist (after final integration passes)
+### (Context) Org move checklist
 
 - [x] Add a short Contributing section and code-of-conduct pointer in README.
   - Added comprehensive Contributing section with guidelines, workflow, and Dawson Institute CoC link

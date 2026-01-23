@@ -46,6 +46,11 @@ def main() -> int:
     p.add_argument("--include-integrated-qi-3d", action="store_true", help="Include integrated QI+3D verification")
     p.add_argument("--use-adaptive-damping", action="store_true", help="Enable adaptive damping in iterative backreaction")
     p.add_argument(
+        "--include-manuscript-build",
+        action="store_true",
+        help="Build the REVTeX manuscript under papers/ after the analysis run",
+    )
+    p.add_argument(
         "--include-final-integration",
         action="store_true",
         help="Include full-system integration grid + stress tests + derivation finalizer",
@@ -297,6 +302,18 @@ def main() -> int:
                     str(session_dir),
                 ],
                 "Integrated curved QI + 3D stability verification",
+            )
+        )
+
+    # Manuscript build (optional)
+    if args.include_manuscript_build:
+        tasks.append(
+            (
+                [
+                    "python",
+                    "compile_manuscript.py",
+                ],
+                "Build manuscript (papers/lqg_warp_verification_methods.tex)",
             )
         )
 

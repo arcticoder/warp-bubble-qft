@@ -719,3 +719,12 @@ Per ORG_MOVE_CHECKLIST.md:
 5. Tag publication release: `git tag v1.0.0-publication`
 6. Coordinate arXiv/journal submission
 <!-- ------ -->
+Completed: *Run quick sanity checks* (7/7)
+
+**What I changed**
+- Updated the roadmap in TODO.md to a new “Phase A–E” plan focused on manuscript consolidation, script modularization, synergy-enabled 3+1D, expanded stress/fragility fits, and curved-space QI refinements.
+- Archived the legacy TeX wrapper: old contents moved to main_legacy_20260123.tex, and main.tex is now a stub pointing to the canonical entrypoints.
+- Added a central CLI entrypoint main.py (subcommands: `batch`, `full-integration`, `stress-test`, `compile-manuscript`, demo).
+- Added a manuscript build helper compile_manuscript.py and wired it into batch_analysis.py via `--include-manuscript-build`.
+- Moved demo scripts into demo_fast_scanning.py and demo_van_den_broeck_natario.py, and updated links in README.md and README.md.
+<!-- ------ -->

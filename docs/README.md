@@ -63,7 +63,7 @@ All discoveries are fully integrated in the codebase:
 - **Corrected LQG:** `src/warp_qft/lqg_profiles.py` (proper sinc definition)
 
 ### Demonstration Scripts
-- `demo_van_den_broeck_natario.py` - Basic metric demonstration
+- `demos/demo_van_den_broeck_natario.py` - Basic metric demonstration
 - `run_vdb_natario_integration.py` - Full pipeline integration
 - `run_vdb_natario_comprehensive_pipeline.py` - Complete analysis with visualizations
 

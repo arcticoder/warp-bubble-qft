@@ -61,7 +61,7 @@ This repository contains the implementation of a Loop Quantum Gravity (LQG) enha
 python test_vdb_natario.py
 
 # Full demonstration with visualizations  
-python demo_van_den_broeck_natario.py
+python demos/demo_van_den_broeck_natario.py
 
 # Complete integration analysis
 python run_vdb_natario_integration.py
