@@ -2,11 +2,23 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx,mathtools,bm,hyperref,microtype}
+
+% Load author config
+\IfFileExists{author_config.tex}{%
+	\input{author_config.tex}%
+}{%
+	\providecommand{\authorname}{Independent Researcher}%
+	\providecommand{\authoraffiliation}{Independent Research Institute}%
+	\providecommand{\authoremail}{contact@example.com}%
+}
+
 \begin{document}
 \title{Verification of LQG Warp Bubble Optimizations: Computational Methods and Limitations}
-\author{TBD}
-\affiliation{TBD}
-\date{January 2026}
+
+% Use symbol-style footnote for author contact and ensure consistent formatting
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\author{\authorname\footnotemark \\ \small \textit{\authoraffiliation}}
+\date{January 22, 2026}
 \begin{abstract}
 We present a computational verification framework for evaluating energy
 optimization claims in warp bubble spacetimes enhanced by loop quantum

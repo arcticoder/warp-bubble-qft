@@ -125,3 +125,4 @@ dmypy.json
 .github/
 
 *.pdf
+author_config.tex
