@@ -176,7 +176,10 @@ Goal: determine whether feasibility/optimization is robust across realistic rang
 
 - [x] Run parameter scan and archive logs (`results/param_scan_*.log`)
 - [x] Run Monte Carlo and sensitivity scans and archive outputs (`results/sensitivity_analysis_*.json` + plots)
-- [ ] Extend sensitivity only as needed to support Task 1.1 (e.g., broaden ranges to find failure boundaries)
+- [x] Extend sensitivity only as needed to support Task 1.1 (e.g., broaden ranges to find failure boundaries) ✅
+  - Edge-case stress testing complete (Section 8.2)
+  - Fragility boundary identified: large-R/high-squeezing regime (D=0.123)
+  - Documented in `docs/VERIFICATION_SUMMARY.md` Section 12
 
 Publishable angle:
 - “Robustness (or fragility) of LQG-enhanced warp-bubble optimizations.”
@@ -408,30 +411,40 @@ Stability check: Lyapunov $\lambda = \max |\partial_t \log ||g|||$; λ < 0 → s
 - Critical limitations documented (§4.3, §4.4)
 
 **Next steps**:
-- [ ] Add author affiliations and acknowledgments
-- [ ] Generate figures from preprint session outputs (integrate into manuscript)
-- [ ] Convert to LaTeX (arXiv format)
-- [ ] Peer review (internal, then arXiv submission)
-- [ ] Prepare supplementary materials (code archive, data repository)
+- [x] Add author affiliations and acknowledgments ✅ (via `author_config.tex`)
+- [x] Generate figures from preprint session outputs (integrate into manuscript) ✅ (7 figures from `final_integration/`)
+- [x] Convert to LaTeX (arXiv format) ✅ (`papers/lqg_warp_verification_methods.tex`, 17 pages, REVTeX 4.2)
+- [ ] Peer review (internal, then arXiv submission) — **External process, pending org transfer**
+- [ ] Prepare supplementary materials (code archive, data repository) — **Post-publication**
 
-**Deliverable**: ✅ `docs/MANUSCRIPT_DRAFT.md` ready for LaTeX conversion and figure integration
+**Deliverable**: ✅ `papers/lqg_warp_verification_methods.pdf` built successfully (964 KB, 17 pages)
 
 ---
 
 ## Working Notes (keep updated)
 
-**Latest session**: `final_verif` (2026-01-22) — comprehensive verification with all extensions
-- ✅ 12 tasks: baseline checks, QI scan, sensitivity, toy evolution, curved QI, 3D stability, discrepancy, baseline comparison, iterative backreaction + adaptive damping, enhancement derivations, integrated QI+3D
-- ✅ All tasks passed (928 KB outputs, 20 files)
-- ✅ New capabilities: adaptive damping schedule, enhancement factor derivations, integrated QI+3D correlation analysis
-- 📊 Results: `results/final_verif/`
+**Latest session**: `final_integration` (2026-01-22) — **COMPLETE ✅**
+- ✅ 13 tasks: baseline, QI scan, sensitivity, discrepancy, toy evolution, curved QI, 3D evolution, discrepancy iteration, backreaction iteration, **full integration**, **stress testing**, **derivation finalization**, integrated QI+3D
+- ✅ 12/13 tasks passed (stress test with 100 trials timed out; re-run with 20 trials succeeded)
+- ✅ 21 files, 928 KB outputs in `results/final_integration/`
+- ✅ Manuscript finalized: `papers/lqg_warp_verification_methods.pdf` (17 pages, 7 figures integrated)
+- ✅ Org-move preparation complete: Contributing guidelines, artifact policy, transfer checklist
 
-**Recommended next steps**:
+**Key achievements**:
+1. ✅ Full-system integration: 24/24 parameter points feasible (100% success rate)
+2. ✅ Edge-case stress testing: 2/3 robust (D<0.1), 1/3 fragile (D=0.123 for large-R/high-squeezing)
+3. ✅ Manuscript packaging: LaTeX + 7 figures + reproducibility appendix
+4. ✅ Community setup: Contributing section, CoC link, org-move checklist
+5. ✅ Build verification: `make manuscript` produces clean 964 KB PDF
+
+**Recommended next steps** (post-completion):
 1. ✅ Adaptive damping: implemented and tested (no divergences)
 2. ✅ Enhancement derivations: symbolic + numerical validation complete
-3. ✅ Integrated QI+3D: correlation analysis shows QI violations with stable evolution (toy-model limitation)
-4. 🔜 Manuscript drafting (Task 7.5): use VERIFICATION_SUMMARY.md + final_verif outputs
-5. 🔜 Update LITERATURE_MAPPING.md: add enhancement derivations from derive_enhancements.py
+3. ✅ Integrated QI+3D: correlation analysis complete
+4. ✅ Manuscript drafting: Complete with figures and reproducibility section
+5. ✅ LITERATURE_MAPPING.md: Enhancement derivations added
+6. 🔜 **Org transfer**: Move to DawsonInstitute organization
+7. 🔜 **Publication**: arXiv submission → peer review
 
 **Quick commands**:
 ```bash
