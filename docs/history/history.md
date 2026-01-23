@@ -598,3 +598,12 @@ Result:
 - manuscript.pdf is now the canonical, up-to-date artifact. docs no longer contains duplicated generated PDFs/logs (they are archived in old_builds).
 - `make manuscript` still builds manuscript.pdf as before.
 <!-- ------ -->
+Completed: *Wire into batch_analysis* (6/7)
+
+- Updated roadmap in docs/TODO.md with a new “Recommended Next Steps” phase (final integration, stress testing, derivation/plot bundling, manuscript packaging, org-move checklist).
+- Added an end-to-end grid runner full_integration.py that exercises the pipeline across parameter grids and (optionally) the toy integrated QI+3D checks, emitting `full_integration_*.json`.
+- Added edge-case noise stress testing via stress_test.py, emitting `stress_tests_*.json`.
+- Added manuscript-oriented derivation packaging via finalize_derivations.py (writes a TeX fragment + auto-detected QI-vs-μ plot when integration JSON exists).
+- Wired everything into batch_analysis.py: `python batch_analysis.py --session-name final_integration` now runs the new integration/stress/derivation steps first; you can also use `--include-final-integration` with any session name.
+- Fixed NumPy 2.x compatibility (`np.trapz` → `np.trapezoid`) in integrated_qi_3d_verification.py and the new integration runner.
+<!-- ------ -->
