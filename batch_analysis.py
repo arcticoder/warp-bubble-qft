@@ -45,6 +45,11 @@ def main() -> int:
     p.add_argument("--include-derivations", action="store_true", help="Include enhancement derivations")
     p.add_argument("--include-integrated-qi-3d", action="store_true", help="Include integrated QI+3D verification")
     p.add_argument("--use-adaptive-damping", action="store_true", help="Enable adaptive damping in iterative backreaction")
+    p.add_argument(
+        "--include-final-integration",
+        action="store_true",
+        help="Include full-system integration grid + stress tests + derivation finalizer",
+    )
     args = p.parse_args()
 
     ts = _timestamp()
@@ -57,6 +62,66 @@ def main() -> int:
     print("=" * 60)
 
     tasks = []
+
+    include_final_integration = args.include_final_integration or (session == "final_integration")
+
+    if include_final_integration:
+        tasks.append(
+            (
+                [
+                    "python",
+                    "full_integration.py",
+                    "--mu-grid",
+                    "0.05:0.30:3",
+                    "--Q-grid",
+                    "1e5,1e6",
+                    "--squeezing-grid",
+                    "10,15",
+                    "--bubbles",
+                    "3,4",
+                    "--save-results",
+                    "--results-dir",
+                    str(session_dir),
+                    "--backreaction-iterative",
+                    "--backreaction-outer-iters",
+                    "3",
+                    "--include-qi-3d",
+                    "--qi-3d-grid",
+                    "16",
+                    "--qi-3d-t-final",
+                    "0.2",
+                ],
+                "Full-system integration grid (pipeline + toy QI+3D)",
+            )
+        )
+
+        tasks.append(
+            (
+                [
+                    "python",
+                    "stress_test.py",
+                    "--trials",
+                    "100",
+                    "--save-results",
+                    "--results-dir",
+                    str(session_dir),
+                ],
+                "Edge-case stress tests (noise-perturbed)",
+            )
+        )
+
+        tasks.append(
+            (
+                [
+                    "python",
+                    "finalize_derivations.py",
+                    "--results-dir",
+                    str(session_dir),
+                    "--save-report",
+                ],
+                "Finalize derivations (TeX fragment + plots)",
+            )
+        )
 
     # Quick feasibility check (baseline)
     tasks.append(

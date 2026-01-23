@@ -1,0 +1,8 @@
+{
+  "timestamp": "20260122_215848",
+  "outputs": {
+    "tex_fragment": "/home/echo_/Code/asciimath/warp-bubble-qft/results/_sanity/final_derivations_fragment.tex",
+    "qi_plot": "/home/echo_/Code/asciimath/warp-bubble-qft/results/_sanity/qi_delta_vs_mu.png"
+  },
+  "notes": "TeX is a manuscript fragment; QI plot uses toy normalized delta from integration JSON if present."
+}

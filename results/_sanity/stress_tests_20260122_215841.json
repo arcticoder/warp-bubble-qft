@@ -1,0 +1,67 @@
+{
+  "timestamp": "20260122_215841",
+  "command_args": {
+    "trials": 5,
+    "sigma_noise": 0.01,
+    "seed": 42,
+    "results_dir": "/home/echo_/Code/asciimath/warp-bubble-qft/results/_sanity",
+    "save_results": true
+  },
+  "edge_cases": [
+    {
+      "base_params": {
+        "mu": 0.6,
+        "R": 12.0,
+        "Q": 5000.0,
+        "squeezing_db": 20.0,
+        "num_bubbles": 4
+      },
+      "trials": 5,
+      "sigma_noise": 0.01,
+      "final_energy_stats": {
+        "mean": 0.15033232811888686,
+        "std": 0.0020587914926953168,
+        "robustness_D": 0.013694935204270694,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.01,
+        "R": 0.5,
+        "Q": 100000000.0,
+        "squeezing_db": 5.0,
+        "num_bubbles": 3
+      },
+      "trials": 5,
+      "sigma_noise": 0.01,
+      "final_energy_stats": {
+        "mean": 0.020509774597085903,
+        "std": 9.714395072910459e-05,
+        "robustness_D": 0.004736470908993175,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.2,
+        "R": 10.0,
+        "Q": 10000.0,
+        "squeezing_db": 25.0,
+        "num_bubbles": 6
+      },
+      "trials": 5,
+      "sigma_noise": 0.01,
+      "final_energy_stats": {
+        "mean": 0.04555006396602558,
+        "std": 0.0009011298581512246,
+        "robustness_D": 0.019783284142550275,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    }
+  ],
+  "notes": "Robustness D = std(E)/mean(E) over multiplicative-noise trials."
+}

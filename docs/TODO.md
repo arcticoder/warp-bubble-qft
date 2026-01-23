@@ -22,7 +22,78 @@ Guiding principle: **treat all headline claims as hypotheses** until reproduced 
 - `results/full_verification/` — complete batch session (11 files, 552 KB, all tasks passed)
 - `batch_analysis.py --session-name <name>` — reproducible orchestration
 
-**Next phase**: Fix remaining low-priority issues (divergences, curved QI, 3+1D extensions, derivations) → draft manuscript → arXiv preprint.
+**Next phase**: End-to-end integration validation + edge-case stress testing + manuscript finalization (then org move / spotlight).
+
+---
+
+## Recommended Next Steps (2026-01-22 → final integration)
+
+With the recent stabilization + extensions work (iterative backreaction damping/regularization, derivation scripts, and 3+1D toy ADM evolution), the repo is now in the “wrap-up” phase.
+
+Goal: **prove the repo stays consistent end-to-end** under parameter grids and edge cases, then finalize a reproducible manuscript bundle.
+
+### 8.1 Run End-to-End Full-System Integration Tests (highest priority)
+
+Run comprehensive batches that combine VdB–Natário + LQG + backreaction + cavity/squeezing/multi-bubble + QI checks + 3+1D toy stability.
+
+- Target command: `python batch_analysis.py --session-name final_integration`
+- Output: `results/final_integration/` with a single JSON report + plots.
+
+**Metrics to track (operational definitions)**:
+
+- Total efficiency (independent-factor baseline):
+  $$\eta = \prod_i F_i$$
+  where $F_i$ are the enhancement factors reported by the pipeline.
+
+- Optional synergy model (heuristic, for reporting only):
+  $$\eta_\mathrm{eff} = \eta(1 + S),\quad S = \sum_{i<j} \gamma_{ij}$$
+  Use $\gamma_{ij}$ only if explicitly defined and measured; otherwise report $S=0$.
+
+- 3+1D stability (toy): Lyapunov exponent $\lambda$ from `full_3d_evolution.py` and a simple “no blow-up” criterion.
+
+- QI in dynamics (toy): use the curved QI “margin” (integral − bound) from the integrated QI+3D workflow. If you define a normalized delta,
+  $$\bar{\Delta} = \langle (I - B)/|B| \rangle_t,$$
+  document the bound $B$ clearly (toy curved bound vs Ford–Roman flat bound).
+
+**Deliverable**:
+- [ ] Add a dedicated integration runner that writes `results/<session>/full_integration_*.json` and (optionally) plots.
+- [ ] Ensure it runs from `batch_analysis.py` when `--session-name final_integration` is used.
+
+### 8.2 Perform Edge-Case Stress Testing
+
+Probe numerical and modeling limits: extreme $\mu$, $Q$, squeezing, radius, and multi-bubble counts; add controlled noise to test robustness.
+
+- Perturbation model:
+  $$\delta p \sim \mathcal{N}(0, \sigma),\quad p' = p(1+\delta p)$$
+  Robustness statistic:
+  $$D = \mathrm{std}(E')/\mathrm{mean}(E')$$
+  Treat $D>0.1$ as “fragile / null on robustness” for that regime.
+
+**Deliverable**:
+- [ ] Add a `stress_test.py` runner that writes `results/<session>/stress_tests_*.json`.
+- [ ] Update `docs/VERIFICATION_SUMMARY.md` with a short robustness section once the stress runs are available.
+
+### 8.3 Finalize Derivations + Visualizations for the Manuscript
+
+Consolidate derivations and key plots (synergy discussion, QI-vs-$\mu$ trend fits, stability summaries) into a single TeX-friendly bundle.
+
+Suggested “unified derivation” model to report (clearly marked heuristic where appropriate):
+$$\rho_{\mathrm{eff}} = \rho_0 \prod_i (1/F_i)\,\exp\!\left(\sum_{i<j} \gamma_{ij}\right)$$
+
+**Deliverable**:
+- [ ] Add a script that emits a small TeX fragment (equations + parameter definitions) and plots under `results/<session>/plots/`.
+
+### 8.4 Manuscript Finalization + Packaging
+
+- [ ] Rename manuscript output to something descriptive (avoid “manuscript” as the final name).
+- [ ] Convert `docs/MANUSCRIPT_DRAFT.md` → LaTeX (or keep Markdown if targeting a Markdown-friendly venue), and generate figures from `results/preprint/` or `results/final_integration/`.
+- [ ] Add author/affiliation/acknowledgments and a short “reproducibility checklist” section.
+
+### 8.5 Org Move / Spotlight Checklist (after final integration passes)
+
+- [ ] Add a short Contributing section and code-of-conduct pointer in README.
+- [ ] Ensure repo description/topics match institute taxonomy.
+- [ ] Decide which `results/` artifacts are kept vs ignored (commit policy).
 
 ---
 

@@ -92,7 +92,7 @@ def curved_qi_integral(
     # Proper time element: dτ² = |g_tt| dt²
     # Integral: ∫ρ(τ) √|g_tt| dτ ≈ Σ ρ_i √|g_tt,i| Δt
     integrand = rho_samples * np.sqrt(np.abs(g_tt))
-    return float(np.trapz(integrand, dx=dt))
+    return float(np.trapezoid(integrand, dx=dt))
 
 
 def alcubierre_metric_components(r: np.ndarray, R: float, v_s: float = 0.1) -> Tuple[np.ndarray, np.ndarray]:
@@ -267,7 +267,7 @@ def main() -> int:
     rho_samples = rho_base * polymer_factor
     
     # Flat-space integral (g_tt = -1)
-    qi_flat = float(np.trapz(rho_samples, dx=args.delta_t_qi / args.n_samples_qi))
+    qi_flat = float(np.trapezoid(rho_samples, dx=args.delta_t_qi / args.n_samples_qi))
     
     # Curved-space integral (Alcubierre metric)
     g_tt_curved, _ = alcubierre_metric_components(r_samples, args.R)

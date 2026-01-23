@@ -1,0 +1,137 @@
+{
+  "timestamp": "20260122_215757",
+  "command_args": {
+    "mu_grid": "0.05:0.30:2",
+    "Q_grid": "1e5",
+    "squeezing_grid": "10",
+    "bubbles": "3",
+    "R": 2.3,
+    "backreaction_iterative": true,
+    "backreaction_outer_iters": 1,
+    "backreaction_rel_tol": 0.0001,
+    "include_qi_3d": true,
+    "qi_3d_grid": 8,
+    "qi_3d_t_final": 0.05,
+    "results_dir": "/home/echo_/Code/asciimath/warp-bubble-qft/results/_sanity",
+    "save_results": true
+  },
+  "summary": {
+    "num_points": 2,
+    "num_feasible": 2,
+    "min_final_energy": 0.17722406808106175
+  },
+  "grid": {
+    "mu": [
+      0.05,
+      0.3
+    ],
+    "Q": [
+      100000.0
+    ],
+    "squeezing_db": [
+      10.0
+    ],
+    "num_bubbles": [
+      3
+    ],
+    "R": 2.3
+  },
+  "runs": [
+    {
+      "inputs": {
+        "mu": 0.05,
+        "R": 2.3,
+        "cavity_Q": 100000.0,
+        "squeezing_db": 10.0,
+        "num_bubbles": 3,
+        "backreaction_iterative": true,
+        "backreaction_outer_iters": 1,
+        "backreaction_rel_tol": 0.0001
+      },
+      "pipeline": {
+        "base_energy": 1.0966731637230198,
+        "final_energy": 0.17722406808106175,
+        "feasible": true,
+        "total_reduction_factor": 0.16160153630404892,
+        "eta": 5.261014842371271,
+        "enhancement_factors": {
+          "cavity": 3.4785051099574824,
+          "squeezing": 1.0,
+          "multi_bubble": 1.512435565298214,
+          "total_reported": 5.261014842371271
+        }
+      },
+      "toy_qi_3d": {
+        "qi": {
+          "flat": {
+            "integral": -0.2923780593362228,
+            "bound": -0.006332573977646111,
+            "margin": -0.28604548535857666,
+            "violates": true
+          },
+          "curved": {
+            "integral": -0.2910352700688118,
+            "bound": -0.18903591682419663,
+            "margin": -0.10199935324461518,
+            "violates": true
+          },
+          "notes": "Toy/heuristic bounds; for integration regression checks only."
+        },
+        "evolution": {
+          "lyapunov_exponent": 0.001888611561269725,
+          "growth_factor": 1.0000944350367709,
+          "stable": true,
+          "steps": 50
+        }
+      }
+    },
+    {
+      "inputs": {
+        "mu": 0.3,
+        "R": 2.3,
+        "cavity_Q": 100000.0,
+        "squeezing_db": 10.0,
+        "num_bubbles": 3,
+        "backreaction_iterative": true,
+        "backreaction_outer_iters": 1,
+        "backreaction_rel_tol": 0.0001
+      },
+      "pipeline": {
+        "base_energy": 1.2723402416796057,
+        "final_energy": 0.20561213775688916,
+        "feasible": true,
+        "total_reduction_factor": 0.16160153630404892,
+        "eta": 5.261014842371271,
+        "enhancement_factors": {
+          "cavity": 3.4785051099574824,
+          "squeezing": 1.0,
+          "multi_bubble": 1.512435565298214,
+          "total_reported": 5.261014842371271
+        }
+      },
+      "toy_qi_3d": {
+        "qi": {
+          "flat": {
+            "integral": -0.28992448497430096,
+            "bound": -0.006332573977646111,
+            "margin": -0.2835919109966548,
+            "violates": true
+          },
+          "curved": {
+            "integral": -0.28859372431716096,
+            "bound": -0.18903591682419663,
+            "margin": -0.09955780749296433,
+            "violates": true
+          },
+          "notes": "Toy/heuristic bounds; for integration regression checks only."
+        },
+        "evolution": {
+          "lyapunov_exponent": 0.0018886044898923377,
+          "growth_factor": 1.0000944346831686,
+          "stable": true,
+          "steps": 50
+        }
+      }
+    }
+  ]
+}
