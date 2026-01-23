@@ -534,3 +534,12 @@ Status: moved the selected paper drafts into papers and committed the change. âœ
 - Files are now in papers (confirmed).
 - Remaining `.tex` files still in docs (e.g., `ansatz_*`, `integration_overview.tex`, overview.tex, etc.). These look like sectional docs or drafts
 <!-- ------ -->
+Summary of work:
+- Moved these supporting files into papers:
+  - 4d_warp_ansatz.tex, ansatz_evolution.tex, ansatz_gaussian.tex, ansatz_summary.tex, bubble_stability.tex, comprehensive_documentation_summary.tex, experiments.tex, future_work.tex, integration_overview.tex, kinetic_suppression.tex, lab_sources.tex, latest_integration_discoveries.tex, metric_ansatz.tex, new_ansatz_development.tex, optimization_methods.tex, pipeline_integration.tex, qi_discrete_commutation.tex, qi_kernels.tex, sampling_axioms.tex, test_new_sections.tex, test_suite.tex, validation.tex
+- Commit created: "docs: move supporting .tex files to papers/"
+
+Notes:
+- A few files were already in papers (e.g., `qi_*`, `recent_discoveries.tex`, `warp_bubble_proof.tex`) so git reported conflicts for those; existing copies remained in papers and I skipped duplicates.
+- Remaining `.tex` in docs are the core assembly files you asked to keep (e.g., `main.tex`, overview.tex, `warp-bubble-qft-docs.tex`, compilation artifacts, and the `history/` folder).
+<!-- ------ -->
