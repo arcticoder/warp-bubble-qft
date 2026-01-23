@@ -543,3 +543,27 @@ Notes:
 - A few files were already in papers (e.g., `qi_*`, `recent_discoveries.tex`, `warp_bubble_proof.tex`) so git reported conflicts for those; existing copies remained in papers and I skipped duplicates.
 - Remaining `.tex` in docs are the core assembly files you asked to keep (e.g., `main.tex`, overview.tex, `warp-bubble-qft-docs.tex`, compilation artifacts, and the `history/` folder).
 <!-- ------ -->
+## ✅ What I did (quick recap) 🔧
+
+- Fixed LaTeX structural problems in manuscript.tex:
+  - Removed a stray leading `-` before `\documentclass` ✅
+  - Closed the references `\begin{enumerate}` by inserting `\end{enumerate}` before the BibTeX calls ✅
+- Re-ran the reproducible build: `make manuscript` — produced manuscript.pdf (14 pages) with no LaTeX errors (only minor warnings: overfull hboxes / hyperref bookmark level) ✅
+- Added and committed the changes:
+  - Commit: `papers: fix LaTeX structure (remove stray hyphen, close references enumerate)` ✅
+
+Files changed / added:
+- Modified: manuscript.tex, Makefile
+- Added: refs.bib
+- Artifact: manuscript.pdf
+
+---
+
+## 🔍 Current status & next recommendations
+
+- Current build status: `make manuscript` completes successfully and manuscript.pdf is up-to-date.
+- Remaining cleanup tasks I recommend (can do now if you want):
+  1. Replace the temporary `\nocite{*}` with explicit `\cite{...}` calls where appropriate (so bibliography only contains cited refs) 🔁 — recommended.
+  2. Do an editorial pass to remove remaining Pandoc artifacts and tighten wording/formatting (addresses the prior warnings and any style issues) ✍️.
+  3. Optional: add `make clean-manuscript` or CI check to fail on LaTeX errors/warnings if you want stricter enforcement 🔧.
+<!-- ------ -->
