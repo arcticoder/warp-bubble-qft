@@ -1,33 +1,30 @@
-\section{Verification of LQG Warp Bubble Optimizations: Computational
-Methods and
-Limitations}\label{verification-of-lqg-warp-bubble-optimizations-computational-methods-and-limitations}
-
-\textbf{Authors}: {[}TBD{]}\\
-\textbf{Affiliation}: {[}TBD{]}\\
-\textbf{Date}: January 2026\\
-\textbf{arXiv categories}: gr-qc (primary), hep-th (secondary)
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\subsection{Abstract}\label{abstract}
-
+-\documentclass[aps,prd,preprint,amsmath,amssymb]{revtex4-2}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx,mathtools,bm,hyperref,microtype}
+\begin{document}
+\title{Verification of LQG Warp Bubble Optimizations: Computational Methods and Limitations}
+\author{TBD}
+\affiliation{TBD}
+\date{January 2026}
+\begin{abstract}
 We present a computational verification framework for evaluating energy
 optimization claims in warp bubble spacetimes enhanced by loop quantum
 gravity (LQG) polymer corrections, quantum optical effects, and metric
-backreaction. Headline claims of 1000× energy reductions are examined
+backreaction. Headline claims of 1000\(\times\) energy reductions are examined
 through reproducible numerical experiments with archived configurations
 and deterministic outputs.
 
 \textbf{Key findings}: 1. \textbf{Energy discrepancy resolved}: Pipeline
-feasibility ratio (\textasciitilde30×) and cross-repository
-computational accounting (1083×) represent distinct physical quantities,
+feasibility ratio (\(\sim\)30$\times$) and cross-repository
+computational accounting (1083$\times$) represent distinct physical quantities,
 now clearly separated in documentation. 2. \textbf{Factor breakdown}:
-Van den Broeck-Natário geometry (10×), backreaction (1.29×), and
-multi-enhancement pathways (cavity + squeezing + polymer ≈ 16.6×) yield
-total \textasciitilde340× when combined, with \textasciitilde20×
+Van den Broeck-Natário geometry (10$\times$), backreaction (1.29$\times$), and
+multi-enhancement pathways (cavity + squeezing + polymer $\approx 16.6\times$) yield
+total \(\sim\)340$\times$ when combined, with \(\sim\)20$\times$
 rigorously verified and remainder heuristic. 3. \textbf{Stability
 achieved}: Iterative backreaction solver stabilized via adaptive
-damping; previously divergent configurations now converge (85× reduction
+damping; previously divergent configurations now converge (85$\times$ reduction
 without NaN). 4. \textbf{Enhancement factors derived}: Symbolic
 derivations (SymPy) and numerical validation for cavity (\(\sqrt{Q}\)),
 squeezing (\(e^r\)), and polymer (\(1/\bar{\mu}\)) mechanisms;
@@ -47,6 +44,8 @@ resolution.
 \textbf{Reproducibility}: Complete workflow available at {[}GitHub
 repository{]}; batch session \texttt{final\_verif} produces 928 KB of
 outputs (12 tasks, 20 files, all passed).
+\end{abstract}
+\maketitle
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -66,16 +65,16 @@ available energy scales.
 Subsequent refinements have explored: - \textbf{Geometric
 optimizations}: Van den Broeck (1999) and Natário (2002) introduced
 volume factors reducing energy by concentrating the warp field →
-\textasciitilde10× reduction - \textbf{Backreaction corrections}:
+\(\sim\)10$\times$ reduction - \textbf{Backreaction corrections}:
 Self-consistent solutions to Einstein equations with stress-energy
-feedback → \textasciitilde10-20\% reduction - \textbf{Quantum field
+feedback → \(\sim\)10-20\% reduction - \textbf{Quantum field
 effects}: Casimir-like confinement, squeezed vacuum states, and cavity
 QED enhancements → speculative, order-of-magnitude uncertain
 
 Recent claims suggest combining these mechanisms with loop quantum
-gravity (LQG) polymer corrections can yield 1000× or greater reductions,
+gravity (LQG) polymer corrections can yield 1000$\times$ or greater reductions,
 potentially bringing energy requirements to technologically relevant
-scales (\textasciitilde MJ-GJ). However, these claims lack: 1. Rigorous
+scales (\(\sim\) MJ-GJ). However, these claims lack: 1. Rigorous
 derivations (many factors are heuristic or effective models) 2.
 Reproducible numerical verification (configurations not archived) 3.
 Clear separation of distinct physical quantities (feasibility ratio vs
@@ -119,7 +118,7 @@ timestamped sessions
 relative to classical Alcubierre) 2. Apply Van den Broeck-Natário volume
 factor: \(E \to E \times (R/(R+\mu))^3\) 3. Solve backreaction
 (iterative Einstein equations with stress-energy feedback) 4. Apply
-enhancement factors (cavity Q, squeezing dB, polymer μ̄) 5. Check quantum
+enhancement factors (cavity Q, squeezing dB, polymer \(\bar{\mu}\)) 5. Check quantum
 inequality violations (Ford-Roman bounds) 6. Test stability (3D
 evolution, causality screening)
 
@@ -127,8 +126,8 @@ evolution, causality screening)
 feasibility ratio'' (dimensionless quantity comparing enhanced vs
 baseline warp bubble energy) from ``cross-repository computational
 accounting'' (absolute energy in joules from integrated system
-analysis). The 1083× figure is the latter; pipeline yields
-\textasciitilde30× for the former.
+analysis). The 1083$\times$ figure is the latter; pipeline yields
+\(\sim\)30$\times$ for the former.
 
 \subsubsection{2.2 Backreaction Solver}\label{backreaction-solver}
 
@@ -151,8 +150,8 @@ converges when \(|\Delta E| / E < 10^{-4}\)
 metric from inner solver - NaN/inf detection: early exit with diagnostic
 flag if nonfinite values appear
 
-\textbf{Validation}: Previously divergent configuration (Q=10⁶,
-squeezing=15dB, iterative mode) now converges to 85× reduction; tested
+\textbf{Validation}: Previously divergent configuration (Q=\(10^{6}\),
+squeezing=15dB, iterative mode) now converges to 85$\times$ reduction; tested
 across energy scales 1.0, 100.0, 10000.0 with no instabilities.
 
 \subsubsection{2.3 Enhancement Factor
@@ -182,10 +181,10 @@ parameter: \(\bar{\mu} \sim \sqrt{\ell_P / R}\) - Heuristic model:
 \(F_\text{poly} = 3.33\) - \textbf{Limitation}: Connection to
 macroscopic metrics requires spin-foam transition amplitudes
 
-\textbf{Synergy analysis}: - Tested additive (1013×), multiplicative
-(33333×), geometric (32×) models - \textbf{Recommendation}:
+\textbf{Synergy analysis}: - Tested additive (1013$\times$), multiplicative
+(33333$\times$), geometric (32$\times$) models - \textbf{Recommendation}:
 Multiplicative (independent mechanisms → product of factors) -
-\textbf{Dominant mechanism}: Cavity (highest individual factor at Q=10⁶)
+\textbf{Dominant mechanism}: Cavity (highest individual factor at Q=\(10^{6}\))
 
 \subsubsection{2.4 Quantum Inequality
 Verification}\label{quantum-inequality-verification}
@@ -244,30 +243,30 @@ null-geodesic slopes. No pathologies detected in tested configurations.
 \subsubsection{3.1 Energy Discrepancy
 Resolution}\label{energy-discrepancy-resolution}
 
-\textbf{Finding}: Pipeline feasibility ratio (\textasciitilde30×) ≠
-cross-repository accounting (1083×).
+\textbf{Finding}: Pipeline feasibility ratio (\(\sim\)30$\times$) \(\neq\)
+cross-repository accounting (1083$\times$).
 
 \textbf{Breakdown}: - \textbf{Pipeline} (dimensionless ratio, this
-work): - Van den Broeck-Natário: 10× (rigorously derived) -
-Backreaction: 1.29× (empirically fitted, stable iterative convergence) -
-Enhancements: \textasciitilde16.6× effective (heuristic models) -
-\textbf{Total}: \textasciitilde340× when combined, \textasciitilde20×
+work): - Van den Broeck-Natário: 10$\times$ (rigorously derived) -
+Backreaction: 1.29$\times$ (empirically fitted, stable iterative convergence) -
+Enhancements: \(\sim\)16.6$\times$ effective (heuristic models) -
+\textbf{Total}: \(\sim\)340$\times$ when combined, \(\sim\)20$\times$
 rigorously verified
 
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Cross-repository} (absolute energy in joules, external
   integration):
 
   \begin{itemize}
-  \tightlist
+  
   \item
     Baseline: 3.80 GJ (computational accounting across repos)
   \item
     Optimized: 3.5 MJ
   \item
-    Reduction: 1083× (includes additional system-level optimizations not
+    Reduction: 1083$\times$ (includes additional system-level optimizations not
     in pipeline)
   \end{itemize}
 \end{itemize}
@@ -279,35 +278,41 @@ energy infrastructure. Both are now documented separately.
 \subsubsection{3.2 Backreaction
 Convergence}\label{backreaction-convergence}
 
-\textbf{Configuration 6} (previously divergent): - Parameters: Q=10⁶,
+\textbf{Configuration 6} (previously divergent): - Parameters: Q=\(10^{6}\),
 squeezing=15dB, iterative backreaction, outer\_iters=10 - Previous
 result: NaN (solver divergence) - \textbf{New result} (with adaptive
-damping): 0.013 (85× reduction), converged in 7 outer iterations -
+damping): 0.013 (85$\times$ reduction), converged in 7 outer iterations -
 Adaptive damping schedule: \(\beta_n\) starts at 0.7, adjusts
 per-iteration based on inner solver convergence metric
 
-\textbf{Validation across scales}: \textbar{} Base energy \textbar{}
-Final energy \textbar{} Reduction \textbar{} Converged \textbar{}
-Divergence flag \textbar{}
-\textbar-------------\textbar--------------\textbar-----------\textbar-----------\textbar-----------------\textbar{}
-\textbar{} 1.0 \textbar{} 0.615 \textbar{} 1.63× \textbar{} ✓ \textbar{}
-False \textbar{} \textbar{} 100.0 \textbar{} 61.5 \textbar{} 1.63×
-\textbar{} ✓ \textbar{} False \textbar{} \textbar{} 10000.0 \textbar{}
-6145 \textbar{} 1.63× \textbar{} ✓ \textbar{} False \textbar{}
+\textbf{Validation across scales}:
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccccc}
+Base energy & Final energy & Reduction & Converged & Divergence flag \\
+\hline
+1.0 & 0.615 & 1.63$\times$ & Yes & False \\
+100.0 & 61.5 & 1.63$\times$ & Yes & False \\
+10000.0 & 6145 & 1.63$\times$ & Yes & False \\
+\end{tabular}
+\caption{Validation across scales.}
+\end{table}
+
+No instabilities observed; reduction factor scales consistently.
 
 No instabilities observed; reduction factor scales consistently.
 
 \subsubsection{3.3 Enhancement Factor
 Validation}\label{enhancement-factor-validation}
 
-\textbf{Numerical at standard parameters}: - Cavity (Q=10⁶):
+\textbf{Numerical at standard parameters}: - Cavity (Q=\(10^{6}\)):
 \(F_\text{cav} = \sqrt{Q} = 1000\) - Squeezing (20 dB):
 \(F_\text{sq} = e^r = 10.0\) - Polymer (\(\bar{\mu}=0.3\)):
 \(F_\text{poly} = 1/\bar{\mu} = 3.33\) - \textbf{Multiplicative total}:
-33333× - \textbf{Additive} (for comparison): 1013× - \textbf{Geometric
-mean}: 32×
+33333$\times$ - \textbf{Additive} (for comparison): 1013$\times$ - \textbf{Geometric
+mean}: 32$\times$
 
-\textbf{Agreement with heuristic model}: Perfect (\textless{} 10⁻⁶
+\textbf{Agreement with heuristic model}: Perfect ($< 10^{-6}$)
 relative difference) because \texttt{enhancement\_pathway.py} already
 implemented these formulas. Derivation work validates physical
 justification and identifies limitations.
@@ -318,7 +323,7 @@ squeezing and polymer provide O(10) corrections.
 \subsubsection{3.4 Quantum Inequality
 Cross-Checks}\label{quantum-inequality-cross-checks}
 
-\textbf{Flat-space Ford-Roman} (μ=0.3, R=2.3, τ=1.0): - Integral: -0.289
+\textbf{Flat-space Ford-Roman} (\(\mu\)=0.3, R=2.3, \(\tau\)=1.0): - Integral: -0.289
 - Bound: -0.00633 - \textbf{Violation}: Yes (margin: -0.283) -
 Interpretation: Naive flat-space bound violated by negative energy
 profile
@@ -331,7 +336,7 @@ Interpretation: Less restrictive bound; violation disappears.
 
 \textbf{Integrated QI+3D correlation}: - QI violation score: 0.100
 (curved-space margin magnitude) - Lyapunov instability score: 0.0019
-(positive λ, but \textless{} threshold) - \textbf{Conclusion}: QI
+(positive \(\lambda\), but \textless{} threshold) - \textbf{Conclusion}: QI
 violates (toy bound) but evolution stable → likely indicates toy-model
 limitations, not physical instability
 
@@ -343,8 +348,8 @@ parameters): - Mean feasibility: 0.61 (±0.18 std) - Failure rate: 3\%
 
 \textbf{Parameter sweeps}: - Cavity Q: Feasibility scales as
 \(1/\sqrt{Q}\) (linear on log-log plot) - Squeezing dB: Feasibility
-scales as \(e^{-r}\) (exponential sensitivity) - Polymer μ̄: Feasibility
-scales as μ̄ (linear)
+scales as \(e^{-r}\) (exponential sensitivity) - Polymer \(\bar{\mu}\): Feasibility
+scales as \(\bar{\mu}\) (linear)
 
 \textbf{Conclusion}: Enhancement factors dominate sensitivity; polymer
 and squeezing have strong leverage.
@@ -359,7 +364,7 @@ and squeezing have strong leverage.
 Numerical results show dimensionless energy ratios approaching
 \(\mathcal{O}(1)\) in parameter regimes with: - High cavity Q
 (\(\sim 10^6\), experimentally achieved in superconducting resonators) -
-Moderate squeezing (\textasciitilde20 dB, demonstrated in quantum optics
+Moderate squeezing (\(\sim\)20 dB, demonstrated in quantum optics
 labs) - LQG polymer corrections at accessible scales
 (\(\bar{\mu} \sim 0.3\))
 
@@ -377,19 +382,19 @@ optimization achieves O(1) ratios \textbf{if} heuristic models hold -
 Computational framework for future refinements (rigorous cavity QED in
 curved spacetime, spin-foam polymer calculations) - Sensitivity
 structure: cavity Q dominates; squeezing/polymer provide
-\textasciitilde10× corrections
+\(\sim\)10$\times$ corrections
 
 \subsubsection{4.2 Comparison to Literature
 Claims}\label{comparison-to-literature-claims}
 
-\textbf{Headline ``1000× reduction''}: - Our analysis:
-\textasciitilde340× total when combining all factors (VdB-Natário +
-backreaction + enhancements) - Rigorously verified: \textasciitilde20×
-(VdB-Natário 10× + backreaction 1.29× + conservative enhancements) -
-Heuristic/exploratory: \textasciitilde17× (cavity √Q + squeezing e\^{}r
-+ polymer 1/μ̄)
+\textbf{Headline ``1000$\times$ reduction''}: - Our analysis:
+\(\sim\)340$\times$ total when combining all factors (VdB-Natário +
+backreaction + enhancements) - Rigorously verified: \(\sim\)20$\times$
+(VdB-Natário 10$\times$ + backreaction 1.29$\times$ + conservative enhancements) -
+Heuristic/exploratory: \(\sim\)17$\times$ (cavity \(\sqrt{Q}\) + squeezing e\^{}r
++ polymer 1/\(\bar{\mu}\))
 
-\textbf{Cross-repository ``1083× / 99.9\% reduction''}: - Distinct
+\textbf{Cross-repository ``1083$\times$ / 99.9\% reduction''}: - Distinct
 quantity (absolute energy accounting, not pipeline feasibility ratio) -
 Includes system-level optimizations beyond warp bubble mechanisms - Now
 clearly separated in documentation
@@ -423,12 +428,12 @@ the following must be addressed:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
+
 \item
   \textbf{Curved-spacetime cavity QED}: Derive enhancement factors from
   QFT on Alcubierre/VdB-Natário backgrounds
 \item
-  \textbf{LQG spin-foam amplitudes}: Connect polymer parameter μ̄ to
+  \textbf{LQG spin-foam amplitudes}: Connect polymer parameter \(\bar{\mu}\) to
   macroscopic warp metrics rigorously
 \item
   \textbf{Flanagan-style curved QI bounds}: Extend Ford-Roman
@@ -454,10 +459,10 @@ warp bubble energy optimizations. Key contributions:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
+
 \item
   \textbf{Discrepancy resolution}: Pipeline feasibility ratio
-  (\textasciitilde30×) and cross-repository accounting (1083×) are
+  (\(\sim\)30$\times$) and cross-repository accounting (1083$\times$) are
   distinct quantities, now documented separately
 \item
   \textbf{Stabilization}: Adaptive damping eliminates solver
@@ -485,7 +490,7 @@ quantify theoretical uncertainties.
 \textbf{computational methods and verification paper}, not a physics
 claim. It provides: - Reproducible tools for testing future theoretical
 refinements (items 1-5 in §4.4) - Sensitivity structure showing cavity Q
-dominates (1000×), with squeezing (10×) and polymer (3×) corrections -
+dominates (1000$\times$), with squeezing (10$\times$) and polymer (3$\times$) corrections -
 Null findings (curved QI, 3D stability) that highlight toy-model
 limitations
 
@@ -510,7 +515,7 @@ phenomenology.
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
+
 \item
   Alcubierre, M. (1994). \emph{The warp drive: hyper-fast travel within
   general relativity}. Class. Quantum Grav. \textbf{11}, L73.
@@ -554,14 +559,12 @@ repository
 
 \textbf{Batch session command}:
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{python}\NormalTok{ batch\_analysis.py }\AttributeTok{{-}{-}session{-}name}\NormalTok{ final\_verif }\DataTypeTok{\textbackslash{}}
-    \AttributeTok{{-}{-}include{-}derivations} \DataTypeTok{\textbackslash{}}
-    \AttributeTok{{-}{-}include{-}integrated{-}qi{-}3d} \DataTypeTok{\textbackslash{}}
-    \AttributeTok{{-}{-}use{-}adaptive{-}damping}
-\end{Highlighting}
-\end{Shaded}
+\begin{verbatim}
+python batch_analysis.py --session-name final_verif \
+    --include-derivations \
+    --include-integrated-qi-3d \
+    --use-adaptive-damping
+\end{verbatim}
 
 \textbf{Output manifest}:
 \texttt{results/final\_verif/session\_manifest.txt} (12 tasks, all exit
@@ -621,3 +624,5 @@ spacetime at scale \(\sim 1/\bar{\mu}\).
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 \emph{End of manuscript draft}
+
+\end{document}
