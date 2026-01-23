@@ -587,3 +587,14 @@ Next steps I recommend (pick any):
 - Do a final editorial pass to remove remaining placeholders like `{[}GitHub repository{]}` and `{[}DOI/Zenodo{]}` and replace with final links/DOI text.
 - Add a Makefile check or a small CI job to fail the build on LaTeX errors/warnings.
 <!-- ------ -->
+Great — tidy-up complete ✅
+
+Summary of what I did:
+- Archived generated build artifacts from docs into old_builds (moved logs and PDFs so generated outputs aren't duplicated between docs and papers). One tracked PDF (`warp-bubble-qft-docs-compilation.pdf`) was renamed under git; untracked artifacts were moved into the archive directory. 🔒
+- Updated history.md to point to the canonical manuscript at manuscript.pdf (replaced `docs/manuscript.pdf` / `Location: manuscript.pdf` with manuscript.pdf) and committed the change. ✍️
+- Created commit: `docs: archive build artifacts to docs/old_builds; update history to reference canonical papers/manuscript.pdf`.
+
+Result:
+- manuscript.pdf is now the canonical, up-to-date artifact. docs no longer contains duplicated generated PDFs/logs (they are archived in old_builds).
+- `make manuscript` still builds manuscript.pdf as before.
+<!-- ------ -->
