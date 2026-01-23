@@ -345,6 +345,11 @@ def apply_backreaction_correction_iterative(
     grid_size: int = 400,
     solver_tolerance: float = 1e-6,
     damping_factor: float = 0.7,
+    adaptive_damping: bool = False,
+    damping_beta0: Optional[float] = None,
+    damping_alpha: float = 0.25,
+    damping_min: float = 0.05,
+    damping_max: float = 0.95,
     regularization_lambda: float = 1e-3,
     max_inner_iterations: int = 50,
     max_outer_iterations: int = 10,
@@ -373,12 +378,49 @@ def apply_backreaction_correction_iterative(
     history = []
     last_solution: Optional[Dict] = None
 
+    # Adaptive damping initialization
+    beta0 = float(damping_factor if damping_beta0 is None else damping_beta0)
+    beta0 = float(np.clip(beta0, damping_min, damping_max))
+    solver.damping_factor = beta0
+    prev_convergence_metric: Optional[float] = None
+
     for outer_idx in range(1, max_outer_iterations + 1):
+        if adaptive_damping:
+            if outer_idx == 1:
+                solver.damping_factor = beta0
+            else:
+                # Convergence metric C_n from previous inner solve:
+                # Use mean error normalized by tolerance so that C ~ 1 near convergence.
+                C_n = prev_convergence_metric
+                if C_n is None:
+                    C_n = 1.0
+                if not np.isfinite(C_n):
+                    C_n = 1e6
+
+                beta_n = beta0 / (1.0 + float(damping_alpha) * float(C_n))
+                beta_n = float(np.clip(beta_n, damping_min, damping_max))
+
+                # Extra safety: if the last solve diverged or failed to converge, be more conservative.
+                if last_solution is not None:
+                    if bool(last_solution.get("had_nonfinite", False)) or not bool(last_solution.get("converged", False)):
+                        beta_n = float(max(damping_min, 0.5 * beta_n))
+
+                solver.damping_factor = beta_n
+
         scale = energy / float(original_energy) if original_energy != 0 else 1.0
         rho_scaled = rho_base * scale
 
         solution = solver.solve_backreaction(r, rho_scaled, max_iterations=max_inner_iterations)
         last_solution = solution
+
+        # Update convergence metric for next outer iteration.
+        inner_errors = getattr(solver, "convergence_history", [])
+        if inner_errors:
+            avg_err = float(np.mean(inner_errors))
+        else:
+            avg_err = float(solution.get("final_error", float("inf")))
+
+        prev_convergence_metric = avg_err / max(float(solver_tolerance), 1e-12)
 
         reduction_factor = solver.compute_reduction_factor(solution)
         next_energy = float(energy * reduction_factor)
@@ -389,6 +431,9 @@ def apply_backreaction_correction_iterative(
                 "outer_iteration": int(outer_idx),
                 "energy_in": float(energy),
                 "rho_scale": float(scale),
+                "adaptive_damping": bool(adaptive_damping),
+                "damping_factor_used": float(getattr(solver, "damping_factor", damping_factor)),
+                "convergence_metric_C": float(prev_convergence_metric) if prev_convergence_metric is not None else None,
                 "metric_converged": bool(solution.get("converged", False)),
                 "metric_iterations": int(solution.get("iterations", 0)),
                 "metric_final_error": float(solution.get("final_error", float("inf"))),
@@ -407,6 +452,11 @@ def apply_backreaction_correction_iterative(
         "grid_size": int(grid_size),
         "solver_tolerance": float(solver_tolerance),
         "damping_factor": float(damping_factor),
+        "adaptive_damping": bool(adaptive_damping),
+        "damping_beta0": float(beta0),
+        "damping_alpha": float(damping_alpha),
+        "damping_min": float(damping_min),
+        "damping_max": float(damping_max),
         "regularization_lambda": float(regularization_lambda),
         "max_inner_iterations": int(max_inner_iterations),
         "max_outer_iterations": int(max_outer_iterations),

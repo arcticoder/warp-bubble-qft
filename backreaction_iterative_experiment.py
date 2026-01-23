@@ -85,6 +85,11 @@ def main() -> int:
     parser.add_argument("--outer-iters", type=int, default=10)
     parser.add_argument("--rel-tol", type=float, default=1e-4)
     parser.add_argument("--damping", type=float, default=0.7, help="Damping factor (0 < β < 1) for stability")
+    parser.add_argument("--adaptive-damping", action="store_true", help="Enable adaptive damping schedule per outer iteration")
+    parser.add_argument("--damping-beta0", type=float, default=None, help="Base damping β0 for adaptive schedule (defaults to --damping)")
+    parser.add_argument("--damping-alpha", type=float, default=0.25, help="Adaptive damping sensitivity α")
+    parser.add_argument("--damping-min", type=float, default=0.05, help="Lower clamp for adaptive damping")
+    parser.add_argument("--damping-max", type=float, default=0.95, help="Upper clamp for adaptive damping")
     parser.add_argument("--regularization", type=float, default=1e-3, help="L2 regularization λ to bound norms")
 
     parser.add_argument("--results-dir", type=str, default="results")
@@ -113,6 +118,11 @@ def main() -> int:
         max_outer_iterations=int(args.outer_iters),
         relative_energy_tolerance=float(args.rel_tol),
         damping_factor=float(args.damping),
+        adaptive_damping=bool(args.adaptive_damping),
+        damping_beta0=args.damping_beta0,
+        damping_alpha=float(args.damping_alpha),
+        damping_min=float(args.damping_min),
+        damping_max=float(args.damping_max),
         regularization_lambda=float(args.regularization),
     )
 

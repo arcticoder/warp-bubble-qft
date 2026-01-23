@@ -357,3 +357,7 @@ I've successfully completed **3 out of 5** low-priority extension tasks from Sec
 
 The framework is now ready for publication as a **computational methods/verification paper** with strong null findings that enhance scientific credibility.
 <!-- ------ -->
+- Added adaptive damping to the outer-loop iterative coupling in warp-bubble-qft/src/warp_qft/backreaction_solver.py: per outer iteration it computes a convergence metric $C_n$ from the inner solver’s error history and updates $\beta_n=\beta_0/(1+\alpha C_n)$ (clamped to `[damping_min, damping_max]`, with extra conservatism if the last inner solve didn’t converge or went nonfinite). The per-iteration `history` entries now record `damping_factor_used` and `convergence_metric_C`.
+- Exposed the new controls in warp-bubble-qft/backreaction_iterative_experiment.py (`--adaptive-damping`, `--damping-beta0`, `--damping-alpha`, `--damping-min`, `--damping-max`) and verified it produces JSON output with the new fields.
+- Note: `pytest` currently fails during collection due to an existing indentation error in warp-bubble-qft/tests/test_recent_discoveries.py, unrelated to the adaptive damping changes.
+<!-- ------ -->
