@@ -32,12 +32,17 @@ docs:
 	cd docs && pdflatex warp_bubble_proof.tex
 
 manuscript:
-	@echo "Building REVTeX manuscript (papers/manuscript.pdf)..."
-	cd papers && pdflatex -interaction=nonstopmode manuscript.tex || true
-	cd papers && bibtex manuscript || true
-	cd papers && pdflatex -interaction=nonstopmode manuscript.tex || true
-	cd papers && pdflatex -interaction=nonstopmode manuscript.tex || true
-	@echo "Built papers/manuscript.pdf (if no errors were reported)"
+	@echo "Building REVTeX manuscript (papers/lqg_warp_verification_methods.pdf)..."
+	cd papers && pdflatex -interaction=nonstopmode lqg_warp_verification_methods.tex || true
+	cd papers && bibtex lqg_warp_verification_methods || true
+	cd papers && pdflatex -interaction=nonstopmode lqg_warp_verification_methods.tex || true
+	cd papers && pdflatex -interaction=nonstopmode lqg_warp_verification_methods.tex || true
+	@echo "Built papers/lqg_warp_verification_methods.pdf (if no errors were reported)"
+
+clean-papers:
+	@echo "Cleaning LaTeX artifacts in papers/..."
+	cd papers && rm -f *.aux *.log *.blg *.out *.bbl *.toc
+	@echo "Preserved .tex, .bib, and .pdf files"
 
 clean:
 	rm -rf build/

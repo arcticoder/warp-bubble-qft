@@ -429,6 +429,38 @@ This work extends Loop Quantum Gravity (LQG) to include matter fields quantized 
 
 The Unlicense
 
+## Contributing
+
+We welcome contributions from the community! This project will be moving to the [Dawson Institute for Advanced Physics](https://github.com/DawsonInstitute) organization.
+
+### How to Contribute
+
+1. **Report Issues**: Open issues for bugs, feature requests, or documentation improvements
+2. **Submit Pull Requests**: Fork the repository and submit PRs with clear descriptions
+3. **Improve Documentation**: Help clarify theoretical foundations or usage examples
+4. **Validate Results**: Run reproducibility checks and report findings
+
+### Contribution Guidelines
+
+- Follow PEP 8 style guidelines for Python code
+- Add unit tests for new features (pytest framework)
+- Update documentation in `docs/` for theoretical changes
+- Include docstrings for all public functions
+- Run the full test suite before submitting PRs: `pytest -v`
+
+### Code of Conduct
+
+This project adheres to the [Dawson Institute Code of Conduct](https://github.com/DawsonInstitute/.github/blob/main/CODE_OF_CONDUCT.md). All contributors are expected to uphold respectful, inclusive, and professional interactions.
+
+### Development Workflow
+
+1. Clone the repository and create a feature branch
+2. Make changes with descriptive commit messages
+3. Run verification: `python batch_analysis.py --session-name quick_check`
+4. Submit PR with clear description and test results
+5. Respond to review feedback
+
+For questions or collaboration inquiries, contact: rsherrington@dawsoninstitute.org
 
 ## Scope, Validation & Limitations
 

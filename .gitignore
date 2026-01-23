@@ -126,3 +126,9 @@ dmypy.json
 
 *.pdf
 author_config.tex
+
+# Results artifacts - keep golden sessions, ignore temporary runs
+results/temp_*
+results/quick_*
+results/debug_*
+# Keep: results/full_verification/ results/final_integration/ (archived for reproducibility)

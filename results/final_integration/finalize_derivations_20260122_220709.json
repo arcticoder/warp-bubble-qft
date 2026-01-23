@@ -1,0 +1,8 @@
+{
+  "timestamp": "20260122_220709",
+  "outputs": {
+    "tex_fragment": "results/final_integration/final_derivations_fragment.tex",
+    "qi_plot": "results/final_integration/qi_delta_vs_mu.png"
+  },
+  "notes": "TeX is a manuscript fragment; QI plot uses toy normalized delta from integration JSON if present."
+}

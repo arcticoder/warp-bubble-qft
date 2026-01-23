@@ -1,0 +1,16 @@
+Session: final_integration
+Timestamp: 20260122_220106
+Tasks:
+  [0] Full-system integration grid (pipeline + toy QI+3D)
+  [-1] Edge-case stress tests (noise-perturbed)
+  [0] Finalize derivations (TeX fragment + plots)
+  [0] Quick feasibility check (baseline)
+  [0] Quick feasibility check (iterative backreaction)
+  [0] QI verification scan
+  [0] Sensitivity analysis (Monte Carlo + enhancement sweeps)
+  [0] Toy 1D evolution
+  [0] Curved-space QI verification
+  [0] 3+1D stability analysis (polymer-corrected ADM)
+  [0] Discrepancy analysis
+  [0] Baseline comparison (factor isolation)
+  [0] Iterative backreaction experiment (reduced resolution)

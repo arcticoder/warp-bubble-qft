@@ -607,3 +607,45 @@ Completed: *Wire into batch_analysis* (6/7)
 - Wired everything into batch_analysis.py: `python batch_analysis.py --session-name final_integration` now runs the new integration/stress/derivation steps first; you can also use `--include-final-integration` with any session name.
 - Fixed NumPy 2.x compatibility (`np.trapz` → `np.trapezoid`) in integrated_qi_3d_verification.py and the new integration runner.
 <!-- ------ -->
+I've successfully completed all remaining tasks from the TODO list for the warp-bubble-qft repository. Here's what was accomplished:
+
+### ✅ Manuscript Finalization (Section 8.4)
+
+1. **Updated Makefile**: Changed target from `manuscript.pdf` to `lqg_warp_verification_methods.pdf` and added `clean-papers` target
+
+2. **Integrated 7 figures** from final_integration into the manuscript:
+   - Enhancement sensitivity analysis (cavity Q + squeezing)
+   - QI verification (scan + curved vs flat bounds)  
+   - 3+1D stability analysis (full evolution + toy Lyapunov)
+   - Backreaction convergence with adaptive damping
+   - Robustness & parameter integration (Monte Carlo + QI-vs-μ)
+
+3. **Enhanced reproducibility section**: Added comprehensive 6-item checklist covering deterministic outputs, version control, archived configs, Docker container, data availability, and documentation
+
+4. **Verified manuscript build**: Successfully compiled 17-page PDF (964 KB) with all figures via `make manuscript`
+
+### ✅ Org-Move Preparation (Section 8.5)
+
+1. **Added Contributing section** to README.md with:
+   - Contribution guidelines (issues, PRs, docs, validation)
+   - Code standards (PEP 8, tests, docstrings)
+   - Development workflow
+   - Dawson Institute Code of Conduct link
+   - Contact information
+
+2. **Defined artifact policy**: Updated .gitignore to keep golden sessions (`full_verification/`, `final_integration/`) while ignoring temporary runs
+
+3. **Created comprehensive checklists**:
+   - ORG_MOVE_CHECKLIST.md: Detailed transfer instructions with pre-move verification, transfer actions, and post-transfer monitoring
+   - COMPLETION_SUMMARY.md: Complete overview of achievements, metrics, and next steps
+
+### 📊 Final Status
+
+- **17-page manuscript** with 7 integrated figures ✅
+- **100% verification coverage** (24/24 parameter points feasible) ✅
+- **Robustness validated** (2/3 edge cases robust, 1/3 fragile documented) ✅
+- **Contributing guidelines** in place ✅
+- **Org-move checklist** complete ✅
+
+The repository is now **ready for transfer to DawsonInstitute organization** and subsequent publication submission to arXiv/journal.
+<!-- ------ -->

@@ -1,0 +1,80 @@
+{
+  "timestamp": "20260122_220741",
+  "params": {
+    "mu": 0.1,
+    "R": 2.3,
+    "energy_in": 1.0,
+    "energy_out": 0.6146279881706733
+  },
+  "diagnostics": {
+    "method": "iterative",
+    "grid_size": 120,
+    "solver_tolerance": 1e-06,
+    "damping_factor": 0.7,
+    "adaptive_damping": false,
+    "damping_beta0": 0.7,
+    "damping_alpha": 0.25,
+    "damping_min": 0.05,
+    "damping_max": 0.95,
+    "regularization_lambda": 0.001,
+    "max_inner_iterations": 10,
+    "max_outer_iterations": 3,
+    "relative_energy_tolerance": 0.0001,
+    "history": [
+      {
+        "outer_iteration": 1,
+        "energy_in": 1.0,
+        "rho_scale": 1.0,
+        "adaptive_damping": false,
+        "damping_factor_used": 0.7,
+        "convergence_metric_C": 1.1102230246251565e-10,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.850231995807127,
+        "energy_out": 0.850231995807127,
+        "relative_delta": 0.14976800419287295
+      },
+      {
+        "outer_iteration": 2,
+        "energy_in": 0.850231995807127,
+        "rho_scale": 0.850231995807127,
+        "adaptive_damping": false,
+        "damping_factor_used": 0.7,
+        "convergence_metric_C": 1.1102230246251565e-10,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.850231995807127,
+        "energy_out": 0.7228944466941705,
+        "relative_delta": 0.149768004192873
+      },
+      {
+        "outer_iteration": 3,
+        "energy_in": 0.7228944466941705,
+        "rho_scale": 0.7228944466941705,
+        "adaptive_damping": false,
+        "damping_factor_used": 0.7,
+        "convergence_metric_C": 1.1102230246251565e-10,
+        "metric_converged": true,
+        "metric_iterations": 1,
+        "metric_final_error": 1.1102230246251565e-16,
+        "reduction_factor": 0.850231995807127,
+        "energy_out": 0.6146279881706733,
+        "relative_delta": 0.14976800419287303
+      }
+    ],
+    "final_reduction_factor": 0.6146279881706733,
+    "final_energy": 0.6146279881706733,
+    "divergence_detected": false
+  },
+  "solution_summary": {
+    "metric_converged": true,
+    "metric_iterations": 1,
+    "metric_final_error": 1.1102230246251565e-16,
+    "g_tt_min": -1.0,
+    "g_tt_max": -1.0,
+    "g_rr_min": 0.9000000004122307,
+    "g_rr_max": 1.0999999994230718
+  }
+}

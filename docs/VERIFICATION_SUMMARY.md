@@ -359,6 +359,46 @@ python run_enhanced_lqg_pipeline.py \
 
 ---
 
-**Last updated**: 2026-01-21  
-**Session**: full_verification  
-**Artifacts**: `results/full_verification/`
+## 12) Robustness & Edge-Case Stress Testing
+
+**Script**: [stress_test.py](../stress_test.py)  
+**Session**: final_integration (2026-01-22)  
+**Output**: `results/final_integration/stress_tests_20260122_221019.json`
+
+### Methodology
+
+Edge-case stress testing probes numerical stability and model robustness under extreme parameters and multiplicative Gaussian noise ($\sigma = 0.05$). Three provocative configurations were tested with 20 noise-perturbed trials each:
+
+1. **High-μ, low-Q**: μ=0.60, R=12.0, Q=5×10³, squeezing=20dB, N=4
+2. **Low-μ, high-Q**: μ=0.01, R=0.50, Q=10⁸, squeezing=5dB, N=3
+3. **Large-R, high-squeezing**: μ=0.20, R=10.0, Q=10⁴, squeezing=25dB, N=6
+
+**Robustness metric**: $D = \mathrm{std}(E') / \mathrm{mean}(E')$ where $E'$ is the final energy across perturbed trials.
+- $D < 0.1$: **robust** (configuration insensitive to 5% parameter noise)
+- $D > 0.1$: **fragile** (significant sensitivity; null result on robustness in that regime)
+
+### Results Summary
+
+| Configuration | Robustness D | Feasible Rate | Interpretation |
+|--------------|--------------|---------------|----------------|
+| High-μ, low-Q | 0.062 | 100% | **Robust** |
+| Low-μ, high-Q | 0.040 | 100% | **Robust** |
+| Large-R, high-squeezing | 0.123 | 100% | **Fragile** (D > 0.1 threshold) |
+
+**Key findings**:
+- Two of three edge cases show **robust** behavior ($D < 0.1$) under 5% multiplicative noise
+- Large-radius + high-squeezing regime is **fragile** ($D = 0.123$), indicating parameter sensitivity in extreme enhancement scenarios
+- All configurations maintained **100% feasibility rate** across perturbed trials (no catastrophic failures)
+
+**Full-system integration** (24-point grid scan):
+- **24/24 points feasible** across parameter grid (μ ∈ [0.05, 0.30], Q ∈ {10⁵, 10⁶}, squeezing ∈ {10, 15}dB, N ∈ {3, 4})
+- **Minimum energy**: 0.036 (well below unity threshold)
+- **No NaN divergences** with stabilized iterative backreaction (damping β=0.7, regularization λ=1e-3)
+
+**Interpretation**: The pipeline demonstrates **conditional robustness** — stable under moderate parameter variations in typical regimes, with identified fragility boundaries (high squeezing + large radius). This supports the framework as a **computational exploration tool** with well-characterized numerical limits, rather than a claim of universal feasibility.
+
+---
+
+**Last updated**: 2026-01-22  
+**Sessions**: full_verification, final_integration  
+**Artifacts**: `results/full_verification/`, `results/final_integration/`

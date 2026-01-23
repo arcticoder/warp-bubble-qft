@@ -1,0 +1,45 @@
+{
+  "parameters": {
+    "mu": 0.3,
+    "R_bubble": 2.3,
+    "sampling_width": 1.0
+  },
+  "metric_info": {
+    "source": "toy_profile",
+    "curvature_radius": 0.9950777875672667,
+    "grid_size": 500,
+    "x_min": -5.0,
+    "x_max": 5.0
+  },
+  "integrals": {
+    "flat_space": -0.5620345273549887,
+    "curved_space": -0.7877925713456603,
+    "metric_enhancement_factor": 1.401680026764761
+  },
+  "bounds": {
+    "ford_roman_flat": -0.006332573977646111,
+    "curved_bound": -1.0099175893685255
+  },
+  "violations": {
+    "violates_flat_bound": true,
+    "violates_curved_bound": false,
+    "violation_margin_flat": -0.5557019533773426,
+    "violation_margin_curved": 0.22212501802286522
+  },
+  "energy_profile": {
+    "peak_density": -1.4972522649743392,
+    "total_integrated": -2.4225407564221917,
+    "rms_density": 0.4597747624932641
+  },
+  "interpretation": "No curved-space QI violation detected",
+  "timestamp": "20260122_220716",
+  "command_args": {
+    "mu": 0.3,
+    "R": 2.3,
+    "sampling_width": 1.0,
+    "metric_file": null,
+    "save_results": true,
+    "save_plots": true,
+    "results_dir": "results/final_integration"
+  }
+}

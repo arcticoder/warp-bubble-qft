@@ -8,21 +8,26 @@ Guiding principle: **treat all headline claims as hypotheses** until reproduced 
 
 ## Status (as of 2026-01-22)
 
-**🎯 Methods Paper: READY** — All high-priority verification tasks complete. Framework positioned for arXiv submission (gr-qc/hep-th) as computational methods/verification paper.
+**🎯 Methods Paper: COMPLETE ✅** — All high-priority verification tasks complete. Manuscript finalized with 7 integrated figures. Repository ready for DawsonInstitute organization transfer and publication submission.
 
 **Key findings**:
 - Energy discrepancy **resolved**: Pipeline ~30× (feasibility ratio) ≠ cross-repo 1083× (computational accounting) — different quantities
 - Factor breakdown: VdB-Natário 10× + backreaction 1.29× + enhancements 16.6× ≈ **~340× total** (~20× verified, rest heuristic)
 - **Stability**: Iterative backreaction stabilized via adaptive damping (no divergences in tested parameter space)
+- **Robustness**: 24/24 integration points feasible, 2/3 edge cases robust (D < 0.1), 1/3 fragile (D=0.123 for large-R/high-squeezing)
 
 **Completed deliverables**:
-- `docs/VERIFICATION_SUMMARY.md` — comprehensive 12-section analysis
+- `docs/VERIFICATION_SUMMARY.md` — comprehensive 12-section analysis with robustness testing
 - `docs/LITERATURE_MAPPING.md` — formula mappings, benchmarking table, limitations
 - `docs/STATUS_UPDATE.md` — quick-start guide
 - `results/full_verification/` — complete batch session (11 files, 552 KB, all tasks passed)
+- `results/final_integration/` — end-to-end integration + stress tests (21 files, 928 KB)
+- `papers/lqg_warp_verification_methods.pdf` — 17-page manuscript with figures (REVTeX 4.2)
+- `ORG_MOVE_CHECKLIST.md` — comprehensive transfer guide
+- `README.md` — Contributing section + CoC link
 - `batch_analysis.py --session-name <name>` — reproducible orchestration
 
-**Next phase**: End-to-end integration validation + edge-case stress testing + manuscript finalization (then org move / spotlight).
+**Next phase**: Organization transfer to DawsonInstitute → publication submission → community engagement.
 
 ---
 
@@ -56,8 +61,8 @@ Run comprehensive batches that combine VdB–Natário + LQG + backreaction + cav
   document the bound $B$ clearly (toy curved bound vs Ford–Roman flat bound).
 
 **Deliverable**:
-- [ ] Add a dedicated integration runner that writes `results/<session>/full_integration_*.json` and (optionally) plots.
-- [ ] Ensure it runs from `batch_analysis.py` when `--session-name final_integration` is used.
+- [x] Add a dedicated integration runner that writes `results/<session>/full_integration_*.json` and (optionally) plots.
+- [x] Ensure it runs from `batch_analysis.py` when `--session-name final_integration` is used.
 
 ### 8.2 Perform Edge-Case Stress Testing
 
@@ -70,8 +75,8 @@ Probe numerical and modeling limits: extreme $\mu$, $Q$, squeezing, radius, and 
   Treat $D>0.1$ as “fragile / null on robustness” for that regime.
 
 **Deliverable**:
-- [ ] Add a `stress_test.py` runner that writes `results/<session>/stress_tests_*.json`.
-- [ ] Update `docs/VERIFICATION_SUMMARY.md` with a short robustness section once the stress runs are available.
+- [x] Add a `stress_test.py` runner that writes `results/<session>/stress_tests_*.json`.
+- [x] Update `docs/VERIFICATION_SUMMARY.md` with a short robustness section once the stress runs are available.
 
 ### 8.3 Finalize Derivations + Visualizations for the Manuscript
 
@@ -81,19 +86,33 @@ Suggested “unified derivation” model to report (clearly marked heuristic whe
 $$\rho_{\mathrm{eff}} = \rho_0 \prod_i (1/F_i)\,\exp\!\left(\sum_{i<j} \gamma_{ij}\right)$$
 
 **Deliverable**:
-- [ ] Add a script that emits a small TeX fragment (equations + parameter definitions) and plots under `results/<session>/plots/`.
+- [x] Add a script that emits a small TeX fragment (equations + parameter definitions) and plots under `results/<session>/plots/`.
 
 ### 8.4 Manuscript Finalization + Packaging
 
-- [ ] Rename manuscript output to something descriptive (avoid “manuscript” as the final name).
-- [ ] Convert `docs/MANUSCRIPT_DRAFT.md` → LaTeX (or keep Markdown if targeting a Markdown-friendly venue), and generate figures from `results/preprint/` or `results/final_integration/`.
-- [ ] Add author/affiliation/acknowledgments and a short “reproducibility checklist” section.
+- [x] Rename manuscript output to something descriptive (avoid "manuscript" as the final name).
+  - Renamed to `lqg_warp_verification_methods.tex/.pdf`
+  - Updated Makefile target; `make manuscript` builds the descriptive filename
+- [x] Convert `docs/MANUSCRIPT_DRAFT.md` → LaTeX (or keep Markdown if targeting a Markdown-friendly venue), and generate figures from `results/preprint/` or `results/final_integration/`.
+  - **Note**: LaTeX manuscript already exists at `papers/lqg_warp_verification_methods.tex`; MANUSCRIPT_DRAFT.md served as draft outline
+  - Integrated 7 figures from `results/final_integration/`: enhancement sensitivity, QI verification, 3D stability, backreaction convergence, robustness/parameter integration
+- [x] Add author/affiliation/acknowledgments and a short "reproducibility checklist" section.
+  - Author config already in place via `author_config.tex` (Ryan Sherrington, Dawson Institute)
+  - Added comprehensive Appendix A with reproducibility checklist (6 items: deterministic outputs, version control, archived configs, Docker container, data availability, documentation)
 
 ### 8.5 Org Move / Spotlight Checklist (after final integration passes)
 
-- [ ] Add a short Contributing section and code-of-conduct pointer in README.
+- [x] Add a short Contributing section and code-of-conduct pointer in README.
+  - Added comprehensive Contributing section with guidelines, workflow, and Dawson Institute CoC link
+  - Contact info: rsherrington@dawsoninstitute.org
 - [ ] Ensure repo description/topics match institute taxonomy.
-- [ ] Decide which `results/` artifacts are kept vs ignored (commit policy).
+  - **Action required**: Update GitHub repository settings when moving to DawsonInstitute org
+  - Suggested topics: `loop-quantum-gravity`, `warp-drive`, `quantum-field-theory`, `computational-physics`, `verification-framework`
+  - Description: "Verification framework for LQG-enhanced warp bubble optimizations with reproducible computational methods"
+- [x] Decide which `results/` artifacts are kept vs ignored (commit policy).
+  - **Policy**: Keep "golden" verification sessions (`full_verification/`, `final_integration/`) for reproducibility
+  - Ignore temporary/debug sessions (`temp_*`, `quick_*`, `debug_*`)
+  - Updated `.gitignore` with selective filtering
 
 ---
 

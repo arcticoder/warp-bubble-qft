@@ -1,0 +1,67 @@
+{
+  "timestamp": "20260122_221019",
+  "command_args": {
+    "trials": 20,
+    "sigma_noise": 0.05,
+    "seed": 42,
+    "results_dir": "results/final_integration",
+    "save_results": true
+  },
+  "edge_cases": [
+    {
+      "base_params": {
+        "mu": 0.6,
+        "R": 12.0,
+        "Q": 5000.0,
+        "squeezing_db": 20.0,
+        "num_bubbles": 4
+      },
+      "trials": 20,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.14888397622345298,
+        "std": 0.009158940824949289,
+        "robustness_D": 0.061517303992493215,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.01,
+        "R": 0.5,
+        "Q": 100000000.0,
+        "squeezing_db": 5.0,
+        "num_bubbles": 3
+      },
+      "trials": 20,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.020623536374658503,
+        "std": 0.0008204236920340815,
+        "robustness_D": 0.039780941402571005,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.2,
+        "R": 10.0,
+        "Q": 10000.0,
+        "squeezing_db": 25.0,
+        "num_bubbles": 6
+      },
+      "trials": 20,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.04704087233748104,
+        "std": 0.005786079498515876,
+        "robustness_D": 0.12300110969467856,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "fragile"
+    }
+  ],
+  "notes": "Robustness D = std(E)/mean(E) over multiplicative-noise trials."
+}
