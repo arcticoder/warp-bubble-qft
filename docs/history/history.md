@@ -567,3 +567,16 @@ Files changed / added:
   2. Do an editorial pass to remove remaining Pandoc artifacts and tighten wording/formatting (addresses the prior warnings and any style issues) ✍️.
   3. Optional: add `make clean-manuscript` or CI check to fail on LaTeX errors/warnings if you want stricter enforcement 🔧.
 <!-- ------ -->
+✅ Done — I added explicit citations and removed the temporary `\nocite{*}`, committed the changes, and rebuilt the manuscript.
+
+Highlights:
+- Replaced temporary `\nocite{*}` with explicit in-text citations for:
+  - Alcubierre~\cite{Alcubierre1994}, van den Broeck~\cite{vanDenBroeck1999}, Natário~\cite{Natario2002}, Ford & Roman~\cite{FordRoman1997}, Flanagan~\cite{Flanagan1997}, Haroche & Raimond~\cite{HarocheRaimond2006}, Walls & Milburn~\cite{WallsMilburn2008}, Rovelli & Vidotto~\cite{RovelliVidotto2014}, Everett & Roman~\cite{EverettRoman1997}.
+- Committed as: "papers: replace \nocite{*} with explicit \cite{} calls; add citations for core refs" ✅
+- Rebuilt with `make manuscript` and produced manuscript.pdf — BibTeX now includes only the explicitly cited references. Minor warnings remain (overfull hbox, hyperref bookmark level) but no structural errors.
+
+Next steps (pick one):
+1. Replace/adapt citation wording (author-year vs textual) for stylistic preferences.  
+2. Do the editorial sweep to remove Pandoc artifacts and fix minor warnings (recommended).  
+3. Add a Makefile check or CI step to ensure cited-only bibliography and fail on LaTeX errors/warnings.
+<!-- ------ -->
