@@ -361,3 +361,52 @@ The framework is now ready for publication as a **computational methods/verifica
 - Exposed the new controls in warp-bubble-qft/backreaction_iterative_experiment.py (`--adaptive-damping`, `--damping-beta0`, `--damping-alpha`, `--damping-min`, `--damping-max`) and verified it produces JSON output with the new fields.
 - Note: `pytest` currently fails during collection due to an existing indentation error in warp-bubble-qft/tests/test_recent_discoveries.py, unrelated to the adaptive damping changes.
 <!-- ------ -->
+Successfully completed all TODO items:
+
+### 1. **Adaptive Damping for Iterative Backreaction** ✅
+- Implemented convergence-dependent damping schedule: β_n = β₀/(1 + αC_n) where C_n is the inner solver's convergence metric
+- Added CLI options in backreaction_iterative_experiment.py: `--adaptive-damping`, `--damping-beta0`, `--damping-alpha`, `--damping-min`, `--damping-max`
+- Per-iteration diagnostics now include `damping_factor_used` and `convergence_metric_C` in JSON history
+- Tested and verified: smooth β ramp-down, no instabilities
+
+### 2. **Enhancement Factor Derivations** ✅
+- Created derive_enhancements.py with SymPy symbolic derivations:
+  - Cavity: F_cav = √Q (phase-space compression)
+  - Squeezing: F_sq = e^r (exact from quantum optics)
+  - Polymer: F_poly ∝ 1/μ̄ (heuristic LQG scaling)
+- Synergy analysis: multiplicative model (33333×) vs additive (1013×) vs geometric (32×)
+- Numerical validation at Q=1e6, squeezing=20dB, μ=0.3 → dominant mechanism is cavity
+
+### 3. **Integrated QI + 3D Verification** ✅
+- Created integrated_qi_3d_verification.py combining:
+  - Curved-space QI integral with Alcubierre metric
+  - 3D ADM-like evolution with polymer corrections
+  - Correlation analysis: QI violations vs Lyapunov instabilities
+- Results: QI violations detected but evolution remains stable (indicates toy-model limitations)
+
+### 4. **Batch Analysis Enhancements** ✅
+- Updated batch_analysis.py with new flags:
+  - `--include-derivations`: runs enhancement derivations
+  - `--include-integrated-qi-3d`: runs integrated QI+3D verification
+  - `--use-adaptive-damping`: enables adaptive damping in iterative backreaction
+
+### 5. **Final Verification Session** ✅
+- Ran comprehensive `final_verif` session with **12 tasks, all passed**:
+  - Quick checks (baseline + iterative)
+  - QI scan, sensitivity analysis, toy evolution
+  - Curved QI, 3D stability, discrepancy/baseline comparisons
+  - Iterative backreaction with adaptive damping
+  - Enhancement derivations
+  - Integrated QI+3D verification
+- Generated 928 KB of outputs in final_verif
+
+### 6. **Documentation Updates** ✅
+- Updated TODO.md:
+  - Status date → 2026-01-22
+  - Removed stale "NaN issue" warning
+  - Marked tasks 7.1–7.4 complete with detailed results
+  - Updated working notes with final_verif session summary
+  - Clarified toy-model limitations for curved QI and 3D stability
+
+All code is tested, documented, and ready for manuscript preparation (Task 7.5).
+<!-- ------ -->

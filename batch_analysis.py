@@ -42,6 +42,9 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--session-name", type=str, default=None, help="Optional session label (default: timestamp)")
     p.add_argument("--skip-slow", action="store_true", help="Skip slow iterative backreaction")
+    p.add_argument("--include-derivations", action="store_true", help="Include enhancement derivations")
+    p.add_argument("--include-integrated-qi-3d", action="store_true", help="Include integrated QI+3D verification")
+    p.add_argument("--use-adaptive-damping", action="store_true", help="Enable adaptive damping in iterative backreaction")
     args = p.parse_args()
 
     ts = _timestamp()
@@ -177,23 +180,58 @@ def main() -> int:
 
     # Iterative backreaction experiment (optional; can be slow)
     if not args.skip_slow:
+        iter_cmd = [
+            "python",
+            "backreaction_iterative_experiment.py",
+            "--grid-size",
+            "120",
+            "--inner-iters",
+            "10",
+            "--outer-iters",
+            "3",
+            "--save-results",
+            "--save-plots",
+            "--results-dir",
+            str(session_dir),
+        ]
+        if args.use_adaptive_damping:
+            iter_cmd.append("--adaptive-damping")
+        
+        tasks.append(
+            (
+                iter_cmd,
+                "Iterative backreaction experiment (reduced resolution)" + (" + adaptive damping" if args.use_adaptive_damping else ""),
+            )
+        )
+    
+    # Enhancement derivations (optional)
+    if args.include_derivations:
         tasks.append(
             (
                 [
                     "python",
-                    "backreaction_iterative_experiment.py",
-                    "--grid-size",
-                    "120",
-                    "--inner-iters",
-                    "10",
-                    "--outer-iters",
-                    "3",
+                    "derive_enhancements.py",
+                    "--save-results",
+                    "--results-dir",
+                    str(session_dir),
+                ],
+                "Enhancement factor derivations (SymPy + numerical)",
+            )
+        )
+    
+    # Integrated QI+3D verification (optional)
+    if args.include_integrated_qi_3d:
+        tasks.append(
+            (
+                [
+                    "python",
+                    "integrated_qi_3d_verification.py",
                     "--save-results",
                     "--save-plots",
                     "--results-dir",
                     str(session_dir),
                 ],
-                "Iterative backreaction experiment (reduced resolution)",
+                "Integrated curved QI + 3D stability verification",
             )
         )
 
