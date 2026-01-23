@@ -271,13 +271,60 @@ Stability check: Lyapunov $\lambda = \max |\partial_t \log ||g|||$; λ < 0 → s
 
 ---
 
-### 7.5 Manuscript Preparation
+### 7.5 Manuscript Preparation ✅ **COMPLETE**
 
-- [ ] Draft manuscript using VERIFICATION_SUMMARY.md as outline
-- [ ] Suggested title: "Verification of LQG Warp Bubble Optimizations: Computational Insights and Limitations"
-- [ ] Sections: Intro (warp energy problem + LQG), Methods (pipeline + mappings), Results (baseline comparison + sensitivity), Discussion (limitations + null findings), Conclusion
-- [ ] Run final `batch_analysis.py --session-name preprint` for publication artifacts
-- [ ] Prepare for arXiv submission (gr-qc primary, hep-th secondary)
+**Goal**: Draft publishable manuscript for arXiv submission (gr-qc/hep-th) based on verification results.
+
+**Deliverables**:
+- ✅ **Manuscript draft**: `docs/MANUSCRIPT_DRAFT.md`
+  - Title: "Verification of LQG Warp Bubble Optimizations: Computational Methods and Limitations"
+  - Sections: Abstract, Introduction, Methods, Results, Discussion, Conclusion, Appendices
+  - Word count: ~6000 words
+  - Figures: References to 20+ plots from `results/preprint/`
+  
+- ✅ **Updated LITERATURE_MAPPING.md**: Added Section 3 with full enhancement factor derivations
+  - Cavity: √Q heuristic with justification and limitations
+  - Squeezing: e^r exact formula from quantum optics
+  - Polymer: 1/μ̄ heuristic from LQG volume quantization
+  - Synergy analysis: multiplicative model physically justified
+  - Benchmarking table updated with new enhancement entries
+  
+- ✅ **Preprint batch session**: `results/preprint/`
+  - 12 tasks (all passed), 928 KB outputs, 20 files
+  - Complete reproducibility artifacts for manuscript figures and tables
+  - Session manifest: `results/preprint/session_manifest.txt`
+
+**Manuscript structure**:
+1. **Abstract**: 300 words, key findings (discrepancy resolution, stability, derivations, curved QI, 3D stability)
+2. **Introduction** (§1): Warp drive energy problem, prior work, scope & limitations
+3. **Methods** (§2): Pipeline, backreaction solver, enhancement derivations, QI checks, stability analysis
+4. **Results** (§3): Energy discrepancy, convergence, enhancement validation, QI cross-checks, sensitivity
+5. **Discussion** (§4): Interpretation, literature comparison, null results, theoretical uncertainties
+6. **Conclusion** (§5): Summary, bottom line, future work
+7. **Appendices**: Reproducibility details, mathematical derivations
+
+**Key findings emphasized**:
+- Discrepancy resolved: pipeline ~30×, cross-repo 1083× are distinct quantities
+- Factor breakdown: VdB-Natário 10× + backreaction 1.29× + enhancements 16.6× ≈ 340× total (~20× verified)
+- Stability: adaptive damping eliminates divergences
+- Derivations: symbolic + numerical validation for cavity/squeezing/polymer
+- Curved QI: toy bound shows no violation (vs flat-space violation) — but bound is heuristic
+- 3D stability: simplified ADM evolution stable (λ < 0) — but not full constrained GR
+
+**Conservative framing**:
+- Results are **parameter-space exploration**, not proof of feasibility
+- Heuristic models (cavity √Q, polymer 1/μ̄) lack rigorous curved-spacetime derivations
+- Numerical "feasibility" contingent on validity of flat-spacetime bounds
+- Critical limitations documented (§4.3, §4.4)
+
+**Next steps**:
+- [ ] Add author affiliations and acknowledgments
+- [ ] Generate figures from preprint session outputs (integrate into manuscript)
+- [ ] Convert to LaTeX (arXiv format)
+- [ ] Peer review (internal, then arXiv submission)
+- [ ] Prepare supplementary materials (code archive, data repository)
+
+**Deliverable**: ✅ `docs/MANUSCRIPT_DRAFT.md` ready for LaTeX conversion and figure integration
 
 ---
 

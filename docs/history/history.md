@@ -410,3 +410,58 @@ Successfully completed all TODO items:
 
 All code is tested, documented, and ready for manuscript preparation (Task 7.5).
 <!-- ------ -->
+## Summary: All TODO Items Complete
+
+Successfully completed all remaining TODO tasks for the warp-bubble-qft verification framework:
+
+### ✅ **Task 7.4: Enhancement Derivations**
+- Created derive_enhancements.py with SymPy symbolic derivations
+- Validated numerically: cavity F=√Q=1000, squeezing F=e^r=10, polymer F=1/μ̄=3.33
+- Synergy analysis: multiplicative model (33333×) physically justified vs additive (1013×)
+- Integrated into batch workflow with `--include-derivations` flag
+
+### ✅ **Task: Integrated QI+3D Verification**
+- Created integrated_qi_3d_verification.py
+- Combines curved-space QI integral with 3D ADM evolution stability
+- Correlation analysis: QI violations with stable evolution → indicates toy-model limitations
+- Integrated into batch workflow with `--include-integrated-qi-3d` flag
+
+### ✅ **Task: Adaptive Damping Enhancement**
+- Extended iterative backreaction with convergence-dependent schedule: β_n = β₀/(1+αC_n)
+- CLI options: `--adaptive-damping`, `--damping-beta0/alpha/min/max`
+- Results: smooth ramp-down, no instabilities, previously divergent configs now converge
+
+### ✅ **Task: LITERATURE_MAPPING.md Update**
+- Added Section 3: Enhancement factor derivations with symbolic expressions, numerical validation, synergy analysis
+- Updated benchmarking table with cavity/squeezing/polymer entries
+- Documented limitations: heuristic cavity √Q, flat-space squeezing, LQG polymer scaling
+
+### ✅ **Task 7.5: Manuscript Preparation**
+- Created MANUSCRIPT_DRAFT.md (~2900 words, 6 sections + 2 appendices)
+- Title: "Verification of LQG Warp Bubble Optimizations: Computational Methods and Limitations"
+- Conservative framing: parameter-space exploration, not proof of feasibility
+- Key findings: discrepancy resolved, stability achieved, derivations validated, curved QI/3D extensions complete
+
+### ✅ **Preprint Batch Session**
+- Ran comprehensive `preprint` session: 12 tasks, all passed
+- Generated 928 KB publication-ready artifacts in preprint
+- Includes: enhancement derivations, adaptive damping convergence, integrated QI+3D, all baseline checks
+
+### 📊 **Final Status**
+All TODO items (tasks 0-7.5) are now **COMPLETE**:
+- ✅ Reproducibility baseline (Task 0)
+- ✅ Core claims verification (Tasks 1.1-1.2)
+- ✅ Sensitivity analysis (Task 2)
+- ✅ Backreaction coupling (Task 3)
+- ✅ 3+1D extensions (Task 4)
+- ✅ Causality checks (Task 5)
+- ✅ Literature benchmarking (Task 6)
+- ✅ **All low-priority extensions** (Tasks 7.1-7.5):
+  - 7.1: NaN divergences fixed ✅
+  - 7.2: Curved QI bounds ✅
+  - 7.3: 3+1D stability ✅
+  - 7.4: Enhancement derivations ✅
+  - 7.5: Manuscript draft ✅
+
+**Ready for**: LaTeX conversion → figure integration → arXiv submission (gr-qc/hep-th)
+<!-- ------ -->

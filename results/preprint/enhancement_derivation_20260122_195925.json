@@ -1,0 +1,79 @@
+{
+  "timestamp": "20260122_195925",
+  "derivations": {
+    "cavity": {
+      "Q_definition": "Eq(Q, omega_0/Delta_omega)",
+      "enhancement_factor": "sqrt(Q)",
+      "expression_latex": "\\sqrt{Q}",
+      "notes": "Heuristic model: F_cav \u221d \u221aQ from phase-space mode compression. Rigorous derivation requires cavity QED mode analysis."
+    },
+    "squeezing": {
+      "variance_squeezed": "exp(-2*r)/4",
+      "variance_antisqueezed": "exp(2*r)/4",
+      "uncertainty_product": "1/16",
+      "enhancement_factor": "exp(r)",
+      "squeezing_dB_relation": "r = S_dB/20",
+      "expression_latex": "e^{r}",
+      "notes": "Exact result from squeezing operator algebra: F_sq = e^r. Standard quantum optics."
+    },
+    "polymer": {
+      "volume_eigenvalue": "gamma**(3/2)*sqrt(j)*sqrt(j + 1)*sqrt(2*j + 1)",
+      "polymer_parameter_scaling": "1/sqrt(R)",
+      "enhancement_factor_heuristic": "1/mu_bar",
+      "expression_latex": "\\frac{1}{\\mu_{bar}}",
+      "notes": "Heuristic model: F_poly \u221d 1/\u03bc\u0304 \u221d \u221aR. Rigorous calculation requires spin-foam transition amplitudes."
+    }
+  },
+  "numerical_evaluation": {
+    "parameters": {
+      "Q": 1000000.0,
+      "squeezing_dB": 20.0,
+      "squeezing_r": 2.3025850929940455,
+      "polymer_mu": 0.3,
+      "bubble_R": 2.3
+    },
+    "enhancement_factors": {
+      "cavity_sqrt_Q": 1000.0,
+      "squeezing_exp_r": 9.999999999999998,
+      "polymer_1_over_mu": 3.3333333333333335
+    },
+    "synergy_analysis": {
+      "individual_factors": {
+        "cavity": 1000.0,
+        "squeezing": 9.999999999999998,
+        "polymer": 3.3333333333333335
+      },
+      "combination_models": {
+        "additive": 1013.3333333333334,
+        "multiplicative": 33333.33333333333,
+        "geometric_mean": 32.182979486854315,
+        "weighted_linear": 337.77777777777777
+      },
+      "recommendation": "multiplicative",
+      "rationale": "Independent physical mechanisms act on different degrees of freedom; expect product of factors."
+    }
+  },
+  "heuristic_comparison": {
+    "derived": {
+      "cavity_sqrt_Q": 1000.0,
+      "squeezing_exp_r": 9.999999999999998,
+      "polymer_1_over_mu": 3.3333333333333335
+    },
+    "heuristic": {
+      "cavity": 1000.0,
+      "squeezing": 9.999999999999998,
+      "polymer": 3.3333333333333335
+    },
+    "relative_differences": {
+      "cavity_diff": 0.0,
+      "squeezing_diff": 0.0,
+      "polymer_diff": 0.0
+    },
+    "agreement": "perfect",
+    "notes": "Placeholder comparison; heuristic model uses same formulas in current implementation."
+  },
+  "summary": {
+    "total_multiplicative_factor": 33333.33333333333,
+    "dominant_mechanism": "cavity"
+  }
+}
