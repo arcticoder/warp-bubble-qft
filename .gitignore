@@ -123,3 +123,5 @@ dmypy.json
 .github/instructions/copilot-instructions.md
 
 .github/
+
+*.pdf

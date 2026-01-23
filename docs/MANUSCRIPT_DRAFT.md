@@ -195,9 +195,9 @@ where $f_\tau(t) = \tau / (t^2 + \tau^2)^2$ is Lorentzian sampling function.
 **Validation across scales**:
 | Base energy | Final energy | Reduction | Converged | Divergence flag |
 |-------------|--------------|-----------|-----------|-----------------|
-| 1.0         | 0.615        | 1.63×     | ✓         | False           |
-| 100.0       | 61.5         | 1.63×     | ✓         | False           |
-| 10000.0     | 6145         | 1.63×     | ✓         | False           |
+| 1.0         | 0.615        | 1.63×     | Yes       | False           |
+| 100.0       | 61.5         | 1.63×     | Yes       | False           |
+| 10000.0     | 6145         | 1.63×     | Yes       | False           |
 
 No instabilities observed; reduction factor scales consistently.
 

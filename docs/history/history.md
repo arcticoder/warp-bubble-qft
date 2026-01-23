@@ -465,3 +465,19 @@ All TODO items (tasks 0-7.5) are now **COMPLETE**:
 
 **Ready for**: LaTeX conversion → figure integration → arXiv submission (gr-qc/hep-th)
 <!-- ------ -->
+## What I found 🔍
+- The LaTeX compile failed because `manuscript.tex` was a *LaTeX fragment* (missing preamble) and several Unicode glyphs (≈, ×, μ, superscripts, ✓) produced errors/warnings when using pdflatex.
+
+## What I did 🔧
+1. Replaced the checkmark glyphs (`✓`) in MANUSCRIPT_DRAFT.md with `Yes` to avoid a glyph that many fonts didn't include.
+2. Regenerated the manuscript as a standalone PDF using Pandoc + XeLaTeX with a Unicode font:
+   - Command used:
+     ```
+     cd docs && pandoc -s MANUSCRIPT_DRAFT.md -o manuscript.pdf --pdf-engine=xelatex -V mainfont='DejaVu Serif' -V monofont='DejaVu Sans Mono'
+     ```
+3. Confirmed output: `docs/manuscript.pdf` created (size ~105 KB).
+
+## Result ✅
+- The PDF builds cleanly now and is available at:
+  - `docs/manuscript.pdf`
+<!-- ------ -->
