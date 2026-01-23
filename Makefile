@@ -1,6 +1,6 @@
 # Makefile for Warp Bubble QFT
 
-.PHONY: help install test lint docs clean demo
+.PHONY: help install test lint docs clean demo manuscript
 
 help:
 	@echo "Available targets:"
@@ -30,6 +30,14 @@ format:
 docs:
 	cd docs && pdflatex polymer_field_algebra.tex
 	cd docs && pdflatex warp_bubble_proof.tex
+
+manuscript:
+	@echo "Building REVTeX manuscript (papers/manuscript.pdf)..."
+	cd papers && pdflatex -interaction=nonstopmode manuscript.tex || true
+	cd papers && bibtex manuscript || true
+	cd papers && pdflatex -interaction=nonstopmode manuscript.tex || true
+	cd papers && pdflatex -interaction=nonstopmode manuscript.tex || true
+	@echo "Built papers/manuscript.pdf (if no errors were reported)"
 
 clean:
 	rm -rf build/
