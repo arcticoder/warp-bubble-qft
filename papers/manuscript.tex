@@ -66,7 +66,7 @@ outputs (12 tasks, 20 files, all passed).
 \subsubsection{1.1 The Warp Drive Energy
 Problem}\label{the-warp-drive-energy-problem}
 
-Alcubierre's (1994) warp drive metric achieves apparent
+Alcubierre~\cite{Alcubierre1994}'s warp drive metric achieves apparent
 faster-than-light travel by contracting spacetime ahead of a ``bubble''
 and expanding behind it, while the bubble interior follows a timelike
 worldline. The central obstacle is the enormous energy
@@ -75,7 +75,7 @@ kg for a bubble radius comparable to the Solar System, far exceeding
 available energy scales.
 
 Subsequent refinements have explored: - \textbf{Geometric
-optimizations}: Van den Broeck (1999) and Natário (2002) introduced
+optimizations}: Van den Broeck~\cite{vanDenBroeck1999} and Nat\'ario~\cite{Natario2002} introduced
 volume factors reducing energy by concentrating the warp field →
 \(\sim\)10$\times$ reduction - \textbf{Backreaction corrections}:
 Self-consistent solutions to Einstein equations with stress-energy
@@ -172,7 +172,7 @@ Derivations}\label{enhancement-factor-derivations}
 \textbf{Implementation}: \texttt{derive\_enhancements.py} (SymPy
 symbolic + numerical validation)
 
-\textbf{Cavity QED}: - Quality factor \(Q = \omega_0 / \Delta\omega\)
+\textbf{Cavity QED}: (see Haroche and Raimond~\cite{HarocheRaimond2006}; Walls and Milburn~\cite{WallsMilburn2008}) - Quality factor \(Q = \omega_0 / \Delta\omega\)
 from mode confinement - Heuristic model: \(F_\text{cav} = \sqrt{Q}\)
 from phase-space compression - Numerical:
 \(Q = 10^6 \to F_\text{cav} = 1000\) - \textbf{Limitation}: Lacks
@@ -186,7 +186,7 @@ reduction: \(\langle \Delta X^2 \rangle = e^{-2r}/4\) - Enhancement:
 - \textbf{Limitation}: Flat-spacetime formula; strong-field behavior
 unknown
 
-\textbf{LQG polymer corrections}: - Volume eigenvalues:
+\textbf{LQG polymer corrections} (see Rovelli and Vidotto~\cite{RovelliVidotto2014}): - Volume eigenvalues:
 \(V_{\gamma,j} = \gamma^{3/2} \sqrt{j(j+1)(2j+1)} \ell_P^3\) - Polymer
 parameter: \(\bar{\mu} \sim \sqrt{\ell_P / R}\) - Heuristic model:
 \(F_\text{poly} = 1/\bar{\mu}\); at \(\bar{\mu} = 0.3\),
@@ -204,7 +204,7 @@ Verification}\label{quantum-inequality-verification}
 \textbf{Implementation}: \texttt{verify\_qi\_energy\_density.py},
 \texttt{curved\_qi\_verification.py}
 
-\textbf{Ford-Roman bound} (flat spacetime):
+\textbf{Ford-Roman bound}~\cite{FordRoman1997} (flat spacetime):
 \[\int_{-\infty}^{\infty} \rho(t) f_\tau(t) \, dt \geq -\frac{1}{16\pi^2 \tau^4}\]
 where \(f_\tau(t) = \tau / (t^2 + \tau^2)^2\) is Lorentzian sampling
 function.
@@ -409,7 +409,7 @@ Heuristic/exploratory: \(\sim\)17$\times$ (cavity \(\sqrt{Q}\) + squeezing e\^{}
 \textbf{Cross-repository ``1083$\times$ / 99.9\% reduction''}: - Distinct
 quantity (absolute energy accounting, not pipeline feasibility ratio) -
 Includes system-level optimizations beyond warp bubble mechanisms - Now
-clearly separated in documentation
+clearly separated in documentation. Related theoretical constructs (e.g., Krasnikov tube) are discussed in the literature (see Everett and Roman~\cite{EverettRoman1997}).
 
 \subsubsection{4.3 Null Results and
 Limitations}\label{null-results-and-limitations}
@@ -448,7 +448,7 @@ the following must be addressed:
   \textbf{LQG spin-foam amplitudes}: Connect polymer parameter \(\bar{\mu}\) to
   macroscopic warp metrics rigorously
 \item
-  \textbf{Flanagan-style curved QI bounds}: Extend Ford-Roman
+  \textbf{Flanagan-style curved QI bounds}~\cite{Flanagan1997}: Extend Ford-Roman
   inequalities to curved spacetime for these specific metrics
 \item
   \textbf{3+1D constrained evolution}: Implement full ADM/BSSN with
@@ -558,7 +558,6 @@ phenomenology.
   Krasnikov tube}. Phys. Rev.~D \textbf{56}, 2100.
 \end{enumerate}
 \bibliographystyle{apsrev4-2}
-\nocite{*}
 \bibliography{refs}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
