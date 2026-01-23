@@ -580,3 +580,10 @@ Next steps (pick one):
 2. Do the editorial sweep to remove Pandoc artifacts and fix minor warnings (recommended).  
 3. Add a Makefile check or CI step to ensure cited-only bibliography and fail on LaTeX errors/warnings.
 <!-- ------ -->
+Great — the heading normalization worked and reduced the bookmark-level warnings. I promoted top-level sections to `\section{...}` and their subheads to `\subsection{...}`, removed the manual numeric prefixes, committed the changes, and rebuilt the PDF. The build now finishes cleanly with only minor warnings (one tiny overfull hbox and standard label/rerun messages).
+
+Next steps I recommend (pick any):
+- Fix that small overfull hbox by breaking long monospaced filenames (I can replace `\texttt{...}` with `\path{...}` or add discretionary breaks) — recommended.
+- Do a final editorial pass to remove remaining placeholders like `{[}GitHub repository{]}` and `{[}DOI/Zenodo{]}` and replace with final links/DOI text.
+- Add a Makefile check or a small CI job to fail the build on LaTeX errors/warnings.
+<!-- ------ -->
