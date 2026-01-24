@@ -1,37 +1,24 @@
-# TODO — Remaining Items (warp-bubble-qft)
+# ✅ All In-Repo Work Complete
 
-**Status**: All programmatic consolidation and verification tasks complete as of 2026-01-24. Remaining items require external processes or GitHub UI access.
-
----
-
-## Pending External Actions
-
-### Org Transfer Checklist
-
-- [ ] Update GitHub repository settings when moving to DawsonInstitute org:
-  - Suggested topics: `loop-quantum-gravity`, `warp-drive`, `quantum-field-theory`, `computational-physics`, `verification-framework`
-  - Description: "Verification framework for LQG-enhanced warp bubble optimizations with reproducible computational methods"
-  - **Requires**: GitHub organization admin access
-
-### Publication Workflow
-
-- [ ] Peer review (internal, then arXiv submission)
-  - **Status**: External process, pending org transfer
-  - **Prerequisites**: Final manuscript approval from Dawson Institute
-
-- [ ] Prepare supplementary materials (code archive, data repository)
-  - **Status**: Post-publication task
-  - **Dependencies**: arXiv acceptance, DOI assignment
+**Status as of 2026-01-24**: All programmatic consolidation, verification, and manuscript tasks are complete.
 
 ---
 
-## Optional Enhancements
+## See: `docs/COMPLETED_TASKS.md`
 
-### F3) Visualization enhancements
+All completed work has been moved to [`COMPLETED_TASKS.md`](COMPLETED_TASKS.md) with full provenance and implementation details.
 
-- [ ] (Optional) Add a stability summary plot (λ per edge case) if 3D checks are enabled.
-  - Low priority; current visualizations (§3 figures 1-7) sufficient for manuscript
+**Remaining items** (external dependencies only):
+- Org transfer repo settings → requires GitHub admin access
+- Peer review & arXiv submission → awaiting Dawson Institute approval  
+- Supplementary materials → post-publication task
+- Optional F3 plot → low priority
 
 ---
 
-**Note**: All completed items have been moved to `docs/COMPLETED_TASKS.md`. See that file for full provenance and implementation details.
+**Quick status**:
+- ✅ Phases A-F (consolidation, polish) — complete
+- ✅ Sections 0-7 (reproducibility, verification, analysis, extensions) — complete
+- ✅ Manuscript (`papers/lqg_warp_verification_methods.pdf`) — complete (964 KB, 17 pages)
+- 📋 External actions — pending org transfer
+

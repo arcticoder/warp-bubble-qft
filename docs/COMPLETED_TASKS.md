@@ -247,6 +247,29 @@ Goal: improve "toy curved QI" while remaining clearly labeled.
 
 ---
 
+## Future/External Work (moved from TODO.md, 2026-01-24)
+
+**Note**: All in-repo programmatic work is complete. Remaining items require external processes or are low-priority optional enhancements.
+
+### Pending External Actions
+
+**Org Transfer Checklist** (requires GitHub admin access):
+- Update repository settings when moving to DawsonInstitute org
+- Suggested topics: `loop-quantum-gravity`, `warp-drive`, `quantum-field-theory`, `computational-physics`, `verification-framework`
+- Description: "Verification framework for LQG-enhanced warp bubble optimizations with reproducible computational methods"
+
+**Publication Workflow** (external process):
+- Peer review (internal, then arXiv submission) — awaiting Dawson Institute approval
+- Prepare supplementary materials (code archive, data repository) — post-publication task, depends on arXiv acceptance and DOI assignment
+
+### Optional Enhancements
+
+**F3 Visualization** (low priority):
+- Add stability summary plot (λ per edge case) if 3D checks enabled
+- Current manuscript visualizations (§3 figures 1-7) are sufficient
+
+---
+
 ## TODO.md Status
 
 Updated [docs/TODO.md](docs/TODO.md):
