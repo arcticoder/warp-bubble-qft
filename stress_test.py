@@ -256,10 +256,39 @@ def main() -> int:
 
         return 0
     # “Edges” are intentionally provocative; treat outcomes as robustness signals.
+    # Expanded to cover diverse extreme regimes: high/low mu, extreme Q, aggressive squeezing,
+    # minimal/maximal enhancements, and mixed configurations.
     edge_cases: List[Dict[str, Any]] = [
-        {"mu": 0.60, "R": 12.0, "Q": 5e3, "squeezing_db": 20.0, "num_bubbles": 4},
-        {"mu": 0.01, "R": 0.50, "Q": 1e8, "squeezing_db": 5.0, "num_bubbles": 3},
-        {"mu": 0.20, "R": 10.0, "Q": 1e4, "squeezing_db": 25.0, "num_bubbles": 6},
+        # Original cases (baseline)
+        {"mu": 0.60, "R": 12.0, "Q": 5e3, "squeezing_db": 20.0, "num_bubbles": 4, "label": "high-mu-large-R"},
+        {"mu": 0.01, "R": 0.50, "Q": 1e8, "squeezing_db": 5.0, "num_bubbles": 3, "label": "low-mu-tiny-R-high-Q"},
+        {"mu": 0.20, "R": 10.0, "Q": 1e4, "squeezing_db": 25.0, "num_bubbles": 6, "label": "large-R-extreme-squeezing"},
+        
+        # Extreme mu regimes
+        {"mu": 0.90, "R": 5.0, "Q": 1e6, "squeezing_db": 15.0, "num_bubbles": 3, "label": "extreme-mu"},
+        {"mu": 0.005, "R": 2.0, "Q": 1e6, "squeezing_db": 15.0, "num_bubbles": 3, "label": "minimal-mu"},
+        
+        # Cavity Q extremes
+        {"mu": 0.3, "R": 2.3, "Q": 1e10, "squeezing_db": 10.0, "num_bubbles": 2, "label": "ultra-high-Q"},
+        {"mu": 0.3, "R": 2.3, "Q": 1e3, "squeezing_db": 15.0, "num_bubbles": 3, "label": "minimal-Q"},
+        
+        # Squeezing extremes
+        {"mu": 0.3, "R": 2.3, "Q": 1e6, "squeezing_db": 30.0, "num_bubbles": 3, "label": "maximal-squeezing"},
+        {"mu": 0.3, "R": 2.3, "Q": 1e6, "squeezing_db": 1.0, "num_bubbles": 3, "label": "minimal-squeezing"},
+        
+        # Multi-bubble extremes
+        {"mu": 0.3, "R": 2.3, "Q": 1e6, "squeezing_db": 15.0, "num_bubbles": 10, "label": "many-bubbles"},
+        {"mu": 0.3, "R": 2.3, "Q": 1e6, "squeezing_db": 15.0, "num_bubbles": 1, "label": "single-bubble"},
+        
+        # Conservative baseline (all minimal enhancements)
+        {"mu": 0.05, "R": 2.0, "Q": 1e4, "squeezing_db": 5.0, "num_bubbles": 1, "label": "conservative-all"},
+        
+        # Aggressive baseline (all maximal enhancements)
+        {"mu": 0.8, "R": 15.0, "Q": 1e9, "squeezing_db": 25.0, "num_bubbles": 8, "label": "aggressive-all"},
+        
+        # Mixed regimes (high in some parameters, low in others)
+        {"mu": 0.7, "R": 1.0, "Q": 5e4, "squeezing_db": 8.0, "num_bubbles": 2, "label": "high-mu-small-R"},
+        {"mu": 0.05, "R": 20.0, "Q": 1e8, "squeezing_db": 20.0, "num_bubbles": 7, "label": "low-mu-large-R-high-enhancements"},
     ]
 
     results: List[Dict[str, Any]] = []
@@ -294,6 +323,7 @@ def main() -> int:
         results.append(
             {
                 "base_params": base_params,
+                "label": base_params.get("label", "unlabeled"),
                 "trials": int(args.trials),
                 "sigma_noise": float(args.sigma_noise),
                 "final_energy_stats": {
@@ -319,13 +349,15 @@ def main() -> int:
         print(f"Wrote {out_path}")
 
     # Console summary
-    print("\nStress test summary:")
+    print(f"\nStress test summary ({len(report['edge_cases'])} edge cases):")
     for item in report["edge_cases"]:
         base = item["base_params"]
         stats = item["final_energy_stats"]
+        label = item.get("label", "unlabeled")
         print(
-            f"  mu={base['mu']}, R={base['R']}, Q={base['Q']:.2g}, sq={base['squeezing_db']}dB, N={base['num_bubbles']} -> "
-            f"D={stats['robustness_D']:.3f}, feasible_rate={stats['feasible_rate']:.2f} ({item['interpretation']})"
+            f"  [{label:30s}] mu={base['mu']:.2f}, R={base['R']:.1f}, Q={base['Q']:.1e}, "
+            f"sq={base['squeezing_db']:.0f}dB, N={base['num_bubbles']} -> "
+            f"D={stats['robustness_D']:.3f}, feasible={stats['feasible_rate']:.1%} ({item['interpretation']})"
         )
 
     return 0

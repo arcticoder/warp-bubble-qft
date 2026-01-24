@@ -1,0 +1,316 @@
+{
+  "timestamp": "20260123_223125",
+  "command_args": {
+    "trials": 5,
+    "sigma_noise": 0.05,
+    "seed": 42,
+    "fragility_fit": false,
+    "mu_sweep": "0.05:0.60:8",
+    "save_plots": false,
+    "results_dir": "results/stress_expanded",
+    "save_results": true
+  },
+  "edge_cases": [
+    {
+      "base_params": {
+        "mu": 0.6,
+        "R": 12.0,
+        "Q": 5000.0,
+        "squeezing_db": 20.0,
+        "num_bubbles": 4,
+        "label": "high-mu-large-R"
+      },
+      "label": "high-mu-large-R",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.15210366523530205,
+        "std": 0.009499756076403923,
+        "robustness_D": 0.0624557998764063,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.01,
+        "R": 0.5,
+        "Q": 100000000.0,
+        "squeezing_db": 5.0,
+        "num_bubbles": 3,
+        "label": "low-mu-tiny-R-high-Q"
+      },
+      "label": "low-mu-tiny-R-high-Q",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.020899969936454453,
+        "std": 0.0004940530610909521,
+        "robustness_D": 0.023638936447904053,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.2,
+        "R": 10.0,
+        "Q": 10000.0,
+        "squeezing_db": 25.0,
+        "num_bubbles": 6,
+        "label": "large-R-extreme-squeezing"
+      },
+      "label": "large-R-extreme-squeezing",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.043771718846293585,
+        "std": 0.004382927810753506,
+        "robustness_D": 0.10013149874567091,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "fragile"
+    },
+    {
+      "base_params": {
+        "mu": 0.9,
+        "R": 5.0,
+        "Q": 1000000.0,
+        "squeezing_db": 15.0,
+        "num_bubbles": 3,
+        "label": "extreme-mu"
+      },
+      "label": "extreme-mu",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.17796577851504802,
+        "std": 0.08061801024485377,
+        "robustness_D": 0.4529972611449962,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "fragile"
+    },
+    {
+      "base_params": {
+        "mu": 0.005,
+        "R": 2.0,
+        "Q": 1000000.0,
+        "squeezing_db": 15.0,
+        "num_bubbles": 3,
+        "label": "minimal-mu"
+      },
+      "label": "minimal-mu",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.04718729831875813,
+        "std": 0.0016372185653502308,
+        "robustness_D": 0.03469617086976551,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.3,
+        "R": 2.3,
+        "Q": 10000000000.0,
+        "squeezing_db": 10.0,
+        "num_bubbles": 2,
+        "label": "ultra-high-Q"
+      },
+      "label": "ultra-high-Q",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.006194328191308865,
+        "std": 0.0003703047958333891,
+        "robustness_D": 0.05978126834689776,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.3,
+        "R": 2.3,
+        "Q": 1000.0,
+        "squeezing_db": 15.0,
+        "num_bubbles": 3,
+        "label": "minimal-Q"
+      },
+      "label": "minimal-Q",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.516556040602297,
+        "std": 0.014230533634105508,
+        "robustness_D": 0.02754886694871075,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.3,
+        "R": 2.3,
+        "Q": 1000000.0,
+        "squeezing_db": 30.0,
+        "num_bubbles": 3,
+        "label": "maximal-squeezing"
+      },
+      "label": "maximal-squeezing",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.0171846292778852,
+        "std": 0.0027653587820152172,
+        "robustness_D": 0.1609204794178447,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "fragile"
+    },
+    {
+      "base_params": {
+        "mu": 0.3,
+        "R": 2.3,
+        "Q": 1000000.0,
+        "squeezing_db": 1.0,
+        "num_bubbles": 3,
+        "label": "minimal-squeezing"
+      },
+      "label": "minimal-squeezing",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.0483186305125266,
+        "std": 0.001841217644254401,
+        "robustness_D": 0.0381057497847971,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.3,
+        "R": 2.3,
+        "Q": 1000000.0,
+        "squeezing_db": 15.0,
+        "num_bubbles": 10,
+        "label": "many-bubbles"
+      },
+      "label": "many-bubbles",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.02717002298407258,
+        "std": 0.0017004103413021103,
+        "robustness_D": 0.06258405973005297,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.3,
+        "R": 2.3,
+        "Q": 1000000.0,
+        "squeezing_db": 15.0,
+        "num_bubbles": 1,
+        "label": "single-bubble"
+      },
+      "label": "single-bubble",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.06958511546376145,
+        "std": 0.002434227613351173,
+        "robustness_D": 0.034982015868305495,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.05,
+        "R": 2.0,
+        "Q": 10000.0,
+        "squeezing_db": 5.0,
+        "num_bubbles": 1,
+        "label": "conservative-all"
+      },
+      "label": "conservative-all",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.6996591248323077,
+        "std": 0.0319795056652843,
+        "robustness_D": 0.0457072659103089,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.8,
+        "R": 15.0,
+        "Q": 1000000000.0,
+        "squeezing_db": 25.0,
+        "num_bubbles": 8,
+        "label": "aggressive-all"
+      },
+      "label": "aggressive-all",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.001920137277406446,
+        "std": 0.0006358074857884425,
+        "robustness_D": 0.3311260571156849,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "fragile"
+    },
+    {
+      "base_params": {
+        "mu": 0.7,
+        "R": 1.0,
+        "Q": 50000.0,
+        "squeezing_db": 8.0,
+        "num_bubbles": 2,
+        "label": "high-mu-small-R"
+      },
+      "label": "high-mu-small-R",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 1.2721072246843066,
+        "std": 0.07827822459807358,
+        "robustness_D": 0.06153429764342354,
+        "feasible_rate": 0.0
+      },
+      "interpretation": "robust"
+    },
+    {
+      "base_params": {
+        "mu": 0.05,
+        "R": 20.0,
+        "Q": 100000000.0,
+        "squeezing_db": 20.0,
+        "num_bubbles": 7,
+        "label": "low-mu-large-R-high-enhancements"
+      },
+      "label": "low-mu-large-R-high-enhancements",
+      "trials": 5,
+      "sigma_noise": 0.05,
+      "final_energy_stats": {
+        "mean": 0.00038114283993324617,
+        "std": 1.9732786043766897e-05,
+        "robustness_D": 0.05177267936404872,
+        "feasible_rate": 1.0
+      },
+      "interpretation": "robust"
+    }
+  ],
+  "notes": "Robustness D = std(E)/mean(E) over multiplicative-noise trials."
+}

@@ -809,3 +809,67 @@ Aggressive (S≈1.21):   16.64× multiplicative → 36.77× total (2.209× boost
 ### Next Priority
 Continue with **Phase D: Expanded stress tests** (add more edge-case parameter regimes) or **Phase E: Curved QI refinements** (4D proxy integral + normalized margin).
 <!-- ------ -->
+## Phase D Complete! ✅
+
+I've successfully expanded the stress testing framework and marked **Phase D as complete**. Here's what was accomplished:
+
+### Completed Work
+
+**1. Phase B Marking** ✅
+- Updated TODO.md to mark Phase B (Script organization) as complete
+- Documented all completed items: main.py CLI, demos/ folder, library/runner split
+
+**2. Expanded Edge-Case Sets** ✅  
+Grew from **3 → 15 edge-case configurations** in stress_test.py:
+
+**New extreme regime categories:**
+- **Extreme μ**: minimal (0.005) and extreme (0.90) polymer parameters
+- **Cavity Q**: ultra-high (1e10) and minimal (1e3) quality factors  
+- **Squeezing**: maximal (30dB) and minimal (1dB) enhancement
+- **Multi-bubble**: many (10) and single (1) bubble configurations
+- **Baselines**: conservative-all (minimal) vs aggressive-all (maximal)
+- **Mixed regimes**: high-μ+small-R, low-μ+large-R+high-enhancements
+
+**3. Test Results** ✅
+Ran comprehensive 15-case stress test (5 trials each):
+
+```
+Robustness Summary:
+✓ Robust (D<0.1):  11/15 cases (73%)
+✗ Fragile (D>0.1):  4/15 cases (27%)
+
+Fragile Cases Identified:
+- extreme-mu (μ=0.90):           D=0.453 ⚠️ high fragility
+- aggressive-all:                D=0.331 ⚠️
+- maximal-squeezing (30dB):      D=0.161 ⚠️
+- large-R-extreme-squeezing:     D=0.100 (threshold)
+
+Failure Boundary:
+- high-mu-small-R: 0% feasible (μ=0.7, R=1.0) ❌
+  → Identifies parameter regime where method fails
+```
+
+**4. Updated Documentation** ✅
+- TODO.md: Phase D marked complete with detailed results
+- Next priority updated to **Phase E: Curved QI refinements**
+
+### Key Findings
+
+**Robustness insights:**
+- Most configurations are robust under 5% noise perturbations
+- Extreme μ (>0.8) creates high fragility
+- Aggressive enhancement combinations are fragile but feasible
+- Small R + high μ creates infeasible regime (0% success)
+
+**Parameter boundaries identified:**
+- Safe regime: μ ∈ [0.01, 0.6], moderate Q, squeezing <25dB
+- Fragile regime: μ >0.7, extreme squeezing >25dB
+- Failure regime: high-μ + small-R combination
+
+### Next Steps
+
+**Phase E: Curved-space QI refinements** (remaining TODO items):
+1. Add 4D proxy integral option (document assumptions)
+2. Add normalized margin Δ̄ = ⟨(I-B)/|B|⟩_t  
+3. Parameterize bound family (flat Ford-Roman vs curved toy vs alternate scalings)
+<!-- ------ -->

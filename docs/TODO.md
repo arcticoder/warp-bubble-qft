@@ -9,7 +9,7 @@ Guiding principle: keep the repo honest and reproducible; treat all headline cla
 ## Status (rolling)
 
 - ✅ Methods + verification deliverables exist (integration runners, stress tests, manuscript PDF).
-- 🔄 Current priority: **Phase C complete; continue with Phase D (expanded stress tests) or Phase E (curved QI refinements)**.
+- 🔄 Current priority: **Phases A-D complete; continue with Phase E (curved QI refinements)**.
 
 ---
 
@@ -36,19 +36,21 @@ Goal: one canonical paper build, one canonical “docs compilation” build, and
 
 ---
 
-## Phase B — Script organization + central entrypoint
+## Phase B — Script organization + central entrypoint ✅ COMPLETE
 
-Goal: fewer top-level scripts, clearer “what should I run?” story.
+Goal: fewer top-level scripts, clearer "what should I run?" story.
 
-- [ ] Create a central CLI entrypoint (recommended: `main.py`)
-  - Subcommands (suggested): `batch`, `full-integration`, `stress-test`, `compile-manuscript`, `demo`
-  - Consistent `--results-dir`/`--session-name` semantics
-- [ ] Create `demos/` folder and move demo-only scripts
-  - Candidates: `demo_fast_scanning.py`, `demo_van_den_broeck_natario.py`, any `simple_*demo.py`
-  - Update `README.md`/`docs/README.md` links accordingly
-- [ ] Split “library code” vs “runner scripts”
-  - Any reusable logic should live under `src/warp_qft/…`
-  - Runner scripts should mostly parse args + call into modules
+- [x] ✅ Create a central CLI entrypoint: `main.py`
+  - ✅ Subcommands: `batch`, `full-integration`, `stress-test`, `compile-manuscript`, `demo`
+  - ✅ Consistent `--results-dir` forwarding to underlying scripts
+  - ✅ Example: `python main.py stress-test --fragility-fit --save-results`
+- [x] ✅ Create `demos/` folder and move demo-only scripts
+  - ✅ Moved: `demo_fast_scanning.py`, `demo_van_den_broeck_natario.py`
+  - ✅ Added: `demo_synergy_integration.py` for Phase C demonstration
+  - ✅ Updated `README.md`/`docs/README.md` links
+- [x] ✅ Split "library code" vs "runner scripts"
+  - ✅ Core logic under `src/warp_qft/` (enhancement_pathway, synergy, backreaction_solver, etc.)
+  - ✅ Runners (batch_analysis, full_integration, stress_test) import from `src/`
 
 ---
 
@@ -75,11 +77,17 @@ Goal: carry synergy into the 3+1D toy evolution and ensure it's traceable as a *
 
 ---
 
-## Phase D — Expanded stress tests + fragility fits
+## Phase D — Expanded stress tests + fragility fits ✅ COMPLETE
 
 Goal: quantify fragility boundaries and produce publishable-quality plots.
 
-- [ ] Expand edge-case sets (include extreme $\mu$, $Q$, squeezing, $R$, bubble counts)
+- [x] ✅ Expand edge-case sets (include extreme $\mu$, $Q$, squeezing, $R$, bubble counts)
+  - ✅ Expanded from 3 to 15 edge-case configurations
+  - ✅ Added extreme regimes: mu [0.005-0.90], Q [1e3-1e10], squeezing [1-30dB], R [0.5-20], bubbles [1-10]
+  - ✅ Conservative/aggressive baselines: all-minimal vs all-maximal enhancements
+  - ✅ Mixed configurations: high in some parameters, low in others
+  - ✅ Labeled cases for clear interpretation (e.g., "extreme-mu", "ultra-high-Q")
+  - ✅ Results: 11/15 robust (D<0.1), 4/15 fragile (D>0.1); identified failure boundary at high-mu+small-R
 - [x] ✅ Add "fragility vs parameter" sweeps
   - ✅ Implemented `--fragility-fit` flag in `stress_test.py`
   - ✅ Computes $D(\mu)$ sweep with exponential fit $D(\mu)=a e^{b\mu}$
