@@ -163,6 +163,112 @@ def _fit_exponential(x: List[float], y: List[float]) -> Tuple[float, float, floa
     return float(a), float(b), float(r_squared)
 
 
+def _fit_exponential_with_offset(
+    x: List[float],
+    y: List[float],
+    *,
+    c_min: float | None = None,
+    c_max: float | None = None,
+    steps: int = 60,
+) -> Tuple[float, float, float, float]:
+    """Fit y = a * exp(b * x) + c using a lightweight grid search over c.
+
+    This avoids adding a SciPy dependency while still supporting a 3-parameter model.
+
+    Returns:
+        (a, b, c, r_squared)
+    """
+    x_arr = np.array(x, dtype=float)
+    y_arr = np.array(y, dtype=float)
+
+    if len(x_arr) < 3:
+        return (np.nan, np.nan, np.nan, np.nan)
+
+    y_min = float(np.min(y_arr))
+    if not np.isfinite(y_min) or y_min <= 0:
+        return (np.nan, np.nan, np.nan, np.nan)
+
+    # Reasonable default range for c: [0, 0.95*min(y)]
+    c_lo = 0.0 if c_min is None else float(c_min)
+    c_hi = 0.95 * y_min if c_max is None else float(c_max)
+    if c_hi <= c_lo:
+        c_hi = c_lo + 1e-9
+
+    best: Tuple[float, float, float, float] | None = None
+    c_grid = np.linspace(c_lo, c_hi, max(10, int(steps)))
+    for c in c_grid:
+        y_shift = y_arr - c
+        mask = y_shift > 0
+        if np.count_nonzero(mask) < 3:
+            continue
+
+        x_fit = x_arr[mask]
+        y_fit = y_shift[mask]
+        log_y = np.log(y_fit)
+        b, log_a = np.polyfit(x_fit, log_y, 1)
+        a = float(np.exp(log_a))
+
+        y_pred = a * np.exp(float(b) * x_arr) + float(c)
+        ss_res = float(np.sum((y_arr - y_pred) ** 2))
+        ss_tot = float(np.sum((y_arr - float(np.mean(y_arr))) ** 2))
+        r2 = 1.0 - (ss_res / ss_tot) if ss_tot > 0 else 0.0
+
+        cand = (float(a), float(b), float(c), float(r2))
+        if best is None or (np.isfinite(cand[3]) and cand[3] > best[3]):
+            best = cand
+
+    return best if best is not None else (np.nan, np.nan, np.nan, np.nan)
+
+
+def _mu_crit_for_threshold(a: float, b: float, c: float, threshold: float) -> float:
+    """Solve threshold = a*exp(b*mu)+c for mu, when possible."""
+    if not (np.isfinite(a) and np.isfinite(b) and np.isfinite(c)):
+        return float("nan")
+    if abs(b) < 1e-12:
+        return float("nan")
+
+    rhs = threshold - c
+    if rhs <= 0 or a <= 0:
+        return float("nan")
+
+    return float(np.log(rhs / a) / b)
+
+
+def _run_3d_stability_probe(
+    *,
+    mu: float,
+    R_bubble: float,
+    grid_size: int,
+    domain_size: float,
+    t_final: float,
+    dt: float,
+    mu_bar: float,
+    synergy_factor: float,
+    polymer_enabled: bool,
+) -> Dict[str, Any]:
+    # Local import to keep baseline stress tests lightweight.
+    from full_3d_evolution import evolve_3d_metric
+
+    out = evolve_3d_metric(
+        grid_size=int(grid_size),
+        domain_size=float(domain_size),
+        t_final=float(t_final),
+        dt=float(dt),
+        mu=float(mu),
+        mu_bar=float(mu_bar),
+        R_bubble=float(R_bubble),
+        polymer_enabled=bool(polymer_enabled),
+        synergy_factor=float(synergy_factor),
+    )
+
+    # Return only summary fields (avoid embedding large arrays in stress report).
+    return {
+        "parameters": out.get("parameters", {}),
+        "stability": out.get("stability", {}),
+        "interpretation": out.get("interpretation", ""),
+    }
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--trials", type=int, default=100)
@@ -170,8 +276,26 @@ def main() -> int:
     p.add_argument("--seed", type=int, default=42)
 
     p.add_argument("--fragility-fit", action="store_true", help="Run fragility(mu) sweep and fit D(mu)=a*e^(b*mu)")
+    p.add_argument(
+        "--fit-offset",
+        action="store_true",
+        help="Use offset model D(mu)=a*exp(b*mu)+c (grid-search over c; no SciPy dependency)",
+    )
     p.add_argument("--mu-sweep", type=str, default="0.05:0.60:8", help="mu sweep range (start:stop:count)")
     p.add_argument("--save-plots", action="store_true", help="Save fragility fit plot")
+
+    p.add_argument(
+        "--run-3d-stability",
+        action="store_true",
+        help="Run a lightweight 3+1D toy stability probe per edge case (adds Lyapunov λ summary)",
+    )
+    p.add_argument("--3d-grid-size", type=int, default=16, help="3D probe grid size (N×N×N)")
+    p.add_argument("--3d-domain-size", type=float, default=5.0, help="3D probe domain half-width")
+    p.add_argument("--3d-t-final", type=float, default=0.20, help="3D probe final time")
+    p.add_argument("--3d-dt", type=float, default=0.002, help="3D probe timestep")
+    p.add_argument("--3d-mu-bar", type=float, default=0.1, help="3D probe polymer parameter mu_bar (K correction)")
+    p.add_argument("--3d-synergy-factor", type=float, default=0.0, help="3D probe synergy factor S")
+    p.add_argument("--3d-no-polymer", action="store_true", help="Disable polymer corrections in 3D probe")
 
     p.add_argument("--results-dir", type=str, default="results")
     p.add_argument("--save-results", action="store_true")
@@ -208,7 +332,15 @@ def main() -> int:
             print("Not enough valid points for fit (need >= 3)")
             return 2
 
-        a, b, r2 = _fit_exponential(mu_vals, D_vals)
+        if args.fit_offset:
+            a, b, c, r2 = _fit_exponential_with_offset(mu_vals, D_vals)
+            mu_crit = _mu_crit_for_threshold(a, b, c, threshold=0.1)
+            fit_model = "D(mu) = a * exp(b * mu) + c"
+        else:
+            a, b, r2 = _fit_exponential(mu_vals, D_vals)
+            c = 0.0
+            mu_crit = _mu_crit_for_threshold(a, b, c, threshold=0.1)
+            fit_model = "D(mu) = a * exp(b * mu)"
 
         fit_report = {
             "timestamp": _timestamp(),
@@ -218,12 +350,14 @@ def main() -> int:
             "base_config": base_config,
             "data": {"mu": mu_vals, "D": D_vals},
             "fit": {
-                "model": "D(mu) = a * exp(b * mu)",
-                "a": a,
-                "b": b,
-                "r_squared": r2,
+                "model": fit_model,
+                "a": float(a),
+                "b": float(b),
+                "c": float(c),
+                "r_squared": float(r2),
+                "mu_crit_at_D=0.1": float(mu_crit),
             },
-            "notes": "Fragility D = std(E)/mean(E); exponential fit via log-linear regression.",
+            "notes": "Fragility D = std(E)/mean(E); fit via log-linear regression (optionally with offset via grid-search in c).",
         }
 
         if args.save_results:
@@ -235,8 +369,13 @@ def main() -> int:
             fig, ax = plt.subplots(figsize=(8, 5))
             ax.scatter(mu_vals, D_vals, label="Data", s=50, alpha=0.7)
             mu_fit = np.linspace(min(mu_vals), max(mu_vals), 100)
-            D_fit = a * np.exp(b * mu_fit)
-            ax.plot(mu_fit, D_fit, "r--", label=f"Fit: D={a:.3f}*exp({b:.3f}*μ), R²={r2:.3f}")
+            D_fit = a * np.exp(b * mu_fit) + c
+            label = (
+                f"Fit: D={a:.3f}*exp({b:.3f}*μ)+{c:.3f}, R²={r2:.3f}"
+                if args.fit_offset
+                else f"Fit: D={a:.3f}*exp({b:.3f}*μ), R²={r2:.3f}"
+            )
+            ax.plot(mu_fit, D_fit, "r--", label=label)
             ax.set_xlabel("Polymer parameter μ")
             ax.set_ylabel("Fragility D (std/mean)")
             ax.set_title("Fragility vs Polymer Parameter")
@@ -250,8 +389,13 @@ def main() -> int:
             print(f"Saved plot: {plot_path}")
 
         print(f"\nFragility fit results:")
-        print(f"  Model: D(mu) = {a:.4f} * exp({b:.4f} * mu)")
+        if args.fit_offset:
+            print(f"  Model: D(mu) = {a:.4f} * exp({b:.4f} * mu) + {c:.4f}")
+        else:
+            print(f"  Model: D(mu) = {a:.4f} * exp({b:.4f} * mu)")
         print(f"  R²: {r2:.4f}")
+        if np.isfinite(mu_crit):
+            print(f"  mu_crit at D=0.1: {mu_crit:.4f}")
         print(f"  Interpretation: {'Fragility increases exponentially with mu' if b > 0 else 'Fragility decreases with mu'}")
 
         return 0
@@ -297,6 +441,23 @@ def main() -> int:
         energies: List[float] = []
         feasible_count = 0
 
+        stability_3d: Dict[str, Any] | None = None
+        if args.run_3d_stability:
+            try:
+                stability_3d = _run_3d_stability_probe(
+                    mu=float(base_params["mu"]),
+                    R_bubble=float(base_params["R"]),
+                    grid_size=int(args.__dict__["3d_grid_size"]),
+                    domain_size=float(args.__dict__["3d_domain_size"]),
+                    t_final=float(args.__dict__["3d_t_final"]),
+                    dt=float(args.__dict__["3d_dt"]),
+                    mu_bar=float(args.__dict__["3d_mu_bar"]),
+                    synergy_factor=float(args.__dict__["3d_synergy_factor"]),
+                    polymer_enabled=not bool(args.__dict__["3d_no_polymer"]),
+                )
+            except Exception as exc:
+                stability_3d = {"error": str(exc)}
+
         for _ in range(args.trials):
             noisy = dict(base_params)
             for k in ["mu", "R", "Q", "squeezing_db"]:
@@ -332,6 +493,7 @@ def main() -> int:
                     "robustness_D": D,
                     "feasible_rate": float(feasible_count / max(1, args.trials)),
                 },
+                "stability_3d": stability_3d,
                 "interpretation": "fragile" if D > 0.1 else "robust",
             }
         )

@@ -946,3 +946,15 @@ Files changed:
 ## Findings & interpretation 🎯
 - All Phase A–E items and the low-priority extension tasks (7.1–7.5) are implemented, tested, and documented; nothing outstanding remains in the high-priority list.  
 <!-- ------ -->
+**Updates shipped (warp-bubble-qft)**  
+- Opened a new “Phase F — Final Polish” roadmap and marked the pieces completed so far in warp-bubble-qft/docs/TODO.md.  
+- Extended stress/fragility tooling in warp-bubble-qft/stress_test.py: optional 3+1D stability probe per edge-case + optional offset fit $D(\mu)=a e^{b\mu}+c$ with $\mu_{\mathrm{crit}}$ reporting.  
+- Added extreme-regime scan mode to warp-bubble-qft/curved_qi_verification.py via `--mu-values ...` (prints a compact table; can save a single JSON).  
+- Added a manuscript-ready robustness bar-chart utility in warp-bubble-qft/visualize_robustness.py.
+
+**How to run the new bits**
+- Fragility fit with offset + $\mu_\mathrm{crit}$: `python stress_test.py --fragility-fit --fit-offset --save-results --save-plots`
+- Edge-cases + lightweight 3D stability summaries: `python stress_test.py --run-3d-stability --3d-grid-size 16 --3d-t-final 0.2 --save-results`
+- Extreme μ curved-QI scan: `python curved_qi_verification.py --mu-values 0.005,0.05,0.3,0.6,0.9 --bound-type curved-toy --save-results`
+- Robust/fragile bar chart from a saved stress test: `python visualize_robustness.py results/stress_tests_*.json --out results/robustness_summary.png`
+<!-- ------ -->

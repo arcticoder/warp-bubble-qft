@@ -9,8 +9,38 @@ Guiding principle: keep the repo honest and reproducible; treat all headline cla
 ## Status (rolling)
 
 - ✅ Methods + verification deliverables exist (integration runners, stress tests, manuscript PDF).
-- ✅ Current priority: **All consolidation phases (A-E) complete. Repo ready for org transfer and publication workflow.**
+- ✅ Consolidation phases (A-E) complete (see below).
+- 🔜 Current priority: **Phase F (polish): deepen stability/fragility probes, tighten manuscript integration, and add publishable visualizations.**
 - 🗂️ Completed items have been consolidated and moved to `docs/COMPLETED_TASKS.md` (archival update: 2026-01-24).
+
+---
+
+## Phase F — Final Polish (org-ready + deeper validation) ⏳ IN PROGRESS
+
+Goal: make the repo easier to run end-to-end, and strengthen the “limits/fragility/null” story with deeper stability probes and clearer figures.
+
+### F1) Manuscript integration + consistency
+
+- [ ] Add/refresh a single “Results snapshot” section in `papers/lqg_warp_verification_methods.tex` that summarizes:
+  - robustness (stress tests: robust vs fragile count)
+  - 3+1D toy stability summary (Lyapunov λ distribution across edge cases)
+  - curved QI “bound family sensitivity” summary (flat vs curved-toy vs hybrid)
+- [ ] Verify `compile_manuscript.py` supports a clean build on a fresh clone (pdflatex + bibtex; no missing inputs).
+
+### F2) Advanced stability probes (couple stress suite → 3+1D toy)
+
+- [x] Extend `stress_test.py` with optional 3+1D stability checks per edge case via `full_3d_evolution.evolve_3d_metric(...)`.
+- [x] Add fragility fit option with offset model: $D(\mu)=a e^{b\mu}+c$ and report $\mu_{\mathrm{crit}}$ where $D(\mu)=0.1$ (when solvable).
+
+### F3) Visualization enhancements
+
+- [x] Add a small plotting utility that renders a manuscript-ready bar chart of robustness $D$ per edge-case label (color-coded robust/fragile).
+- [ ] (Optional) Add a stability summary plot (λ per edge case) if 3D checks are enabled.
+
+### F4) Extreme-regime QI cross-checks
+
+- [x] Add a “stress-like” scan mode for `curved_qi_verification.py` over extreme μ values (e.g., μ ∈ {0.005, 0.05, 0.3, 0.6, 0.9}) and emit a compact table/JSON.
+- [ ] Ensure the manuscript clearly labels what is *toy curved QI* vs *flat Ford–Roman* and why they disagree.
 
 ---
 

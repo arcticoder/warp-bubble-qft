@@ -434,6 +434,12 @@ def main() -> int:
         description="Verify quantum inequalities in curved Alcubierre spacetime"
     )
     parser.add_argument("--mu", type=float, default=0.3, help="Polymer parameter μ")
+    parser.add_argument(
+        "--mu-values",
+        type=str,
+        default="",
+        help="Optional comma-separated μ values for a scan (e.g. 0.005,0.05,0.3,0.6,0.9). If set, overrides --mu.",
+    )
     parser.add_argument("--R", type=float, default=2.3, help="Bubble radius")
     parser.add_argument("--sampling-width", type=float, default=1.0, help="Temporal sampling width Δt")
     parser.add_argument("--metric-file", type=str, help="Path to metric JSON (from toy_evolution)")
@@ -455,64 +461,101 @@ def main() -> int:
     results_dir.mkdir(parents=True, exist_ok=True)
     
     metric_file = Path(args.metric_file) if args.metric_file else None
-    
-    # Run verification with Phase E features
+
+    def _print_result_summary(result: Dict[str, Any]) -> None:
+        print("\n" + "=" * 70)
+        print("  Curved-Space Quantum Inequality Verification (Phase E)")
+        print("=" * 70)
+        print(f"\nParameters:")
+        print(f"  μ = {result['parameters']['mu']:.3f}")
+        print(f"  R_bubble = {result['parameters']['R_bubble']:.3f}")
+        print(f"  Sampling width Δt = {result['parameters']['sampling_width']:.3f}")
+        print(f"  4D proxy mode: {'ENABLED' if result['parameters']['use_4d_proxy'] else 'disabled'}")
+        print(f"  Bound model: {result['parameters']['bound_type']}")
+        print(f"\nMetric:")
+        print(f"  Source: {result['metric_info']['source']}")
+        print(f"  Curvature radius R_curv = {result['metric_info']['curvature_radius']:.3f}")
+        print(f"  Dimension: {result['metric_info']['dimension']}D")
+        print(f"\nIntegrals:")
+        print(f"  Flat space:   {result['integrals']['flat_space']:+.6e}")
+        print(f"  Curved space: {result['integrals']['curved_space']:+.6e}")
+        print(f"  Enhancement:  {result['integrals']['metric_enhancement_factor']:.3f}×")
+        print(f"\nBounds:")
+        print(f"  Ford-Roman (flat):  {result['bounds']['ford_roman_flat']:+.6e}")
+        print(f"  Curved bound ({result['bounds']['bound_model']}): {result['bounds']['curved_bound']:+.6e}")
+        print(f"\nViolations:")
+        print(f"  Flat space:   {'✓ VIOLATES' if result['violations']['violates_flat_bound'] else '✗ no violation'}")
+        print(f"  Curved space: {'✓ VIOLATES' if result['violations']['violates_curved_bound'] else '✗ no violation'}")
+        print(f"\nNormalized Margins Δ̄ = (I-B)/|B|:")
+        print(f"  Flat space:   {result['violations']['normalized_margin_flat']:+.3f}")
+        print(f"  Curved space: {result['violations']['normalized_margin_curved']:+.3f}")
+        print("  (Positive = no violation, negative = violation)")
+        print(f"\n{result['interpretation']}")
+        print(f"\nNote: {result['phase_e_note']}")
+        print("=" * 70 + "\n")
+
+    mu_values = [s.strip() for s in str(args.mu_values).split(",") if s.strip()]
+    if mu_values:
+        mus: list[float] = [float(s) for s in mu_values]
+        scan_results: list[Dict[str, Any]] = []
+        ts = _timestamp()
+
+        for mu in mus:
+            r = verify_curved_qi(
+                mu=float(mu),
+                R_bubble=args.R,
+                sampling_width=args.sampling_width,
+                metric_file=metric_file,
+                use_4d_proxy=getattr(args, "4d_proxy", False),
+                bound_type=args.bound_type,
+            )
+            r["timestamp"] = ts
+            r["command_args"] = vars(args)
+            scan_results.append(r)
+
+        print("\nCurved QI scan summary:")
+        print(
+            "  μ      I_curved        B_curved        Δ̄_curved   status"
+        )
+        for r in scan_results:
+            mu = r["parameters"]["mu"]
+            I = r["integrals"]["curved_space"]
+            B = r["bounds"]["curved_bound"]
+            dbar = r["violations"]["normalized_margin_curved"]
+            status = "VIOLATES" if r["violations"]["violates_curved_bound"] else "ok"
+            print(f"  {mu:0.3f}  {I:+.3e}  {B:+.3e}  {dbar:+7.3f}   {status}")
+
+        if args.save_results:
+            out_file = results_dir / f"curved_qi_scan_{ts}.json"
+            out_file.write_text(json.dumps({"results": scan_results}, indent=2), encoding="utf-8")
+            print(f"Saved: {out_file}")
+
+        # Plots are intentionally omitted in scan mode to avoid producing many files.
+        return 0
+
+    # Single-run mode
     result = verify_curved_qi(
         mu=args.mu,
         R_bubble=args.R,
         sampling_width=args.sampling_width,
         metric_file=metric_file,
-        use_4d_proxy=getattr(args, '4d_proxy', False),
-        bound_type=args.bound_type
+        use_4d_proxy=getattr(args, "4d_proxy", False),
+        bound_type=args.bound_type,
     )
-    
-    # Add metadata
     result["timestamp"] = _timestamp()
     result["command_args"] = vars(args)
-    
-    # Print summary
-    print("\n" + "="*70)
-    print("  Curved-Space Quantum Inequality Verification (Phase E)")
-    print("="*70)
-    print(f"\nParameters:")
-    print(f"  μ = {result['parameters']['mu']:.3f}")
-    print(f"  R_bubble = {result['parameters']['R_bubble']:.3f}")
-    print(f"  Sampling width Δt = {result['parameters']['sampling_width']:.3f}")
-    print(f"  4D proxy mode: {'ENABLED' if result['parameters']['use_4d_proxy'] else 'disabled'}")
-    print(f"  Bound model: {result['parameters']['bound_type']}")
-    print(f"\nMetric:")
-    print(f"  Source: {result['metric_info']['source']}")
-    print(f"  Curvature radius R_curv = {result['metric_info']['curvature_radius']:.3f}")
-    print(f"  Dimension: {result['metric_info']['dimension']}D")
-    print(f"\nIntegrals:")
-    print(f"  Flat space:   {result['integrals']['flat_space']:+.6e}")
-    print(f"  Curved space: {result['integrals']['curved_space']:+.6e}")
-    print(f"  Enhancement:  {result['integrals']['metric_enhancement_factor']:.3f}×")
-    print(f"\nBounds:")
-    print(f"  Ford-Roman (flat):  {result['bounds']['ford_roman_flat']:+.6e}")
-    print(f"  Curved bound ({result['bounds']['bound_model']}): {result['bounds']['curved_bound']:+.6e}")
-    print(f"\nViolations:")
-    print(f"  Flat space:   {'✓ VIOLATES' if result['violations']['violates_flat_bound'] else '✗ no violation'}")
-    print(f"  Curved space: {'✓ VIOLATES' if result['violations']['violates_curved_bound'] else '✗ no violation'}")
-    print(f"\nNormalized Margins Δ̄ = (I-B)/|B|:")
-    print(f"  Flat space:   {result['violations']['normalized_margin_flat']:+.3f}")
-    print(f"  Curved space: {result['violations']['normalized_margin_curved']:+.3f}")
-    print(f"  (Positive = no violation, negative = violation)")
-    print(f"\n{result['interpretation']}")
-    print(f"\nNote: {result['phase_e_note']}")
-    print("="*70 + "\n")
-    
-    # Save results
+
+    _print_result_summary(result)
+
     if args.save_results:
         out_file = results_dir / f"curved_qi_{result['timestamp']}.json"
         out_file.write_text(json.dumps(result, indent=2), encoding="utf-8")
         print(f"Saved: {out_file}")
-    
-    # Save plots
+
     if args.save_plots:
         plot_file = results_dir / f"curved_qi_{result['timestamp']}.png"
         plot_curved_qi_comparison(result, plot_file)
-    
+
     return 0
 
 
