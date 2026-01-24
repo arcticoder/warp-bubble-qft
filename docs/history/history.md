@@ -1,5 +1,7 @@
 ## Summary of Completed Work
 
+**Archive note (2026-01-24)**: Moved completed Phase F items (3D probes in `stress_test.py`, offset fragility fit, `visualize_robustness.py`, and curved-QI scan mode) from `docs/TODO.md` into `docs/COMPLETED_TASKS.md` (commit `147abe1`).
+
 I've successfully completed the initial verification and reproducibility framework for the `warp-bubble-qft` repository. Here's what was accomplished:
 
 ### ✅ **Files Created**
