@@ -1,3 +1,7 @@
+**Archive note (2026-01-24)**: Completed Phase F1 (manuscript integration) and F4 (QI labeling). Verified that `papers/lqg_warp_verification_methods.tex` contains comprehensive Results section (§3.1-3.6) covering robustness, 3D stability (Lyapunov λ), and curved QI sensitivity. Build verification confirms clean PDF generation. Manuscript clearly distinguishes "Ford-Roman bound (flat spacetime)" vs "Curved-space toy bound" with explicit caveats. Moved items documented in commit `cd1df09`.
+
+---
+
 I've successfully completed the initial verification and reproducibility framework for the `warp-bubble-qft` repository. Here's what was accomplished:
 
 ### ✅ **Files Created**
