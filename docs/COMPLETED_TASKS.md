@@ -1,4 +1,4 @@
-# Completed Tasks Summary (2026-01-21)
+# Completed Tasks Summary (finalized 2026-01-24)
 
 ## Overview
 
@@ -111,11 +111,20 @@ Updated [docs/TODO.md](docs/TODO.md):
 - ✅ Task 4: Toy evolution harness implemented
 - ✅ Task 5: Causality screening implemented
 
-Remaining priority work:
+Remaining priority work: NONE — all prioritized items completed as of 2026-01-24
 
-- [ ] Task 1.1: Re-run pipeline with toggled baselines to isolate missing factors
-- [ ] Task 1.2: Tighten Ford-Roman comparison (explicit mapping to literature)
-- [ ] Task 6: Literature benchmarking table
+- ✅ Task 1.1: Baseline toggles and factor isolation completed (see `baseline_comparison.py` and `results/baseline_comparison_*.json`; commit: `33b0a7f`)
+- ✅ Task 1.2: Ford–Roman comparison and literature mapping completed (`docs/LITERATURE_MAPPING.md`; commit: `a57685a`)
+- ✅ Task 6: Literature benchmarking table and derivations completed (`derive_enhancements.py`, `docs/LITERATURE_MAPPING.md`; commit: `45186fc`)
+
+Notes & provenance:
+- Curved-space QI verification implemented (`curved_qi_verification.py`, commit `d107010`) and Phase E completed with 4D proxy, normalized margin, and parameterized bounds.
+- Iterative backreaction stabilization (adaptive damping and diagnostics) implemented (`backreaction_solver.py`, `backreaction_iterative_experiment.py`, commit `ea60859` and `aa25037`).
+- 3+1D toy stability analysis added (`full_3d_evolution.py`, commit `1ec9d68`).
+- Manuscript finalized and converted to REVTeX with figures integrated (`papers/lqg_warp_verification_methods.tex`/`pdf`, commit series starting `3f84282` → `0aa6b88`).
+- Integrated batch workflow expanded to include final integration, stress testing, and derivation packaging (`batch_analysis.py`, `full_integration.py`, `finalize_derivations.py`; commits `76cc244`, `d5e4c1f`).
+
+All completed items are now listed in `docs/TODO.md` (marked completed) and summarized here for archival provenance. If you want, I can also add a brief CHANGELOG section listing these commits with short descriptions.
 
 ---
 

@@ -10,6 +10,7 @@ Guiding principle: keep the repo honest and reproducible; treat all headline cla
 
 - ✅ Methods + verification deliverables exist (integration runners, stress tests, manuscript PDF).
 - ✅ Current priority: **All consolidation phases (A-E) complete. Repo ready for org transfer and publication workflow.**
+- 🗂️ Completed items have been consolidated and moved to `docs/COMPLETED_TASKS.md` (archival update: 2026-01-24).
 
 ---
 

@@ -924,3 +924,25 @@ All TODO phases (A-E) are now complete! Here's what was accomplished in Phase E:
 
 **Repository status**: Ready for org transfer and publication workflow.
 <!-- ------ -->
+Good news — all prioritized TODO items have been verified in the repo history and moved into the completed archive. ✅
+
+## What I checked 🔍
+- Confirmed implementations and provenance via recent commits (examples: `ea60859`, `d107010`, `1ec9d68`, `45186fc`, `3f84282`, `76cc244`).  
+- Cross-referenced TODO.md, history.md, and commit messages to ensure each item was actually implemented and tested.
+
+## Changes I made (files updated) ✍️
+- **Updated** COMPLETED_TASKS.md  
+  - Marked previously “remaining” items as **completed** and added provenance (commits & filenames).  
+  - Added consolidated summary that includes Phase C–E, curved QI (Phase E), adaptive damping, 3+1D stability, derivations, manuscript finalization, and batch wiring.
+- **Updated** TODO.md  
+  - Added a line noting that completed items were consolidated into COMPLETED_TASKS.md (archival date: **2026-01-24**).
+**2026-01-24**.
+- **Annotated** COMPLETED_TASKS.md header with finalized date.
+
+Files changed:
+- COMPLETED_TASKS.md ✅  
+- TODO.md ✅  
+
+## Findings & interpretation 🎯
+- All Phase A–E items and the low-priority extension tasks (7.1–7.5) are implemented, tested, and documented; nothing outstanding remains in the high-priority list.  
+<!-- ------ -->
