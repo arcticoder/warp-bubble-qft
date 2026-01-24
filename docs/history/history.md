@@ -1,3 +1,7 @@
+**Archive note (2026-01-24)**: MAJOR TODO.md consolidation - CUT and PASTED all 553 lines of completed work to COMPLETED_TASKS.md. TODO.md reduced from 590 lines to 37 lines (only external pending actions remain). Commit `140cb9f`.
+
+---
+
 I've successfully completed the initial verification and reproducibility framework for the `warp-bubble-qft` repository. Here's what was accomplished:
 
 ### ✅ **Files Created**
