@@ -102,6 +102,19 @@ results/
 
 ---
 
+### Additional Phase F completions (moved from `docs/TODO.md`, 2026-01-24)
+
+- **3+1D stability probes in `stress_test.py`** — Implemented optional 3D probe per edge case (summary outputs only to keep artifacts small) and wired into `stress_test.py` CLI. Provenance: commit `e4629ce` (work included related commit `1ec9d68` for `full_3d_evolution.py`).
+
+- **Offset fragility fit (D(μ)=a e^{bμ}+c)** — Added grid-search offset-fit option to `stress_test.py` (`--fit-offset`) and reported `μ_crit` where solvable; provenance: commit `e4629ce`.
+
+- **Robustness visualizer (`visualize_robustness.py`)** — New plotting helper to produce manuscript-ready bar charts of robustness D (color-coded robust/fragile). Provenance: commit `e4629ce`.
+
+- **Extreme-μ scan mode for curved QI** — Added `--mu-values` to `curved_qi_verification.py` to run compact extreme-μ scans and emit JSON table summaries. Provenance: commit `e4629ce` (related: `d107010` for curved QI implementation).
+
+These items were removed from `docs/TODO.md` and consolidated here for archival provenance. If you'd like, I can also add a short changelog entry listing the exact commit messages and file diffs. 
+---
+
 ## TODO.md Status
 
 Updated [docs/TODO.md](docs/TODO.md):

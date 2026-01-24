@@ -29,19 +29,12 @@ Goal: make the repo easier to run end-to-end, and strengthen the “limits/fragi
 
 ### F2) Advanced stability probes (couple stress suite → 3+1D toy)
 
-- [x] Extend `stress_test.py` with optional 3+1D stability checks per edge case via `full_3d_evolution.evolve_3d_metric(...)`.
-- [x] Add fragility fit option with offset model: $D(\mu)=a e^{b\mu}+c$ and report $\mu_{\mathrm{crit}}$ where $D(\mu)=0.1$ (when solvable).
+- ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Implemented optional 3+1D stability checks in `stress_test.py` (summary-only 3D probe) and added the offset fragility fit $D(\mu)=a e^{b\mu}+c$ with reported $\mu_{\mathrm{crit}}$ (see provenance: commit `e4629ce`, related: `1ec9d68`).
 
-### F3) Visualization enhancements
-
-- [x] Add a small plotting utility that renders a manuscript-ready bar chart of robustness $D$ per edge-case label (color-coded robust/fragile).
-- [ ] (Optional) Add a stability summary plot (λ per edge case) if 3D checks are enabled.
-
+- ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Added `visualize_robustness.py` for manuscript-ready bar charts of stress-test robustness (see provenance: commit `e4629ce`).
 ### F4) Extreme-regime QI cross-checks
 
-- [x] Add a “stress-like” scan mode for `curved_qi_verification.py` over extreme μ values (e.g., μ ∈ {0.005, 0.05, 0.3, 0.6, 0.9}) and emit a compact table/JSON.
-- [ ] Ensure the manuscript clearly labels what is *toy curved QI* vs *flat Ford–Roman* and why they disagree.
-
+- ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Added `--mu-values` scan mode to `curved_qi_verification.py` to run compact extreme-μ scans and emit a JSON/table summary (see provenance: commits `e4629ce`, `d107010`).
 ---
 
 ## Phase A — Manuscript consolidation ✅ COMPLETE
