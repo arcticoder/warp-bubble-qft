@@ -1,0 +1,51 @@
+{
+  "timestamp": "20260123_174308",
+  "command_args": {
+    "trials": 20,
+    "sigma_noise": 0.05,
+    "seed": 42,
+    "fragility_fit": true,
+    "mu_sweep": "0.05:0.50:6",
+    "save_plots": true,
+    "results_dir": "results/fragility_demo",
+    "save_results": true
+  },
+  "parameter": "mu",
+  "sweep_range": {
+    "start": 0.05,
+    "stop": 0.5,
+    "count": 6
+  },
+  "base_config": {
+    "mu": 0.3,
+    "R": 2.3,
+    "Q": 1000000.0,
+    "squeezing_db": 15.0,
+    "num_bubbles": 3
+  },
+  "data": {
+    "mu": [
+      0.05,
+      0.14,
+      0.22999999999999998,
+      0.32,
+      0.41,
+      0.5
+    ],
+    "D": [
+      0.03835653025404276,
+      0.05100969792598665,
+      0.05021373214953041,
+      0.07270798483757818,
+      0.0758998049410517,
+      0.055843302232809505
+    ]
+  },
+  "fit": {
+    "model": "D(mu) = a * exp(b * mu)",
+    "a": 0.041343470024666915,
+    "b": 1.0922164152988894,
+    "r_squared": 0.410487204112738
+  },
+  "notes": "Fragility D = std(E)/mean(E); exponential fit via log-linear regression."
+}

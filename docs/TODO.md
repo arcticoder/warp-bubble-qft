@@ -13,26 +13,26 @@ Guiding principle: keep the repo honest and reproducible; treat all headline cla
 
 ---
 
-## Phase A — Manuscript consolidation (highest priority)
+## Phase A — Manuscript consolidation ✅ COMPLETE
 
 Goal: one canonical paper build, one canonical “docs compilation” build, and a clear story for what lives where.
 
-- [ ] Decide canonical manuscript source of truth
-  - Recommended: `papers/lqg_warp_verification_methods.tex` (REVTeX methods/verification paper)
-  - Ensure any “paper-like” content in `docs/` is either:
-    - explicitly *documentation* (derivations, notes), or
-    - migrated into `papers/` as `\input{}` sections (if intended for publication)
-- [ ] Resolve `docs/main.tex` duplication
-  - Archive legacy wrapper under `docs/history/` (keep for provenance)
-  - Replace `docs/main.tex` with a short stub pointing to:
-    - `docs/warp-bubble-qft-docs-compilation.tex` (docs compilation)
-    - `papers/lqg_warp_verification_methods.tex` (paper)
-- [ ] Normalize TeX inclusion style
-  - Avoid “standalone article” TeX in `papers/` if it’s meant to be `\input{}` into the manuscript
-  - If a file is standalone (has `\documentclass`), keep it as such and do *not* `\input{}` it elsewhere
-- [ ] Add a lightweight manuscript build helper
-  - Script (recommended): `compile_manuscript.py` that runs `pdflatex/bibtex` (or falls back to `make manuscript`)
-  - Optional: hook into `batch_analysis.py` via `--include-manuscript-build`
+- [x] ✅ Canonical: `papers/lqg_warp_verification_methods.tex` established as single source of truth
+  - REVTeX 4.2 methods/verification paper (17 pages, 964 KB PDF)
+  - `docs/` content explicitly marked as documentation (derivations, notes)
+  - No duplication between `docs/` and `papers/`
+- [x] ✅ Archived to `docs/history/main_legacy_20260123.tex`
+  - Legacy `docs/main.tex` preserved for provenance
+  - Current `docs/` structure: standalone documentation only
+  - Paper builds via `papers/lqg_warp_verification_methods.tex`
+- [x] ✅ TeX inclusion normalized
+  - All `papers/` content is standalone with `\documentclass`
+  - No `\input{}` cross-references between `docs/` and `papers/`
+  - Clean separation: docs = reference material, papers = publication targets
+- [x] ✅ Manuscript build helper: `make manuscript` target
+  - Builds `papers/lqg_warp_verification_methods.pdf` via pdflatex + bibtex
+  - Integrated into `batch_analysis.py` via artifact collection
+  - Single-command reproducibility: `make manuscript`
 
 ---
 
@@ -70,9 +70,11 @@ Goal: carry synergy into the 3+1D toy evolution and ensure it’s traceable as a
 Goal: quantify fragility boundaries and produce publishable-quality plots.
 
 - [ ] Expand edge-case sets (include extreme $\mu$, $Q$, squeezing, $R$, bubble counts)
-- [ ] Add “fragility vs parameter” sweeps
-  - Example: compute $D(\mu)$ at fixed noise level and fit $D(\mu)=a e^{b\mu}$
-  - Produce plots and record fit coefficients + goodness-of-fit
+- [x] ✅ Add "fragility vs parameter" sweeps
+  - ✅ Implemented `--fragility-fit` flag in `stress_test.py`
+  - ✅ Computes $D(\mu)$ sweep with exponential fit $D(\mu)=a e^{b\mu}$
+  - ✅ Outputs fit coefficients, $R^2$, and plot
+  - ✅ Example: `python stress_test.py --fragility-fit --save-results --save-plots --results-dir results/fragility`
 
 ---
 

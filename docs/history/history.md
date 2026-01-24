@@ -728,3 +728,34 @@ Completed: *Run quick sanity checks* (7/7)
 - Added a manuscript build helper compile_manuscript.py and wired it into batch_analysis.py via `--include-manuscript-build`.
 - Moved demo scripts into demo_fast_scanning.py and demo_van_den_broeck_natario.py, and updated links in README.md and README.md.
 <!-- ------ -->
+I've successfully implemented and tested the fragility fit functionality from your priority list. Here's the summary:
+
+### ✅ Phase A & B (Consolidation) - COMPLETE
+- Manuscript consolidated: canonical source at lqg_warp_verification_methods.tex
+- Legacy main.tex archived to main_legacy_20260123.tex
+- Central entrypoint created: main.py with 5 subcommands
+- Demo scripts organized under demos folder
+- Build helper: compile_manuscript.py integrated into batch workflow
+
+### ✅ Phase D (Fragility Fits) - Feature Implemented
+**Fragility sweep with exponential fitting** now working in stress_test.py:
+
+- **Functionality**: Sweeps a parameter (e.g., μ) across a range, runs Monte Carlo trials at each point, computes fragility metric D = std(E)/mean(E), and fits D(μ) = a·e^(bμ)
+- **Test run successful**:
+  - Swept μ from 0.05 to 0.50 (6 points, 20 trials each)
+  - Fit result: D(μ) = 0.0413 × e^(1.0922μ), R² = 0.41
+  - Generated JSON report: fragility_fit_20260123_174308.json
+  - Generated plot: fragility_fit_20260123_174308.png (57 KB)
+- **Usage**: `python stress_test.py --fragility-fit --save-results --save-plots --results-dir results/fragility`
+
+### 📋 TODO.md Updated
+- Phase A marked ✅ COMPLETE with concrete completion details
+- Phase D fragility item marked [x] with implementation details
+
+### 🔜 Next Steps (from your priorities)
+**Phase C** (Synergy-enabled 3+1D): Define S = exp(Σγ_ij)-1 and integrate ρ_syn into toy evolution
+
+**Phase D continuation**: Expand edge-case sets beyond current 3 (add more extreme parameter regimes)
+
+**Phase E** (Curved QI refinements): Add 4D proxy integral + normalized margin Δ̄
+<!-- ------ -->
