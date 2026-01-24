@@ -1,0 +1,54 @@
+{
+  "parameters": {
+    "mu": 0.3,
+    "R_bubble": 2.3,
+    "sampling_width": 1.0,
+    "use_4d_proxy": true,
+    "bound_type": "flat-ford-roman"
+  },
+  "metric_info": {
+    "source": "toy_profile",
+    "curvature_radius": 0.9950777875672667,
+    "grid_size": 500,
+    "x_min": -5.0,
+    "x_max": 5.0,
+    "dimension": 4
+  },
+  "integrals": {
+    "flat_space": -0.5620345273549887,
+    "curved_space": -52.369378185285655,
+    "metric_enhancement_factor": 93.17822239808487
+  },
+  "bounds": {
+    "ford_roman_flat": -0.006332573977646111,
+    "curved_bound": -0.006332573977646111,
+    "bound_model": "flat-ford-roman"
+  },
+  "violations": {
+    "violates_flat_bound": true,
+    "violates_curved_bound": true,
+    "violation_margin_flat": -0.5557019533773426,
+    "violation_margin_curved": -52.36304561130801,
+    "normalized_margin_flat": -87.75293511595159,
+    "normalized_margin_curved": -8268.840726716933
+  },
+  "energy_profile": {
+    "peak_density": -1.4972522649743392,
+    "total_integrated": -2.4225407564221917,
+    "rms_density": 0.4597747624932641
+  },
+  "interpretation": "QI violation persists in curved space",
+  "phase_e_note": "Phase E extensions: 4D proxy mode, normalized margin \u0394\u0304=(I-B)/|B|, parameterized bounds (flat-ford-roman). Assumptions documented in code comments.",
+  "timestamp": "20260123_223919",
+  "command_args": {
+    "mu": 0.3,
+    "R": 2.3,
+    "sampling_width": 1.0,
+    "metric_file": null,
+    "4d_proxy": true,
+    "bound_type": "flat-ford-roman",
+    "save_results": true,
+    "save_plots": false,
+    "results_dir": "results/phase_e_test"
+  }
+}

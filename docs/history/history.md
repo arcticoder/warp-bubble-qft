@@ -873,3 +873,54 @@ Failure Boundary:
 2. Add normalized margin Δ̄ = ⟨(I-B)/|B|⟩_t  
 3. Parameterize bound family (flat Ford-Roman vs curved toy vs alternate scalings)
 <!-- ------ -->
+All TODO phases (A-E) are now complete! Here's what was accomplished in Phase E:
+
+## Phase E Implementation Summary
+
+### ✅ Three Major Extensions to Curved QI Verification
+
+**1. 4D Proxy Integral Mode**
+- Added curved_qi_verification.py function
+- Extends 1+1D → 3+1D via spherical volume approximation: √|g⁽⁴⁾| ≈ √|g⁽¹⁺¹⁾| × (4πR²)
+- CLI: `--4d-proxy` flag
+- Result: 93× metric enhancement vs 1.4× in 1+1D
+
+**2. Normalized Margin Metric**
+- Implemented Δ̄ = (I-B)/|B| for relative violation assessment
+- Positive = no violation, negative = violation
+- Magnitude indicates severity (|Δ̄| >> 1 = strong violation)
+- Example: curved-toy shows Δ̄ = +0.22 (22% safety margin)
+
+**3. Parameterized Bound Family**
+- Added curved_qi_verification.py selector
+- Three models:
+  - `flat-ford-roman`: -C/(Δt)^d (standard)
+  - `curved-toy`: -C/R² (heuristic curvature-dependent)
+  - `hybrid`: max(flat, curved) (most restrictive)
+- CLI: `--bound-type {flat-ford-roman,curved-toy,hybrid}`
+
+### 📊 Test Results
+
+| Config | I_curved | Bound | Δ̄ | Status |
+|--------|----------|-------|-----|--------|
+| 1+1D Curved | -0.788 | -1.010 | +0.22 | OK |
+| 4D Flat | -52.4 | -0.0063 | -8269 | VIOLATES |
+| 1+1D Hybrid | -0.788 | -0.0063 | -123 | VIOLATES |
+
+### 📁 Deliverables
+
+- ✅ Enhanced curved_qi_verification.py with all Phase E features
+- ✅ Demo script: demo_phase_e_curved_qi.py
+- ✅ Test results: `results/phase_e_test/curved_qi_*.json` (3 configurations)
+- ✅ Documentation: TODO.md Phase E section complete
+
+### 🎯 All Consolidation Phases Complete
+
+- ✅ **Phase A**: Manuscript consolidation
+- ✅ **Phase B**: Script organization + central entrypoint  
+- ✅ **Phase C**: Synergy-enabled 3+1D integration
+- ✅ **Phase D**: Expanded stress tests + fragility fits
+- ✅ **Phase E**: Curved-space QI refinements
+
+**Repository status**: Ready for org transfer and publication workflow.
+<!-- ------ -->

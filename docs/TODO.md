@@ -9,7 +9,7 @@ Guiding principle: keep the repo honest and reproducible; treat all headline cla
 ## Status (rolling)
 
 - ✅ Methods + verification deliverables exist (integration runners, stress tests, manuscript PDF).
-- 🔄 Current priority: **Phases A-D complete; continue with Phase E (curved QI refinements)**.
+- ✅ Current priority: **All consolidation phases (A-E) complete. Repo ready for org transfer and publication workflow.**
 
 ---
 
@@ -47,6 +47,7 @@ Goal: fewer top-level scripts, clearer "what should I run?" story.
 - [x] ✅ Create `demos/` folder and move demo-only scripts
   - ✅ Moved: `demo_fast_scanning.py`, `demo_van_den_broeck_natario.py`
   - ✅ Added: `demo_synergy_integration.py` for Phase C demonstration
+  - ✅ Added: `demo_phase_e_curved_qi.py` for Phase E demonstration
   - ✅ Updated `README.md`/`docs/README.md` links
 - [x] ✅ Split "library code" vs "runner scripts"
   - ✅ Core logic under `src/warp_qft/` (enhancement_pathway, synergy, backreaction_solver, etc.)
@@ -96,13 +97,33 @@ Goal: quantify fragility boundaries and produce publishable-quality plots.
 
 ---
 
-## Phase E — Curved-space QI refinements (research extension)
+## Phase E — Curved-space QI refinements ✅ COMPLETE
 
-Goal: improve the “toy curved QI” so it’s less ad hoc while remaining clearly labeled.
+Goal: improve the "toy curved QI" so it's less ad hoc while remaining clearly labeled.
 
-- [ ] Add a 4D proxy integral option (document assumptions)
-- [ ] Add a normalized margin option $\bar{\Delta} = \langle (I-B)/|B|\rangle_t$
-- [ ] Parameterize bound family in code (flat Ford–Roman vs curved toy vs alternate scalings)
+- [x] ✅ Add a 4D proxy integral option (document assumptions)
+  - ✅ Implemented `curved_qi_integral_4d()` with spherical transverse volume approximation
+  - ✅ CLI flag: `--4d-proxy` enables 3+1D spacetime volume mode
+  - ✅ Assumption: spherical symmetry, transverse metric ≈ flat, angular integration factorizes
+  - ✅ Results: 4D mode shows 93× metric enhancement (vs 1.4× in 1+1D) due to volume factor
+- [x] ✅ Add a normalized margin option $\bar{\Delta} = \langle (I-B)/|B|\rangle_t$
+  - ✅ Implemented `normalized_margin_flat` and `normalized_margin_curved` in output
+  - ✅ Formula: Δ̄ = (I - B) / |B| (positive = no violation, negative = violation)
+  - ✅ Example: curved-toy bound shows Δ̄ = +0.22 (22% margin above bound, no violation)
+- [x] ✅ Parameterize bound family in code (flat Ford–Roman vs curved toy vs alternate scalings)
+  - ✅ Added `compute_qi_bound(bound_type, ...)` selector function
+  - ✅ Three models: 'flat-ford-roman' (-C/Δt^d), 'curved-toy' (-C/R²), 'hybrid' (max of both)
+  - ✅ CLI flag: `--bound-type {flat-ford-roman,curved-toy,hybrid}`
+  - ✅ Hybrid model picks most restrictive bound for conservative estimates
+  
+**Test results** (μ=0.3, R=2.3, Δt=1.0):
+- **1+1D curved-toy**: I_curved = -0.788, B = -1.010 → Δ̄ = +0.22 (no violation)
+- **4D flat-ford-roman**: I_curved = -52.4, B = -0.0063 → Δ̄ = -8269 (strong violation)
+- **1+1D hybrid**: Uses flat bound (-0.0063), Δ̄ = -123 (violation under restrictive bound)
+- Saved to `results/phase_e_test/curved_qi_*.json` (3 test cases)
+- Demo script: `python demos/demo_phase_e_curved_qi.py` (6 configurations, comparison table)
+
+**Interpretation**: Phase E extensions allow exploration of bound model sensitivity. Curved-toy bound is less restrictive (assumes curvature modifies QI), flat bound is strict (assumes flat-space QI applies). Physical validity of curved bounds remains open research question.
 
 ---
 

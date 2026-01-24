@@ -153,6 +153,46 @@ def curved_qi_integral(
     return float(integral)
 
 
+def curved_qi_integral_4d(
+    rho_profile: np.ndarray,
+    g_tt: np.ndarray,
+    g_rr: np.ndarray,
+    x: np.ndarray,
+    sampling_width: float = 1.0,
+    R_transverse: float = 2.3
+) -> float:
+    """
+    4D proxy integral: extend 1+1D to 3+1D spacetime volume.
+    
+    ∫ ρ(τ) √|g^(4)| w(τ) d⁴x
+    
+    Approximation: assume spherical symmetry in transverse directions.
+    √|g^(4)| ≈ √|g^(1+1)| × (4π R_transverse²)
+    
+    WARNING: This is a heuristic proxy, not a rigorous 4D integral.
+    Assumes:
+    - Spherical bubble geometry
+    - Transverse metric ≈ flat (g_θθ = r², g_φφ = r²sin²θ)
+    - Angular integration factorizes
+    """
+    Delta = sampling_width
+    w = (Delta / np.pi) / (x**2 + Delta**2)
+    
+    # 1+1D volume element
+    sqrt_g_1d = np.sqrt(np.abs(g_tt) * g_rr)
+    
+    # Transverse volume factor: 4π R² (surface area of sphere)
+    V_transverse = 4 * np.pi * R_transverse**2
+    
+    # 4D volume element (proxy)
+    sqrt_g_4d = sqrt_g_1d * V_transverse
+    
+    dx = x[1] - x[0]
+    integral = np.sum(rho_profile * sqrt_g_4d * w) * dx
+    
+    return float(integral)
+
+
 def ford_roman_bound(Delta_t: float, dimension: int = 4) -> float:
     """
     Ford-Roman quantum inequality bound for massless scalar.
@@ -181,14 +221,59 @@ def curved_ford_roman_bound(R_curv: float, Delta_t: float) -> float:
     return float(bound)
 
 
+def compute_qi_bound(
+    bound_type: str,
+    R_curv: float,
+    Delta_t: float,
+    dimension: int = 2
+) -> float:
+    """
+    Parameterized bound family selector.
+    
+    Args:
+        bound_type: One of 'flat-ford-roman', 'curved-toy', 'hybrid'
+        R_curv: Curvature radius
+        Delta_t: Temporal sampling width
+        dimension: Spacetime dimension (2 for 1+1D, 4 for 3+1D)
+    
+    Returns:
+        QI bound value (negative)
+    
+    Bound models:
+      - 'flat-ford-roman': -C / (Δt)^d (standard flat-space bound)
+      - 'curved-toy': -C / R² (heuristic curvature-dependent)
+      - 'hybrid': min(flat, curved) (most restrictive)
+    """
+    if bound_type == 'flat-ford-roman':
+        return ford_roman_bound(Delta_t, dimension)
+    elif bound_type == 'curved-toy':
+        return curved_ford_roman_bound(R_curv, Delta_t)
+    elif bound_type == 'hybrid':
+        B_flat = ford_roman_bound(Delta_t, dimension)
+        B_curved = curved_ford_roman_bound(R_curv, Delta_t)
+        return max(B_flat, B_curved)  # Most restrictive (least negative)
+    else:
+        raise ValueError(f"Unknown bound_type: {bound_type}")
+
+
 def verify_curved_qi(
     mu: float = 0.3,
     R_bubble: float = 2.3,
     sampling_width: float = 1.0,
-    metric_file: Path | None = None
+    metric_file: Path | None = None,
+    use_4d_proxy: bool = False,
+    bound_type: str = 'curved-toy'
 ) -> Dict[str, Any]:
     """
     Main verification routine for curved QI.
+    
+    Args:
+        mu: Polymer parameter
+        R_bubble: Bubble radius
+        sampling_width: Temporal sampling width Δt
+        metric_file: Optional metric data file
+        use_4d_proxy: If True, use 4D spacetime volume proxy
+        bound_type: Bound model ('flat-ford-roman', 'curved-toy', 'hybrid')
     
     Returns:
         Comprehensive diagnostics dict
@@ -204,16 +289,27 @@ def verify_curved_qi(
     
     # Compute integrals
     I_flat = flat_qi_integral(rho, x, sampling_width)
-    I_curved = curved_qi_integral(rho, g_tt, g_rr, x, sampling_width)
+    
+    if use_4d_proxy:
+        I_curved = curved_qi_integral_4d(rho, g_tt, g_rr, x, sampling_width, R_bubble)
+        dimension = 4
+    else:
+        I_curved = curved_qi_integral(rho, g_tt, g_rr, x, sampling_width)
+        dimension = 2
     
     # Compute bounds
     R_curv = compute_curvature_radius(g_tt, g_rr, x)
-    bound_flat = ford_roman_bound(sampling_width, dimension=2)  # 1+1D
-    bound_curved = curved_ford_roman_bound(R_curv, sampling_width)
+    bound_flat = ford_roman_bound(sampling_width, dimension=dimension)
+    bound_curved = compute_qi_bound(bound_type, R_curv, sampling_width, dimension)
     
     # Violation checks
     violates_flat = I_flat < bound_flat
     violates_curved = I_curved < bound_curved
+    
+    # Normalized margins: Δ̄ = (I - B) / |B|
+    # Positive = no violation, negative = violation
+    margin_normalized_flat = (I_flat - bound_flat) / abs(bound_flat) if abs(bound_flat) > 1e-12 else 0.0
+    margin_normalized_curved = (I_curved - bound_curved) / abs(bound_curved) if abs(bound_curved) > 1e-12 else 0.0
     
     # Metric effects
     metric_enhancement = I_curved / I_flat if abs(I_flat) > 1e-12 else 1.0
@@ -223,6 +319,8 @@ def verify_curved_qi(
             "mu": float(mu),
             "R_bubble": float(R_bubble),
             "sampling_width": float(sampling_width),
+            "use_4d_proxy": bool(use_4d_proxy),
+            "bound_type": str(bound_type),
         },
         "metric_info": {
             "source": metric.get("source", "unknown"),
@@ -230,6 +328,7 @@ def verify_curved_qi(
             "grid_size": int(len(x)),
             "x_min": float(x.min()),
             "x_max": float(x.max()),
+            "dimension": int(dimension),
         },
         "integrals": {
             "flat_space": float(I_flat),
@@ -239,12 +338,15 @@ def verify_curved_qi(
         "bounds": {
             "ford_roman_flat": float(bound_flat),
             "curved_bound": float(bound_curved),
+            "bound_model": str(bound_type),
         },
         "violations": {
             "violates_flat_bound": bool(violates_flat),
             "violates_curved_bound": bool(violates_curved),
             "violation_margin_flat": float(I_flat - bound_flat),
             "violation_margin_curved": float(I_curved - bound_curved),
+            "normalized_margin_flat": float(margin_normalized_flat),
+            "normalized_margin_curved": float(margin_normalized_curved),
         },
         "energy_profile": {
             "peak_density": float(rho.min()),
@@ -255,6 +357,11 @@ def verify_curved_qi(
             "QI violation persists in curved space"
             if violates_curved
             else "No curved-space QI violation detected"
+        ),
+        "phase_e_note": (
+            "Phase E extensions: 4D proxy mode, normalized margin Δ̄=(I-B)/|B|, "
+            f"parameterized bounds ({bound_type}). "
+            "Assumptions documented in code comments."
         ),
     }
 
@@ -330,6 +437,14 @@ def main() -> int:
     parser.add_argument("--R", type=float, default=2.3, help="Bubble radius")
     parser.add_argument("--sampling-width", type=float, default=1.0, help="Temporal sampling width Δt")
     parser.add_argument("--metric-file", type=str, help="Path to metric JSON (from toy_evolution)")
+    parser.add_argument("--4d-proxy", action="store_true", help="Use 4D spacetime volume proxy (Phase E)")
+    parser.add_argument(
+        "--bound-type",
+        type=str,
+        default="curved-toy",
+        choices=["flat-ford-roman", "curved-toy", "hybrid"],
+        help="QI bound model selection (Phase E)"
+    )
     parser.add_argument("--save-results", action="store_true", help="Save JSON results")
     parser.add_argument("--save-plots", action="store_true", help="Save plots")
     parser.add_argument("--results-dir", type=str, default="results", help="Output directory")
@@ -341,12 +456,14 @@ def main() -> int:
     
     metric_file = Path(args.metric_file) if args.metric_file else None
     
-    # Run verification
+    # Run verification with Phase E features
     result = verify_curved_qi(
         mu=args.mu,
         R_bubble=args.R,
         sampling_width=args.sampling_width,
-        metric_file=metric_file
+        metric_file=metric_file,
+        use_4d_proxy=getattr(args, '4d_proxy', False),
+        bound_type=args.bound_type
     )
     
     # Add metadata
@@ -355,26 +472,34 @@ def main() -> int:
     
     # Print summary
     print("\n" + "="*70)
-    print("  Curved-Space Quantum Inequality Verification")
+    print("  Curved-Space Quantum Inequality Verification (Phase E)")
     print("="*70)
     print(f"\nParameters:")
     print(f"  μ = {result['parameters']['mu']:.3f}")
     print(f"  R_bubble = {result['parameters']['R_bubble']:.3f}")
     print(f"  Sampling width Δt = {result['parameters']['sampling_width']:.3f}")
+    print(f"  4D proxy mode: {'ENABLED' if result['parameters']['use_4d_proxy'] else 'disabled'}")
+    print(f"  Bound model: {result['parameters']['bound_type']}")
     print(f"\nMetric:")
     print(f"  Source: {result['metric_info']['source']}")
     print(f"  Curvature radius R_curv = {result['metric_info']['curvature_radius']:.3f}")
+    print(f"  Dimension: {result['metric_info']['dimension']}D")
     print(f"\nIntegrals:")
     print(f"  Flat space:   {result['integrals']['flat_space']:+.6e}")
     print(f"  Curved space: {result['integrals']['curved_space']:+.6e}")
     print(f"  Enhancement:  {result['integrals']['metric_enhancement_factor']:.3f}×")
     print(f"\nBounds:")
     print(f"  Ford-Roman (flat):  {result['bounds']['ford_roman_flat']:+.6e}")
-    print(f"  Curved bound:       {result['bounds']['curved_bound']:+.6e}")
+    print(f"  Curved bound ({result['bounds']['bound_model']}): {result['bounds']['curved_bound']:+.6e}")
     print(f"\nViolations:")
     print(f"  Flat space:   {'✓ VIOLATES' if result['violations']['violates_flat_bound'] else '✗ no violation'}")
     print(f"  Curved space: {'✓ VIOLATES' if result['violations']['violates_curved_bound'] else '✗ no violation'}")
+    print(f"\nNormalized Margins Δ̄ = (I-B)/|B|:")
+    print(f"  Flat space:   {result['violations']['normalized_margin_flat']:+.3f}")
+    print(f"  Curved space: {result['violations']['normalized_margin_curved']:+.3f}")
+    print(f"  (Positive = no violation, negative = violation)")
     print(f"\n{result['interpretation']}")
+    print(f"\nNote: {result['phase_e_note']}")
     print("="*70 + "\n")
     
     # Save results

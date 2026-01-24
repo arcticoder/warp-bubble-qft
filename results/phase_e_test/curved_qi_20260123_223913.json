@@ -1,0 +1,54 @@
+{
+  "parameters": {
+    "mu": 0.3,
+    "R_bubble": 2.3,
+    "sampling_width": 1.0,
+    "use_4d_proxy": false,
+    "bound_type": "curved-toy"
+  },
+  "metric_info": {
+    "source": "toy_profile",
+    "curvature_radius": 0.9950777875672667,
+    "grid_size": 500,
+    "x_min": -5.0,
+    "x_max": 5.0,
+    "dimension": 2
+  },
+  "integrals": {
+    "flat_space": -0.5620345273549887,
+    "curved_space": -0.7877925713456603,
+    "metric_enhancement_factor": 1.401680026764761
+  },
+  "bounds": {
+    "ford_roman_flat": -0.006332573977646111,
+    "curved_bound": -1.0099175893685255,
+    "bound_model": "curved-toy"
+  },
+  "violations": {
+    "violates_flat_bound": true,
+    "violates_curved_bound": false,
+    "violation_margin_flat": -0.5557019533773426,
+    "violation_margin_curved": 0.22212501802286522,
+    "normalized_margin_flat": -87.75293511595159,
+    "normalized_margin_curved": 0.219943706656059
+  },
+  "energy_profile": {
+    "peak_density": -1.4972522649743392,
+    "total_integrated": -2.4225407564221917,
+    "rms_density": 0.4597747624932641
+  },
+  "interpretation": "No curved-space QI violation detected",
+  "phase_e_note": "Phase E extensions: 4D proxy mode, normalized margin \u0394\u0304=(I-B)/|B|, parameterized bounds (curved-toy). Assumptions documented in code comments.",
+  "timestamp": "20260123_223913",
+  "command_args": {
+    "mu": 0.3,
+    "R": 2.3,
+    "sampling_width": 1.0,
+    "metric_file": null,
+    "4d_proxy": false,
+    "bound_type": "curved-toy",
+    "save_results": true,
+    "save_plots": false,
+    "results_dir": "results/phase_e_test"
+  }
+}
