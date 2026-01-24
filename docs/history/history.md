@@ -1,7 +1,3 @@
-## Summary of Completed Work
-
-**Archive note (2026-01-24)**: Moved completed Phase F items (3D probes in `stress_test.py`, offset fragility fit, `visualize_robustness.py`, and curved-QI scan mode) from `docs/TODO.md` into `docs/COMPLETED_TASKS.md` (commit `147abe1`).
-
 I've successfully completed the initial verification and reproducibility framework for the `warp-bubble-qft` repository. Here's what was accomplished:
 
 ### ✅ **Files Created**
@@ -959,4 +955,25 @@ Files changed:
 - Edge-cases + lightweight 3D stability summaries: `python stress_test.py --run-3d-stability --3d-grid-size 16 --3d-t-final 0.2 --save-results`
 - Extreme μ curved-QI scan: `python curved_qi_verification.py --mu-values 0.005,0.05,0.3,0.6,0.9 --bound-type curved-toy --save-results`
 - Robust/fragile bar chart from a saved stress test: `python visualize_robustness.py results/stress_tests_*.json --out results/robustness_summary.png`
+<!-- ------ -->
+## ✅ Summary — moved completed TODO items
+
+I inspected TODO.md, the repo state, and recent commits, then moved truly completed items into the archive and recorded provenance.
+
+### What I moved (now in COMPLETED_TASKS.md)
+- **F2 — Advanced stability probes**  
+  - Implemented 3+1D probe in stress_test.py and the offset fragility fit D(μ)=a e^{bμ}+c (reports μ_crit).  
+  - Provenance: implemented in commit `e4629ce` → archived in commit `147abe1`.  
+- **F3 — Visualization enhancement**  
+  - Added visualize_robustness.py (manuscript-ready robustness bar charts).  
+  - Provenance: implemented in commit `e4629ce` → archived in commit `147abe1`.  
+- **F4 — Extreme-μ curved-QI scan**  
+  - Added `--mu-values` scan mode to curved_qi_verification.py (compact table/JSON).  
+  - Provenance: implemented in commits `d107010` / `e4629ce` → archived in commit `147abe1`.
+
+### Other bookkeeping
+- Added an archival note to history.md documenting the move (commit `3e22e45`).
+- Changes committed locally:
+  - TODO.md / COMPLETED_TASKS.md moved entries (commit `147abe1`)
+  - history.md updated (commit `3e22e45`)
 <!-- ------ -->
