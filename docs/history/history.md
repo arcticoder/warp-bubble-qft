@@ -1,7 +1,3 @@
-**Archive note (2026-01-24)**: Completed Phase F1 (manuscript integration) and F4 (QI labeling). Verified that `papers/lqg_warp_verification_methods.tex` contains comprehensive Results section (§3.1-3.6) covering robustness, 3D stability (Lyapunov λ), and curved QI sensitivity. Build verification confirms clean PDF generation. Manuscript clearly distinguishes "Ford-Roman bound (flat spacetime)" vs "Curved-space toy bound" with explicit caveats. Moved items documented in commit `cd1df09`.
-
----
-
 I've successfully completed the initial verification and reproducibility framework for the `warp-bubble-qft` repository. Here's what was accomplished:
 
 ### ✅ **Files Created**
@@ -980,4 +976,42 @@ I inspected TODO.md, the repo state, and recent commits, then moved truly comple
 - Changes committed locally:
   - TODO.md / COMPLETED_TASKS.md moved entries (commit `147abe1`)
   - history.md updated (commit `3e22e45`)
+<!-- ------ -->
+**Archive note (2026-01-24)**: Completed Phase F1 (manuscript integration) and F4 (QI labeling). Verified that `papers/lqg_warp_verification_methods.tex` contains comprehensive Results section (§3.1-3.6) covering robustness, 3D stability (Lyapunov λ), and curved QI sensitivity. Build verification confirms clean PDF generation. Manuscript clearly distinguishes "Ford-Roman bound (flat spacetime)" vs "Curved-space toy bound" with explicit caveats. Moved items documented in commit `cd1df09`.
+<!-- ------ -->
+I've completed all actionable Phase F TODO items. Here's what was done:
+
+## ✅ Completed and Moved to COMPLETED_TASKS.md
+
+### Phase F1 — Manuscript Integration (Complete)
+- **Results snapshot section**: Already exists in lqg_warp_verification_methods.tex (§3.1-3.6) covering:
+  - Energy discrepancy resolution
+  - Backreaction convergence  
+  - Enhancement factor validation
+  - QI cross-checks (flat vs curved bounds)
+  - 3+1D stability analysis (Lyapunov λ)
+  - Sensitivity/robustness (Monte Carlo)
+
+- **Build verification**: Tested `python compile_manuscript.py --clean` → produces clean 964 KB PDF (17 pages)
+
+### Phase F4 — QI Labeling (Complete)
+- **Extreme-μ scan mode**: Already implemented via `--mu-values` flag
+- **Manuscript clarity**: Verified text explicitly distinguishes:
+  - "**Ford-Roman bound (flat spacetime)**" 
+  - "**Curved-space toy bound**" with caveats: "Toy bound not rigorously derived", "heuristic 1/R² scaling"
+
+### Commits Created
+1. `cd1df09` — Marked F1 and F4 complete, moved to COMPLETED_TASKS.md
+2. `97805c5` — Updated history.md with completion note
+3. `b524fb3` — Restored F3 section structure
+
+## 📋 Remaining Items
+
+All actionable in-repo TODO items are now **complete**. Remaining items are:
+
+1. **F3 optional**: Stability summary plot (λ per edge case) — marked optional
+2. **Org transfer**: Repo description/topics update — requires GitHub UI access
+3. **External processes**: Peer review, arXiv submission, supplementary materials — post-publication
+
+Phase F (Final Polish) is essentially complete for all non-optional programmatic tasks!
 <!-- ------ -->
