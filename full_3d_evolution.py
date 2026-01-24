@@ -177,9 +177,13 @@ def evolve_3d_metric(
     mu_bar: float = 0.1,
     R_bubble: float = 2.3,
     polymer_enabled: bool = True,
+    synergy_factor: float = 0.0,
 ) -> Dict[str, Any]:
     """
     Main 3D evolution routine.
+    
+    Args:
+        synergy_factor: Synergy enhancement S = exp(Σγ_ij) - 1 (default 0 = baseline)
     
     Returns:
         Dictionary with evolution history and diagnostics
@@ -202,6 +206,13 @@ def evolve_3d_metric(
             for k in range(grid_size):
                 r = r_3d[i, j, k]
                 rho_3d[i, j, k] = polymer_field_profile(np.array([r]), mu, R_bubble)[0]
+    
+    # Synergy-modulated energy density: ρ_syn = ρ * (1 + S)
+    # S = 0 (baseline) means no synergy, purely multiplicative enhancements
+    rho_syn_3d = rho_3d * (1.0 + synergy_factor)
+    
+    # Use synergistic density in evolution (fallback to baseline if S=0)
+    rho_effective = rho_syn_3d
     
     # Initial metric: nearly flat
     g_xx = np.ones_like(r_3d)
@@ -239,7 +250,7 @@ def evolve_3d_metric(
         # Evolve one timestep
         g_xx, g_yy, g_zz, K_xx, K_yy, K_zz = compute_adm_evolution_step(
             g_xx, g_yy, g_zz, K_xx, K_yy, K_zz,
-            alpha, rho_3d, dx, dt, mu_bar, polymer_enabled
+            alpha, rho_effective, dx, dt, mu_bar, polymer_enabled
         )
     
     # Compute Lyapunov exponent
@@ -258,6 +269,8 @@ def evolve_3d_metric(
             "mu_bar": float(mu_bar),
             "R_bubble": float(R_bubble),
             "polymer_enabled": bool(polymer_enabled),
+            "synergy_factor": float(synergy_factor),
+            "synergy_enabled": bool(abs(synergy_factor) > 1e-12),
         },
         "evolution": {
             "steps_completed": len(norm_history),
@@ -271,6 +284,11 @@ def evolve_3d_metric(
             "initial_norm": float(norm_history[0]) if norm_history else 0.0,
             "growth_factor": float(norm_history[-1] / norm_history[0]) if norm_history and norm_history[0] > 0 else 1.0,
         },
+        "energy_density": {
+            "base_rho": rho_3d,
+            "synergistic_rho": rho_syn_3d,
+            "synergy_boost": float(1.0 + synergy_factor),
+        },
         "final_state": {
             "g_xx": g_xx,
             "g_yy": g_yy,
@@ -282,6 +300,7 @@ def evolve_3d_metric(
         "interpretation": (
             f"{'Stable' if is_stable else 'Unstable'} evolution "
             f"(λ = {lyap:.4f}, growth {norm_history[-1]/norm_history[0]:.2f}× over {time_history[-1]:.3f}s)"
+            f"{' [synergy S='+str(synergy_factor)+']' if abs(synergy_factor) > 1e-12 else ' [baseline]'}"
             if norm_history else "Evolution failed"
         ),
     }
@@ -354,6 +373,7 @@ def main() -> int:
     parser.add_argument("--mu-bar", type=float, default=0.1, help="Polymer parameter μ̄ (K correction)")
     parser.add_argument("--R", type=float, default=2.3, help="Bubble radius")
     parser.add_argument("--no-polymer", action="store_true", help="Disable polymer corrections (classical)")
+    parser.add_argument("--synergy-factor", type=float, default=0.0, help="Synergy factor S (0 = baseline, no synergy)")
     parser.add_argument("--save-results", action="store_true", help="Save JSON results")
     parser.add_argument("--save-plots", action="store_true", help="Save plots")
     parser.add_argument("--results-dir", type=str, default="results", help="Output directory")
@@ -370,6 +390,10 @@ def main() -> int:
     print(f"Domain: [-{args.domain_size}, +{args.domain_size}]³")
     print(f"Evolution time: 0 → {args.t_final} (dt = {args.dt})")
     print(f"Polymer: {'ENABLED' if not args.no_polymer else 'DISABLED'} (μ={args.mu}, μ̄={args.mu_bar})")
+    if abs(args.synergy_factor) > 1e-12:
+        print(f"Synergy: S = {args.synergy_factor:.4f} (boost: {1.0+args.synergy_factor:.3f}×)")
+    else:
+        print(f"Synergy: BASELINE (S=0, no cross-pathway coupling)")
     print(f"\nRunning evolution...")
     
     # Run evolution
@@ -382,6 +406,7 @@ def main() -> int:
         mu_bar=args.mu_bar,
         R_bubble=args.R,
         polymer_enabled=not args.no_polymer,
+        synergy_factor=args.synergy_factor,
     )
     
     # Add metadata
@@ -404,6 +429,11 @@ def main() -> int:
         # Remove large arrays before saving (keep only summary stats)
         result_to_save = result.copy()
         result_to_save["final_state"] = _json_safe(result["final_state"])
+        result_to_save["energy_density"] = {
+            "base_rho": _json_safe(result["energy_density"]["base_rho"]),
+            "synergistic_rho": _json_safe(result["energy_density"]["synergistic_rho"]),
+            "synergy_boost": result["energy_density"]["synergy_boost"],
+        }
         
         out_file = results_dir / f"full_3d_evolution_{result['timestamp']}.json"
         out_file.write_text(json.dumps(result_to_save, indent=2), encoding="utf-8")

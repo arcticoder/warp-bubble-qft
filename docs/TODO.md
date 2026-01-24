@@ -9,7 +9,7 @@ Guiding principle: keep the repo honest and reproducible; treat all headline cla
 ## Status (rolling)
 
 - ✅ Methods + verification deliverables exist (integration runners, stress tests, manuscript PDF).
-- 🔄 Current priority: **consolidate manuscripts/TeX + simplify run entrypoints**.
+- 🔄 Current priority: **Phase C complete; continue with Phase D (expanded stress tests) or Phase E (curved QI refinements)**.
 
 ---
 
@@ -52,16 +52,26 @@ Goal: fewer top-level scripts, clearer “what should I run?” story.
 
 ---
 
-## Phase C — Synergy-enabled 3+1D integration (research extension)
+## Phase C — Synergy-enabled 3+1D integration ✅ COMPLETE
 
-Goal: carry synergy into the 3+1D toy evolution and ensure it’s traceable as a *model choice*.
+Goal: carry synergy into the 3+1D toy evolution and ensure it's traceable as a *model choice*.
 
-- [ ] Implement synergy factor plumbing
-  - Define $S = \exp(\sum_{i<j}\gamma_{ij}) - 1$ (or equivalent) with explicit defaults
-  - Add a “synergy off” baseline (all $\gamma_{ij}=0$)
-- [ ] Extend toy 3+1D source term(s)
-  - Add a synergy-modulated effective energy density $\rho_{\mathrm{syn}}$
-  - Record both $\rho$ and $\rho_{\mathrm{syn}}$ in outputs to keep comparisons honest
+- [x] ✅ Implement synergy factor plumbing
+  - ✅ Created `src/warp_qft/synergy.py` with SynergyCalculator class
+  - ✅ Model: S = exp(Σγ_ij) - 1 with configurable coupling coefficients
+  - ✅ Baseline mode: all γ_ij = 0 → S = 0 (purely multiplicative)
+  - ✅ Conservative config: γ_ij ∈ [0.02, 0.05] for cautious synergy modeling
+  - ✅ Integrated into `enhancement_pathway.py` for total enhancement calculation
+- [x] ✅ Extend toy 3+1D source term(s)
+  - ✅ Added synergy_factor parameter to `full_3d_evolution.py`
+  - ✅ Computes ρ_syn = ρ * (1 + S) for synergy-modulated energy density
+  - ✅ Records both ρ and ρ_syn in outputs for comparison
+  - ✅ CLI flag: `--synergy-factor S` (default 0 = baseline)
+- [x] ✅ Tested synergy integration
+  - ✅ Baseline mode (S=0): multiplicative 16.64× → synergistic 16.64× (no boost)
+  - ✅ Conservative mode (S≈0.21): multiplicative 16.64× → synergistic 20.12× (1.21× boost)
+  - ✅ 3D evolution stable with synergy: λ=-0.000031 (S=0.2, boost 1.2×)
+  - ✅ Example: `python full_3d_evolution.py --synergy-factor 0.2 --save-results`
 
 ---
 

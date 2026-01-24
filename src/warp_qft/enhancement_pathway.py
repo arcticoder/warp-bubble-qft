@@ -15,6 +15,8 @@ from typing import Dict, List, Tuple, Optional, Union
 import logging
 from dataclasses import dataclass
 
+from .synergy import SynergyCalculator, SynergyConfig, create_baseline_config
+
 logger = logging.getLogger(__name__)
 
 
@@ -28,6 +30,7 @@ class EnhancementConfig:
     squeezing_bandwidth: float = 0.1  # Squeezing bandwidth
     bubble_separation: float = 5.0    # Separation between bubbles
     coherence_time: float = 1e-12    # Coherence time for squeezing
+    synergy_config: Optional[SynergyConfig] = None  # Synergy coupling configuration (None = baseline)
 
 
 class CavityBoostCalculator:
@@ -405,6 +408,10 @@ class EnhancementPathwayOrchestrator:
         self.cavity = CavityBoostCalculator(config)
         self.squeezing = QuantumSqueezingEnhancer(config)
         self.multi_bubble = MultiBubbleSuperposition(config)
+        
+        # Initialize synergy calculator (baseline if not specified)
+        synergy_cfg = config.synergy_config if config.synergy_config else create_baseline_config()
+        self.synergy = SynergyCalculator(synergy_cfg)
     
     def combine_all_enhancements(self, base_energy: float) -> Dict:
         """
@@ -430,8 +437,20 @@ class EnhancementPathwayOrchestrator:
             self.config.num_bubbles
         )
         
-        # Combine enhancements multiplicatively
-        total_enhancement = cavity_factor * squeezing_factor * bubble_factor
+        # Baseline multiplicative enhancement (no synergy)
+        multiplicative_enhancement = cavity_factor * squeezing_factor * bubble_factor
+        
+        # Compute synergy enhancement
+        synergy_result = self.synergy.compute_effective_enhancement(
+            F_cavity=cavity_factor,
+            F_squeezing=squeezing_factor,
+            F_polymer=1.0,  # Polymer factor handled elsewhere
+            F_multi=bubble_factor,
+            use_logspace=False,
+        )
+        
+        synergy_factor = synergy_result["synergy_factor"]
+        total_enhancement = synergy_result["synergistic_total"]
         
         # Enhanced energy with proper scaling:
         # A larger enhancement factor represents *more available negative energy / stronger effect*,
@@ -443,13 +462,19 @@ class EnhancementPathwayOrchestrator:
             "squeezing_enhancement": squeezing_factor,
             "bubble_enhancement": bubble_factor,
             "multi_bubble_enhancement": bubble_factor,  # Alias for test compatibility
+            "multiplicative_enhancement": multiplicative_enhancement,
+            "synergy_factor": synergy_factor,
+            "synergy_boost": synergy_result["synergy_boost"],
             "total_enhancement": total_enhancement,
             "base_energy": base_energy,
             "enhanced_energy": enhanced_energy,
-            "final_energy": enhanced_energy  # Add final_energy key
+            "final_energy": enhanced_energy,  # Add final_energy key
+            "synergy_enabled": not self.synergy.config.is_baseline(),
         }
         
-        logger.debug(f"Total enhancement: {total_enhancement:.2f}x")
+        logger.debug(f"Multiplicative enhancement: {multiplicative_enhancement:.2f}x")
+        logger.debug(f"Synergy factor S: {synergy_factor:.4f} (boost: {synergy_result['synergy_boost']:.3f}x)")
+        logger.debug(f"Total enhancement (with synergy): {total_enhancement:.2f}x")
         logger.debug(f"Energy: {base_energy:.2e} → {enhanced_energy:.2e}")
         
         return results
