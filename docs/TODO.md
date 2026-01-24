@@ -30,6 +30,13 @@ Goal: make the repo easier to run end-to-end, and strengthen the “limits/fragi
 - ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Implemented optional 3+1D stability checks in `stress_test.py` (summary-only 3D probe) and added the offset fragility fit $D(\mu)=a e^{b\mu}+c$ with reported $\mu_{\mathrm{crit}}$ (see provenance: commit `e4629ce`, related: `1ec9d68`).
 
 - ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Added `visualize_robustness.py` for manuscript-ready bar charts of stress-test robustness (see provenance: commit `e4629ce`).
+
+### F3) Visualization enhancements
+
+- ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Added `visualize_robustness.py` for manuscript-ready bar charts of stress-test robustness (see provenance: commit `e4629ce`).
+
+- [ ] (Optional) Add a stability summary plot (λ per edge case) if 3D checks are enabled.
+
 ### F4) Extreme-regime QI cross-checks ✅ COMPLETE
 
 - ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Added `--mu-values` scan mode to `curved_qi_verification.py` to run compact extreme-μ scans and emit a JSON/table summary (see provenance: commits `e4629ce`, `d107010`).
