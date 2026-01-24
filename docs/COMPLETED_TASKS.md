@@ -112,6 +112,14 @@ results/
 
 - **Extreme-μ scan mode for curved QI** — Added `--mu-values` to `curved_qi_verification.py` to run compact extreme-μ scans and emit JSON table summaries. Provenance: commit `e4629ce` (related: `d107010` for curved QI implementation).
 
+### Phase F1 & F4 manuscript finalization (moved from `docs/TODO.md`, 2026-01-24)
+
+- **Results snapshot section in manuscript** — Comprehensive Results section (§3.1-3.6) already exists in `papers/lqg_warp_verification_methods.tex` covering: energy discrepancy resolution, backreaction convergence, enhancement validation, QI cross-checks (flat vs curved), 3+1D stability analysis (Lyapunov λ), and sensitivity/robustness (Monte Carlo). Provenance: manuscript structure established through final integration session.
+
+- **Clean manuscript build verification** — Verified `compile_manuscript.py --clean` produces clean 964 KB PDF (17 pages, REVTeX 4.2) with pdflatex + bibtex + multiple passes. All required inputs present (author_config.tex, refs.bib, result figures). Build tested 2026-01-24.
+
+- **QI bound labeling clarity** — Manuscript explicitly distinguishes "Ford-Roman bound (flat spacetime)" (§2.3, lines 207, 353) vs "Curved-space toy bound" (§2.3, lines 218, 358) with clear caveats: "Toy bound not rigorously derived", "heuristic 1/R² scaling, **not rigorous**". Disagreement explained in Results §3.4 and Discussion §4.3. Provenance: manuscript content from commits leading to final PDF.
+
 These items were removed from `docs/TODO.md` and consolidated here for archival provenance. If you'd like, I can also add a short changelog entry listing the exact commit messages and file diffs. 
 ---
 

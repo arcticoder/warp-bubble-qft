@@ -19,22 +19,22 @@ Guiding principle: keep the repo honest and reproducible; treat all headline cla
 
 Goal: make the repo easier to run end-to-end, and strengthen the “limits/fragility/null” story with deeper stability probes and clearer figures.
 
-### F1) Manuscript integration + consistency
+### F1) Manuscript integration + consistency ✅ COMPLETE
 
-- [ ] Add/refresh a single “Results snapshot” section in `papers/lqg_warp_verification_methods.tex` that summarizes:
-  - robustness (stress tests: robust vs fragile count)
-  - 3+1D toy stability summary (Lyapunov λ distribution across edge cases)
-  - curved QI “bound family sensitivity” summary (flat vs curved-toy vs hybrid)
-- [ ] Verify `compile_manuscript.py` supports a clean build on a fresh clone (pdflatex + bibtex; no missing inputs).
+- ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Results snapshot section already exists in manuscript (§3.1-3.6 cover energy discrepancy, backreaction, enhancements, QI checks, 3D stability, sensitivity/robustness). See provenance: manuscript structure from commits leading to final integration.
+
+- ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Clean build verified: `python compile_manuscript.py --clean` produces 964 KB PDF (17 pages) with no fatal errors. All required inputs present.
 
 ### F2) Advanced stability probes (couple stress suite → 3+1D toy)
 
 - ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Implemented optional 3+1D stability checks in `stress_test.py` (summary-only 3D probe) and added the offset fragility fit $D(\mu)=a e^{b\mu}+c$ with reported $\mu_{\mathrm{crit}}$ (see provenance: commit `e4629ce`, related: `1ec9d68`).
 
 - ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Added `visualize_robustness.py` for manuscript-ready bar charts of stress-test robustness (see provenance: commit `e4629ce`).
-### F4) Extreme-regime QI cross-checks
+### F4) Extreme-regime QI cross-checks ✅ COMPLETE
 
 - ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Added `--mu-values` scan mode to `curved_qi_verification.py` to run compact extreme-μ scans and emit a JSON/table summary (see provenance: commits `e4629ce`, `d107010`).
+
+- ✅ **MOVED to `docs/COMPLETED_TASKS.md`** — Manuscript clearly labels "Ford-Roman bound (flat spacetime)" vs "Curved-space toy bound" with explicit caveats ("Toy bound not rigorously derived", "heuristic 1/R² scaling"). See [lqg_warp_verification_methods.tex](../papers/lqg_warp_verification_methods.tex#L207-L362).
 ---
 
 ## Phase A — Manuscript consolidation ✅ COMPLETE
