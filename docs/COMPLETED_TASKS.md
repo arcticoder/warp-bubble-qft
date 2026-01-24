@@ -120,7 +120,131 @@ results/
 
 - **QI bound labeling clarity** — Manuscript explicitly distinguishes "Ford-Roman bound (flat spacetime)" (§2.3, lines 207, 353) vs "Curved-space toy bound" (§2.3, lines 218, 358) with clear caveats: "Toy bound not rigorously derived", "heuristic 1/R² scaling, **not rigorous**". Disagreement explained in Results §3.4 and Discussion §4.3. Provenance: manuscript content from commits leading to final PDF.
 
-These items were removed from `docs/TODO.md` and consolidated here for archival provenance. If you'd like, I can also add a short changelog entry listing the exact commit messages and file diffs. 
+---
+
+## Phase A — Manuscript consolidation (moved from TODO.md, 2026-01-24)
+
+Goal: one canonical paper build, one canonical "docs compilation" build, and a clear story for what lives where.
+
+- ✅ Canonical: `papers/lqg_warp_verification_methods.tex` established as single source of truth (REVTeX 4.2, 17 pages, 964 KB PDF)
+- ✅ Archived `docs/main.tex` to `docs/history/main_legacy_20260123.tex` for provenance
+- ✅ TeX inclusion normalized: all `papers/` content standalone with `\documentclass`, no cross-references between `docs/` and `papers/`
+- ✅ Manuscript build helper: `make manuscript` target builds PDF via pdflatex + bibtex
+
+## Phase B — Script organization + central entrypoint (moved from TODO.md, 2026-01-24)
+
+Goal: fewer top-level scripts, clearer "what should I run?" story.
+
+- ✅ Created central CLI entrypoint `main.py` with subcommands: `batch`, `full-integration`, `stress-test`, `compile-manuscript`, `demo`
+- ✅ Created `demos/` folder and moved `demo_fast_scanning.py`, `demo_van_den_broeck_natario.py`, added `demo_synergy_integration.py`, `demo_phase_e_curved_qi.py`
+- ✅ Split library code (`src/warp_qft/`) vs runner scripts (batch_analysis, full_integration, stress_test)
+
+## Phase C — Synergy-enabled 3+1D integration (moved from TODO.md, 2026-01-24)
+
+Goal: carry synergy into 3+1D toy evolution as traceable model choice.
+
+- ✅ Created `src/warp_qft/synergy.py` with SynergyCalculator (model: S = exp(Σγ_ij) - 1)
+- ✅ Added synergy_factor parameter to `full_3d_evolution.py` with `--synergy-factor` CLI flag
+- ✅ Tested: baseline S=0 (no boost), conservative S≈0.21 (1.21× boost), 3D evolution stable with synergy (λ=-0.000031)
+
+## Phase D — Expanded stress tests + fragility fits (moved from TODO.md, 2026-01-24)
+
+Goal: quantify fragility boundaries and produce publishable plots.
+
+- ✅ Expanded edge-case sets from 3 to 15 configurations (extreme μ, Q, squeezing, R, bubble counts)
+- ✅ Results: 11/15 robust (D<0.1), 4/15 fragile (D>0.1); failure boundary at high-mu+small-R
+- ✅ Added `--fragility-fit` flag in `stress_test.py` with exponential fit D(μ)=a e^(bμ)
+
+## Phase E — Curved-space QI refinements (moved from TODO.md, 2026-01-24)
+
+Goal: improve "toy curved QI" while remaining clearly labeled.
+
+- ✅ Implemented `curved_qi_integral_4d()` with 4D proxy (spherical transverse volume): 93× enhancement vs 1.4× in 1+1D
+- ✅ Added normalized margin Δ̄ = (I-B)/|B| output (positive = no violation, negative = violation)
+- ✅ Parameterized bound family: `compute_qi_bound(bound_type, ...)` with 'flat-ford-roman', 'curved-toy', 'hybrid' models
+- Test results (μ=0.3, R=2.3): 1+1D curved-toy Δ̄=+0.22 (no violation), 4D flat Δ̄=-8269 (strong violation), hybrid Δ̄=-123
+
+## Section 0 — Reproducibility Baseline (moved from TODO.md, 2026-01-24)
+
+- ✅ Recorded runtime environment (`results/REPRODUCIBILITY.md`)
+- ✅ Established "golden run" command + frozen config
+- ✅ Defined output artifacts to archive (logs/JSON/plots in `results/`)
+
+## Section 1 — Reproduce & Verify Core Claims (moved from TODO.md, 2026-01-24)
+
+### 1.1 Resolved "1083×" energy optimization discrepancy
+
+- ✅ Defined quantities precisely: pipeline = dimensionless feasibility ratio (~30×), cross-repo = computational accounting (1083×)
+- ✅ Created `discrepancy_analysis.py --save-results` logging intermediate factors
+- ✅ Created `baseline_comparison.py` toggling VdB-Natário, backreaction modes, enhancement parameters
+
+### 1.2 Verified QI-violation computation
+
+- ✅ Standalone `verify_qi_energy_density.py` script
+- ✅ QI checks with fixed seeds (`results/qi_scan.png`)
+- ✅ Ford-Roman comparison documented in `docs/LITERATURE_MAPPING.md`
+
+## Section 2 — Sensitivity Analysis & Parameter Robustness (moved from TODO.md, 2026-01-24)
+
+- ✅ Parameter scans archived (`results/param_scan_*.log`)
+- ✅ Monte Carlo + sensitivity scans (`results/sensitivity_analysis_*.json` + plots)
+- ✅ Edge-case stress testing complete (documented in `VERIFICATION_SUMMARY.md` §12)
+
+## Section 3 — Backreaction: Linear vs Nonlinear / Iterative Coupling (moved from TODO.md, 2026-01-24)
+
+- ✅ Implemented `apply_backreaction_correction_iterative()` in `src/warp_qft/backreaction_solver.py`
+- ✅ Integrated into pipeline with config/CLI flags: `--backreaction-iterative`, `--backreaction-outer-iters`, `--backreaction-rel-tol`
+
+## Section 4 — Toward 3+1D (Scoped and Honest) (moved from TODO.md, 2026-01-24)
+
+- ✅ Created `toy_evolution.py`: 1D reaction-diffusion PDE driven by polymer energy density profile
+- ✅ Artifacts: `results/toy_evolution_*.json` and `.png`
+
+## Section 5 — Quantum-Optics Analogies & Causality Checks (moved from TODO.md, 2026-01-24)
+
+- ✅ Verified squeezing model (effective-factor based)
+- ✅ Added `src/warp_qft/causality.py` with `screen_spherical_metric()` helper
+
+## Section 6 — Benchmark Against Literature / Known Bounds (moved from TODO.md, 2026-01-24)
+
+- ✅ Created comparison table in `docs/LITERATURE_MAPPING.md` (bounds, averaging procedures, parameter mappings)
+- ✅ Paper-style narrative acknowledges known objections and limitations (§5-6)
+
+## Section 7 — Low-Priority Extensions (moved from TODO.md, 2026-01-24)
+
+### 7.1 Fixed NaN Divergences in Iterative Backreaction
+
+- ✅ Added damping/regularization + adaptive damping schedule (β_n = β₀/(1 + αC_n))
+- ✅ Config 6 now converges to 0.013 (85× reduction, was NaN)
+- ✅ CLI options: `--adaptive-damping`, `--damping-beta0`, `--damping-alpha`
+- Deliverable: `docs/STABILIZATION_NOTE.md`, commit `ea60859`
+
+### 7.2 Implemented Curved-Spacetime QI Bounds
+
+- ✅ Created `curved_qi_verification.py` (metric-weighted QI integral)
+- ✅ Flat-space vs curved-space bound comparison
+- Results (μ=0.3, R=2.3): flat violates (margin -0.556), curved no violation (margin +0.222)
+
+### 7.3 Extended to 3+1D Stability Analysis
+
+- ✅ Created `full_3d_evolution.py` (3D Cartesian grid, simplified ADM time-stepping)
+- ✅ Lyapunov exponent: λ = (1/T) log(||g(T)||/||g(0)||)
+- Results (16³ grid): polymer λ=-0.00023 (stable), classical λ=-0.00023 (stable)
+
+### 7.4 Rigorous Cavity/Squeezing Derivations
+
+- ✅ Created `derive_enhancements.py` (symbolic SymPy derivations)
+- ✅ Numerical validation: F_cav=1000, F_sq=10, F_poly=3.33 at standard parameters
+- ✅ Integrated into `batch_analysis.py --include-derivations`
+
+### 7.5 Manuscript Preparation
+
+- ✅ Drafted `docs/MANUSCRIPT_DRAFT.md` (6000 words, refs to 20+ plots)
+- ✅ Updated `LITERATURE_MAPPING.md` §3 with enhancement factor derivations
+- ✅ Preprint batch session: `results/preprint/` (12 tasks, 928 KB, 20 files)  
+- ✅ Converted to LaTeX: `papers/lqg_warp_verification_methods.tex` (17 pages, REVTeX 4.2)
+- ✅ Added author affiliations via `author_config.tex`, reproducibility appendix
+
 ---
 
 ## TODO.md Status
