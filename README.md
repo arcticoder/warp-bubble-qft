@@ -2,7 +2,7 @@
 
 **Verification framework for LQG-enhanced warp bubble energy optimizations with reproducible computational methods and stability analysis.**
 
-[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
 ## Overview
 
@@ -84,4 +84,4 @@ Details of the implementation are available in the [manuscript](papers/lqg_warp_
 
 ## License
 
-This project is released under the [Unlicense](LICENSE) - explicit dedication to the public domain.
+This project is released under the [MIT License](LICENSE).

@@ -1126,3 +1126,5 @@ Important: nothing has been committed. All changes are staged so you can review 
 - If you’re happy, commit with a descriptive message:
   - git commit -m "Reorganize manuscript sources: move paper fragments to papers/archive; consolidate scripts and reports into scripts/ and docs/reports/"
 <!-- ------ -->
+Done — I replaced the Unlicense with the MIT license and updated the README badge and text to reference the MIT License (copyright: 2026 Arcticoder). Changes are staged but not committed.
+<!-- ------ -->
