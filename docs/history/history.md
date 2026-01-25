@@ -1128,3 +1128,5 @@ Important: nothing has been committed. All changes are staged so you can review 
 <!-- ------ -->
 Done — I replaced the Unlicense with the MIT license and updated the README badge and text to reference the MIT License (copyright: 2026 Arcticoder). Changes are staged but not committed.
 <!-- ------ -->
+I removed the inline reference enumerate from both the active manuscript (lqg_warp_verification_methods.tex) and the archived copy (manuscript.tex) and replaced them with a BibTeX-managed block pointing to refs.bib. Both modified files are staged (not committed).
+<!-- ------ -->
