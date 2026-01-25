@@ -353,3 +353,24 @@ python run_enhanced_lqg_pipeline.py --quick-check --backreaction-iterative --bac
 3. **Benchmarking table** (Task 6):
    - Comparison table: bounds, averaging procedures, parameter mappings
    - Paper-style narrative with known objections and limitations
+
+## ArXiv Preparation & Cleanup (finalized 2026-01-24)
+
+### 1. Repository Cleanliness
+- **Root Cleanup**: Moved `lqg_pipeline.log` to results, documentation files to `docs/admin/`, `docs/reports/` and `docs/archive/`. Identified `scripts/` as the home for all executable logic.
+- **Corrupted Files**: Identified and archived/removed `warp_bubble_proof.tex` (was in `docs/latex_src/`, moved to `archive/old_latex_docs/`).
+- **Standardization**: Removed non-essential folders from root.
+
+### 2. Manuscript Package
+- **Canonical Source**: Established `papers/` as the single source for the arXiv submission.
+- **Structure**:
+    - `lqg_warp_verification_methods.tex` (Main)
+    - `author_config.tex`
+    - `refs.bib`
+    - `figures/` (Populated with `results/final_integration/*.png`)
+    - `arxiv_source.tar.gz` (Ready for upload)
+- **Validation**: Verified standard packages (revtex4-2).
+
+### 3. Documentation & Meta
+- **GitHub**: Updated repository description and topics via `gh api`.
+- **README.md**: Completely rewritten to reflect the "Verification Framework" status, pointing correctly to `scripts/` and explaining the separation of concerns (pipeline ratio vs 1083x accounting).

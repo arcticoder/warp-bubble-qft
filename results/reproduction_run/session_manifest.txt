@@ -1,0 +1,13 @@
+Session: reproduction_run
+Timestamp: 20260124_155739
+Tasks:
+  [2] Quick feasibility check (baseline)
+  [2] Quick feasibility check (iterative backreaction)
+  [2] QI verification scan
+  [2] Sensitivity analysis (Monte Carlo + enhancement sweeps)
+  [2] Toy 1D evolution
+  [2] Curved-space QI verification
+  [2] 3+1D stability analysis (polymer-corrected ADM)
+  [2] Discrepancy analysis
+  [2] Baseline comparison (factor isolation)
+  [2] Iterative backreaction experiment (reduced resolution)

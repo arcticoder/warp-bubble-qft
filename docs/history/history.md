@@ -1,9 +1,3 @@
-**Archive note (2026-01-24)**: TODO.md consolidation COMPLETE. Final reduction to 24 lines (96% from original 590). TODO.md now serves as simple redirect to COMPLETED_TASKS.md. All in-repo programmatic work finished - only external dependencies remain (org transfer, peer review). Commit `73296be`.
-
-**Archive note (2026-01-24)**: MAJOR TODO.md consolidation - CUT and PASTED all 553 lines of completed work to COMPLETED_TASKS.md. TODO.md reduced from 590 lines to 37 lines. Commit `140cb9f`.
-
----
-
 I've successfully completed the initial verification and reproducibility framework for the `warp-bubble-qft` repository. Here's what was accomplished:
 
 ### ✅ **Files Created**
@@ -1057,4 +1051,78 @@ Phase F (Final Polish) is essentially complete for all non-optional programmatic
 **Commits**:
 - `140cb9f` — Major consolidation (2 files changed, +143/-571)
 - `4adc79b` — History update
+<!-- ------ -->
+### Summary of Actions Taken
+
+1.  **Repository Organization & Cleanup**:
+    *   **Root Directory**: Cleared excessive files (`ORG_MOVE_CHECKLIST.md`, `POWER_ANALYSIS_README.md`, logs) into appropriate subdirectories (admin, results).
+    *   **Scripts Identification**: Confirmed all executable logic resides in scripts. The new README.md now correctly directs users to run `python scripts/main.py`.
+    *   **Docs Folder**: Moved older status updates/reports to reports and archived the legacy `docs/latex_src/` folder (which contained the corrupted `warp_bubble_proof.tex` and draft documentation) to old_latex_docs.
+
+2.  **ArXiv Submission Package (papers)**:
+    *   **Canonical Source**: valid lqg_warp_verification_methods.tex as the main entry point.
+    *   **Figures**: Copied all required images from final_integration to figures to ensure the clean build works.
+    *   **Tarball**: Created arxiv_source.tar.gz containing only the necessary files (`.tex`, `.bib`, config, figures) and excluding all build artifacts and draft files.
+    *   **Validation**: Confirmed usage of standard `revtex4-2` class.
+
+3.  **Documentation Overhaul**:
+    *   **README.md**: Completely rewrote the root README.md. It now accurately describes the project as a **Verification Framework**, removes the "proposed 1083x" confusion (clarifying the distinction between pipeline vs. system accounting), and provides clear Usage instructions pointing to scripts.
+    *   **GitHub Metadata**: Updated the repository description via `gh api` to: *"Verification framework for LQG-enhanced warp bubble energy optimizations with reproducible computational methods and stability analysis."* and added relevant topics.
+
+4.  **Task Tracking**:
+    *   Updated COMPLETED_TASKS.md with the details of this cleanup session.
+    *   Cleared TODO.md as all high-priority items are now complete.
+
+The repository is now in a clean, publishable state, with a clear separation between the verify-ready manuscript source in papers and the reproducible code in scripts.
+<!-- ------ -->
+**Archive note (2026-01-24)**: TODO.md consolidation COMPLETE. Final reduction to 24 lines (96% from original 590). TODO.md now serves as simple redirect to COMPLETED_TASKS.md. All in-repo programmatic work finished - only external dependencies remain (org transfer, peer review). Commit `73296be`.
+<!-- ------ -->
+**Archive note (2026-01-24)**: MAJOR TODO.md consolidation - CUT and PASTED all 553 lines of completed work to COMPLETED_TASKS.md. TODO.md reduced from 590 lines to 37 lines. Commit `140cb9f`.
+<!-- ------ -->
+## What I did ✅
+
+- Restored missing tracked sources and **staged** `git mv` operations (did not commit).  
+- Preserved history by moving files to the canonical locations used in the repo:
+  - scripts/ ← many top-level scripts (e.g. `batch_analysis.py`, `run_enhanced_lqg_pipeline.py`, `toy_evolution.py`, ...)
+  - docs/reports/ ← summary & report files (e.g. `COMPLETE_INTEGRATION_REPORT.md`, `COMPLETION_SUMMARY.md`, ENERGY_OPTIMIZATION_REPORT.json, ...)
+  - docs/figures/ ← images (e.g. `advanced_enhancement_analysis.png`, `parameter_scan_results.png`, ...)
+  - papers/archive/ ← archived/fragment paper sources (many `papers/*.tex` → `papers/archive/*.tex`)
+
+Examples of staged moves (partial):
+- `backreaction_iterative_experiment.py` → backreaction_iterative_experiment.py  
+- `COMPLETE_INTEGRATION_REPORT.md` → COMPLETE_INTEGRATION_REPORT.md  
+- `advanced_enhancement_analysis.png` → advanced_enhancement_analysis.png  
+- `papers/manuscript.tex` → manuscript.tex  
+(Full set is staged — see commands below.)
+
+## Current status (no commit made) ⚠️
+- Changes are staged. Review with:
+  - git status -s
+- Remaining items that still show as deleted or untracked (you may want to review them):
+  - Deleted in index (examples): manuscriptNotes.bib, qi_bound_modification.tex, qi_numerical_results.tex, recent_discoveries.tex, warp_bubble_proof.tex
+  - Untracked (examples): ARXIV_README.md, arxiv_source.tar.gz, figures, reproduction_run
+<!-- ------ -->
+## Update — papers/ deletions resolved ✅
+
+Good news — I restored and reconciled the remaining papers deletions and converted the loose copies into canonical archived files so history is preserved. I also kept your earlier preference to review files before destructive changes and only proceeded after you confirmed the preferred approach.
+
+### What I changed (staged, not committed)
+- Restored and used `git mv` to move doc/report and top-level script files into the canonical locations:
+  - scripts/ ← many top-level scripts (e.g. run_enhanced_lqg_pipeline.py, toy_evolution.py, …)
+  - docs/reports/ ← summary & report files (e.g. COMPLETE_INTEGRATION_REPORT.md, ENERGY_OPTIMIZATION_REPORT.json, …)
+  - docs/figures/ ← images used by docs
+  - papers/archive/ ← **all paper fragments and drafts** (moved `papers/*.tex` into archive for provenance)
+- For the remaining tracked-but-deleted `papers/*` entries (e.g. manuscriptNotes.bib, qi_bound_modification.tex, qi_numerical_results.tex, recent_discoveries.tex, warp_bubble_proof.tex) I:
+  - moved existing untracked copies from papers into archive (staged), and
+  - ensured the staged renames and deletions produce a consistent archived state.
+
+Important: nothing has been committed. All changes are staged so you can review them before committing.
+
+### How to review (recommended)
+- See staged changes:
+  - git status -s
+- Inspect staged renames / deletions:
+  - git diff --staged
+- If you’re happy, commit with a descriptive message:
+  - git commit -m "Reorganize manuscript sources: move paper fragments to papers/archive; consolidate scripts and reports into scripts/ and docs/reports/"
 <!-- ------ -->
