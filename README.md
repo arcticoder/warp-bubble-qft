@@ -2,7 +2,6 @@
 
 **Verification framework for LQG-enhanced warp bubble energy optimizations with reproducible computational methods and stability analysis.**
 
-[![arXiv](https://img.shields.io/badge/arXiv-2601.XXXXX-b31b1b.svg)](https://arxiv.org/abs/2601.XXXXX)
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 
 ## Overview
